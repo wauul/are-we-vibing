@@ -1,0 +1,29 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum InputType {
+  SPOTIFY
+  YOUTUBE
+  MANUAL
+}
+
+model Session {
+  id                    String     @id @default(uuid())
+  personAName           String
+  personAInputType      InputType
+  personANormalizedList Json
+  personBName           String?
+  personBInputType      InputType?
+  personBNormalizedList Json?
+  resultJson            Json?
+  createdAt             DateTime   @default(now())
+  generationStartedAt   DateTime?
+  generationAttempts    Int        @default(0)
+}
