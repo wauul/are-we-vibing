@@ -1,4 +1,5 @@
 import Link from "next/link";
+import VibeVisual from "@/components/vibe-visual";
 import {
   ArrowRight,
   Music2,
@@ -34,7 +35,7 @@ export default function Home() {
           </p>
           <div className="sources">
             <span>
-              <Headphones size={15} /> Spotify
+              <Sparkles size={15} /> AI-powered chemistry
             </span>
             <span>
               <Play size={15} /> YouTube
@@ -44,42 +45,7 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <div
-          className="hero-art"
-          aria-label="Illustrated vinyl records with an example 92 percent compatibility score"
-        >
-          <div className="orbit orbit-one" />
-          <div className="orbit orbit-two" />
-          <span className="art-spark spark-one">✦</span>
-          <span className="art-spark spark-two">✧</span>
-          <span className="floating-label label-a">
-            your late-night rotation ☾
-          </span>
-          <div className="record record-a">
-            <div className="record-label">
-              <Music2 size={30} />
-              <small>SIDE A · YOUR WORLD</small>
-            </div>
-          </div>
-          <div className="record record-b">
-            <div className="record-label">
-              <Heart size={28} />
-              <small>SIDE B · THEIR WORLD</small>
-            </div>
-          </div>
-          <div className="match-sticker">
-            <span>IT’S GIVING</span>
-            <strong>
-              92<span>%</span>
-            </strong>
-            <span>MUSICAL SOULMATES ✦</span>
-            <small>Example result</small>
-          </div>
-          <span className="floating-label label-b">
-            their main-character soundtrack ↗
-          </span>
-          <span className="art-caption">TWO TASTES. ONE FREQUENCY.</span>
-        </div>
+        <VibeVisual />
       </section>
       <div className="ticker">
         <span>BESTIES OR SKIP BUTTONS?</span>
@@ -145,3 +111,6 @@ export default function Home() {
     </main>
   );
 }
+
+
+

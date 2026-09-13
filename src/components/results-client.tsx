@@ -16,6 +16,7 @@ import { toPng } from "html-to-image";
 import confetti from "canvas-confetti";
 import type { SessionView } from "@/lib/schema";
 import { api } from "./input-form";
+import { SoundBars } from "./vibe-visual";
 const badges = {
   MANUAL: "via your own picks ♫",
   SPOTIFY: "via Spotify 🎧",
@@ -144,6 +145,7 @@ export default function ResultsClient({ id }: { id: string }) {
       <div ref={card} className="share-card">
         <div className="score-panel">
           <div className="eyebrow">R WE VIBING?</div>
+          <div className="score-orbits" aria-hidden="true"><i /><i /><span>✦</span><b>✧</b></div>
           <div
             className="score"
             aria-label={`${r.compatibilityScore} percent compatibility`}
@@ -151,7 +153,8 @@ export default function ResultsClient({ id }: { id: string }) {
             {score}
             <span>%</span>
           </div>
-          <span className="score-label">ON THE SAME WAVELENGTH</span>
+          <span className="score-label">{r.compatibilityScore > 80 ? "CERTIFIED AUX-CORD SOULMATES" : r.compatibilityScore >= 50 ? "THERE’S A FREQUENCY HERE" : "DIFFERENT WORLDS. FRESH DISCOVERIES."}</span>
+          <SoundBars className="result-wave" />
           <h2>{r.verdict}</h2>
           <p className="micro">
             {session.personAName} × {session.personBName}

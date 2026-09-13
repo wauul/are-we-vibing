@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AudioLines, ArrowUpRight } from "lucide-react";
 import "./globals.css";
+import "./design.css";
 export const metadata: Metadata = {
   title: "R We Vibing? — Find your musical chemistry",
   description: "Two people. Two music tastes. One very honest vibe check.",

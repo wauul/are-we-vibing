@@ -2,22 +2,8 @@
 import { useState } from "react";
 import { ArrowRight, Headphones, Music2, Play } from "lucide-react";
 import { submission, type InputType, type SessionView } from "@/lib/schema";
-export async function api<T>(url: string, body?: unknown): Promise<T> {
-  const response = await fetch(
-    url,
-    body === undefined
-      ? { cache: "no-store" }
-      : {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        },
-  );
-  const data = await response.json();
-  if (!response.ok)
-    throw new Error(data.error || "Something skipped a beat. Try again.");
-  return data;
-}
+import { api, rememberCreator } from "@/lib/client-api";
+export { api } from "@/lib/client-api";
 export function InputForm({
   id,
   onDone,
@@ -51,7 +37,7 @@ export function InputForm({
       await new Promise((r) =>
         setTimeout(r, Math.max(0, 1800 - (Date.now() - start))),
       );
-      if (!id) localStorage.setItem(`vibing:${s.id}`, "A");
+      if (!id) rememberCreator(s.id);
       onDone(s);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Oops. Try again.");
@@ -78,7 +64,6 @@ export function InputForm({
         {(
           [
             { id: "MANUAL", label: "My picks", icon: Music2 },
-            { id: "SPOTIFY", label: "Spotify", icon: Headphones },
             { id: "YOUTUBE", label: "YouTube", icon: Play },
           ] as const
         ).map((m) => (
@@ -99,6 +84,7 @@ export function InputForm({
           </button>
         ))}
       </div>
+      <p className="source-note"><Headphones size={13} /> Spotify import is currently unavailable. You can type your favorites from any music app.</p>
       <label htmlFor="music">
         {type === "MANUAL"
           ? "Your on-repeat artists & songs"
@@ -139,6 +125,7 @@ export function InputForm({
             ? "Spotify’s developer terms do not allow its playlist data in AI vibe checks. Choose YouTube or add your own picks."
             : "Public or unlisted playlists · First 20 videos."}
       </p>
+      {type === "MANUAL" && <div className="pick-suggestions"><span>Need a little inspiration?</span>{["SZA", "Daft Punk", "Frank Ocean"].map(artist => <button type="button" key={artist} disabled={busy} onClick={() => setValue(current => current.trim() ? `${current.trim()}\n${artist}` : artist)}>+ {artist}</button>)}</div>}
       {error && (
         <p className="error" role="alert">
           {error}

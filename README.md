@@ -66,3 +66,9 @@ Production: https://are-we-vibing.vercel.app
 Repository: https://github.com/wauul/are-we-vibing
 
 
+## Current live link and UI
+
+Always use https://are-we-vibing.vercel.app. Vercel deployment-specific URLs are immutable snapshots: the old `are-we-vibing-mdsydv21b-wauuls-projects.vercel.app` snapshot predates the Prisma WASM fix and still fails to create sessions. Do not share that old link.
+
+The interface includes an animated record-player scene with a pause control, sound bars, floating cards, a session progress indicator, and a score reveal. All motion respects reduced-motion preferences. The waiting screen supports entering the second person's music on the same device. Browser storage is optional; an in-memory fallback preserves the creator state during the current visit, and invitations contain only the shared session ID. Network errors preserve the form, and automatic mutation retries are deliberately avoided to prevent duplicate sessions.
+

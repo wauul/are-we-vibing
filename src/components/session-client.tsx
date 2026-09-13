@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { Headphones, Link2, Music2 } from "lucide-react";
 import type { SessionView } from "@/lib/schema";
 import { InputForm, api } from "./input-form";
+import { isCreator } from "@/lib/client-api";
+import { SoundBars } from "./vibe-visual";
 export function Matching() {
   return (
     <div className="matching" role="status">
@@ -14,6 +16,7 @@ export function Matching() {
       </div>
       <h2>Finding your frequency…</h2>
       <p>Comparing guilty pleasures. Negotiating the aux cord.</p>
+      <SoundBars />
     </div>
   );
 }
@@ -25,6 +28,7 @@ export default function SessionClient({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [joinHere, setJoinHere] = useState(false);
   const refresh = useCallback(async () => {
     if (isNew) return;
     try {
@@ -38,7 +42,7 @@ export default function SessionClient({ id }: { id: string }) {
   }, [id, isNew, router]);
   useEffect(() => {
     if (busy) return;
-    setOwner(localStorage.getItem(`vibing:${id}`) === "A");
+    setOwner(isCreator(id));
     void refresh();
     if (isNew || busy) return;
     const timer = setInterval(() => void refresh(), 3000);
@@ -62,7 +66,7 @@ export default function SessionClient({ id }: { id: string }) {
   }
   async function copy() {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(`${window.location.origin}/session/${id}`);
       setCopied(true);
     } catch {
       setError("Copy the session link from the address bar to share.");
@@ -74,10 +78,11 @@ export default function SessionClient({ id }: { id: string }) {
         <p role="status">{error || "Loading your mixtape…"}</p>
       </main>
     );
-  const waiting = owner && session?.status === "waiting";
+  const waiting = owner && !joinHere && session?.status === "waiting";
   const matching = busy || session?.status === "matching";
   return (
     <main className="flow-shell">
+      <div className="flow-progress" aria-label="Session progress"><span className="done">01 <b>Your taste</b></span><i /><span className={!isNew ? "done" : ""}>02 <b>Their taste</b></span><i /><span>03 <b>The reveal</b></span></div>
       <div className="eyebrow">
         {isNew
           ? "SIDE A · YOUR TURN"
@@ -117,7 +122,7 @@ export default function SessionClient({ id }: { id: string }) {
                 aria-label="Shareable session link"
                 readOnly
                 value={
-                  typeof window !== "undefined" ? window.location.href : ""
+                  typeof window !== "undefined" ? `${window.location.origin}/session/${id}` : ""
                 }
               />
               <button className="button full" onClick={copy}>
@@ -127,6 +132,7 @@ export default function SessionClient({ id }: { id: string }) {
               <p className="micro">
                 This page updates automatically when they join.
               </p>
+              <button className="same-device" onClick={() => setJoinHere(true)}>Together in person? Add their taste on this device →</button>
             </div>
           ) : session?.status === "retry" ? (
             <div className="waiting">
