@@ -72,3 +72,7 @@ Always use https://are-we-vibing.vercel.app. Vercel deployment-specific URLs are
 
 The interface includes an animated record-player scene with a pause control, sound bars, floating cards, a session progress indicator, and a score reveal. All motion respects reduced-motion preferences. The waiting screen supports entering the second person's music on the same device. Browser storage is optional; an in-memory fallback preserves the creator state during the current visit, and invitations contain only the shared session ID. Network errors preserve the form, and automatic mutation retries are deliberately avoided to prevent duplicate sessions.
 
+
+## Artist and song autocomplete
+
+My picks searches Apple’s public iTunes Search API after a short typing pause (minimum two characters). No API key or paid service is needed. Only the active search fragment is sent to the catalog; identical searches are cached for an hour. Select with a click or Arrow keys and Enter; Escape dismisses matches. Suggestions replace the active comma/newline-separated entry and never prevent typing custom music. Catalog limits or outages fall back to free text. No album artwork or audio previews are fetched. Spotify remains disabled and is labeled Coming soon.

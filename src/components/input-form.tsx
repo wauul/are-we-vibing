@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import ManualPicks from "./manual-picks";
 import { ArrowRight, Headphones, Music2, Play } from "lucide-react";
 import { submission, type InputType, type SessionView } from "@/lib/schema";
 import { api, rememberCreator } from "@/lib/client-api";
@@ -65,6 +66,7 @@ export function InputForm({
           [
             { id: "MANUAL", label: "My picks", icon: Music2 },
             { id: "YOUTUBE", label: "YouTube", icon: Play },
+            { id: "SPOTIFY", label: "Spotify", icon: Headphones },
           ] as const
         ).map((m) => (
           <button
@@ -77,32 +79,21 @@ export function InputForm({
               setValue("");
               setError("");
             }}
-            disabled={busy}
+            disabled={busy || m.id === "SPOTIFY"}
           >
             <m.icon size={17} />
-            {m.label}
+            <span>{m.label}{m.id === "SPOTIFY" && <small className="coming-soon-badge">Coming soon</small>}</span>
           </button>
         ))}
       </div>
-      <p className="source-note"><Headphones size={13} /> Spotify import is currently unavailable. You can type your favorites from any music app.</p>
+      <p className="source-note"><Headphones size={13} /> Spotify playlist import is coming soon. For now, add favorites from any music app with My picks.</p>
       <label htmlFor="music">
         {type === "MANUAL"
           ? "Your on-repeat artists & songs"
           : "Your playlist share link"}
       </label>
       {type === "MANUAL" ? (
-        <textarea
-          id="music"
-          rows={5}
-          maxLength={5000}
-          placeholder={
-            "Frank Ocean\nFleetwood Mac — Dreams\nSZA, The Marías, Daft Punk"
-          }
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          required
-          disabled={busy}
-        />
+        <ManualPicks value={value} onChange={setValue} disabled={busy} />
       ) : (
         <input
           id="music"
@@ -125,7 +116,6 @@ export function InputForm({
             ? "Spotify’s developer terms do not allow its playlist data in AI vibe checks. Choose YouTube or add your own picks."
             : "Public or unlisted playlists · First 20 videos."}
       </p>
-      {type === "MANUAL" && <div className="pick-suggestions"><span>Need a little inspiration?</span>{["SZA", "Daft Punk", "Frank Ocean"].map(artist => <button type="button" key={artist} disabled={busy} onClick={() => setValue(current => current.trim() ? `${current.trim()}\n${artist}` : artist)}>+ {artist}</button>)}</div>}
       {error && (
         <p className="error" role="alert">
           {error}
@@ -142,3 +132,4 @@ export function InputForm({
     </form>
   );
 }
+
