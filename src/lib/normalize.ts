@@ -56,6 +56,11 @@ export async function normalizeInput(
   type: InputType,
   value: string,
 ): Promise<string[]> {
+  // Spotify's current developer terms prohibit ingesting Spotify metadata into AI.
+  // Keep the requested adapter below for reference, but do not run it in this AI app.
+  if (type === "SPOTIFY") {
+    throw new AppError("Spotify import is unavailable for AI vibe checks. Choose YouTube or type your favorite music instead.", 422);
+  }
   let tracks: string[];
   if (type === "MANUAL")
     tracks = value

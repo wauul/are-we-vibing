@@ -59,3 +59,11 @@ Use Vercel's Hobby account and Neon Free. Do not select paid integrations. Set t
 Session links are bearer links: anyone with a link may join before the second seat is filled and view names/results. Keep links private if desired. Normalized music lists are stored in the database but omitted from public GET responses. Names/music are sent to Groq to generate the result; music providers receive playlist lookups. There is no automatic session deletion. Share-card downloads are generated in the browser.
 
 Input length limits, provider timeouts, fixed API hosts, same-origin browser mutation checks and a per-session generation cap bound individual requests. Free API quotas still apply; high-traffic public use may need an additional shared IP rate limiter. A free quota exhaustion is surfaced as an error, never an automatic paid upgrade.
+
+## Verified service limitations
+
+Spotify Developer Terms section IV.2.a.i prohibits ingesting Spotify content into an AI model, and its definition includes playlist metadata. Spotify input is therefore disabled in this AI application at both form and API levels. The requested adapter is retained as a reference implementation but never executed. No Spotify credentials are required or provisioned. Manual and YouTube flows are supported. See https://developer.spotify.com/terms.
+
+Production: https://are-we-vibing.vercel.app
+Repository: https://github.com/wauul/are-we-vibing
+

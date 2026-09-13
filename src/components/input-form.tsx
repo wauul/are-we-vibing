@@ -136,7 +136,7 @@ export function InputForm({
         {type === "MANUAL"
           ? `${Math.min(value.split(/[\n,]/).filter((s) => s.trim()).length, 15)}/15 picks · Separate with commas or new lines. First 15 used.`
           : type === "SPOTIFY"
-            ? "Public playlists only. Spotify access restrictions may require manual entry."
+            ? "Spotify’s developer terms do not allow its playlist data in AI vibe checks. Choose YouTube or add your own picks."
             : "Public or unlisted playlists · First 20 videos."}
       </p>
       {error && (
@@ -144,7 +144,7 @@ export function InputForm({
           {error}
         </p>
       )}
-      <button className="button full" disabled={busy}>
+      <button className="button full" disabled={busy || type === "SPOTIFY"}>
         {busy ? "Spinning up…" : id ? "Check our vibe" : "Make my session"}
         <ArrowRight size={18} />
       </button>
