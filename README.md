@@ -15,14 +15,14 @@ Prisma uses the JavaScript Postgres adapter so the app works on Windows ARM with
 - **Neon**: https://console.neon.tech → create project on the Free plan → Connect → copy the pooled connection string to `DATABASE_URL`. Keep TLS enabled. No paid upgrade or payment card is needed for this app.
 - **Groq**: https://console.groq.com/keys → Create API Key → `GROQ_API_KEY`. The code defaults to `llama-3.1-8b-instant` as originally requested, but this account no longer has that model. Production sets `GROQ_MODEL=openai/gpt-oss-20b`, which was verified with the free account and produces the same validated JSON. Stay on the free plan; quotas may temporarily prevent generation.
 - **YouTube**: https://console.cloud.google.com → new project → APIs & Services → Library → YouTube Data API v3 → Enable → Credentials → Create credentials → API key. Restrict the key to YouTube Data API v3. Set `YOUTUBE_API_KEY`. Server-side requests cannot use browser HTTP-referrer restrictions. Do not attach billing for this app.
-- **Spotify (conditional)**: https://developer.spotify.com/dashboard → create an app → copy Client ID and Client Secret into `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`. **Spotify changed developer access in 2026: development apps require the owner to have Premium, and playlist access can be restricted. The requested arbitrary-playlist Client Credentials flow is not reliably available to new free accounts.** The adapter implements the requested `/v1/playlists/{id}/tracks` flow and reports a friendly error on provider rejection. Manual and YouTube inputs remain available. Do not purchase Premium just to set up this app. See https://developer.spotify.com/documentation/web-api/tutorials/february-2026-migration-guide.
+- **Spotify (unavailable)**: No Spotify keys are required. After accepting the terms, the account dashboard still exposed no app-creation control. New development access requires Premium, and Spotify terms restrict sending its content to AI models. The form and API disable Spotify import; the original adapter remains only as reference code. Use Manual or YouTube. See https://developer.spotify.com/blog/2026-02-06-update-on-developer-access-and-platform-security and https://developer.spotify.com/terms.
 
 All keys remain server-side and are excluded from Git. Never prefix them with NEXT*PUBLIC*. Manual input still needs Neon and Groq for persistent sessions and AI results.
 
 ## How it works
 
 1. `/session/new` submits a name and one music source to `POST /api/sessions`.
-2. `normalizeInput(type, value)` returns strings: first 100 Spotify tracks, first 20 YouTube videos, or first 15 manual entries. Playlist URLs are validated against explicit provider hosts; the app never fetches user-supplied hosts.
+2. `normalizeInput(type, value)` returns strings: first 20 YouTube videos or first 15 manual entries. Spotify requests return a friendly unavailable error before any provider request. Playlist URLs are validated against explicit provider hosts; the app never fetches user-supplied hosts.
 3. Creator gets `/session/[id]`; a localStorage marker keeps that browser in the waiting state. Their friend opens the same link in another browser and submits to `POST /api/sessions/[id]/join`.
 4. An atomic database update claims the second seat. A 60-second generation lease prevents duplicate concurrent Groq calls. Failed or interrupted generation can be retried from the shared page, up to five attempts per session.
 5. One Groq call analyzes both lists. Zod validates JSON, score bounds and exact recommendation/award counts. Invalid output gets exactly one stricter retry. API failures return a friendly error without fabricated results.
@@ -45,9 +45,7 @@ vercel link --yes --project are-we-vibing
 vercel env add DATABASE_URL production
 vercel env add GROQ_API_KEY production
 vercel env add YOUTUBE_API_KEY production
-# Only if eligible Spotify credentials are available:
-vercel env add SPOTIFY_CLIENT_ID production
-vercel env add SPOTIFY_CLIENT_SECRET production
+vercel env add GROQ_MODEL production
 npm run db:deploy
 vercel --prod
 ```
@@ -66,4 +64,5 @@ Spotify Developer Terms section IV.2.a.i prohibits ingesting Spotify content int
 
 Production: https://are-we-vibing.vercel.app
 Repository: https://github.com/wauul/are-we-vibing
+
 

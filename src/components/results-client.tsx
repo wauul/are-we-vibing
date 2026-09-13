@@ -28,6 +28,7 @@ export default function ResultsClient({ id }: { id: string }) {
   const [notice, setNotice] = useState("");
   const [score, setScore] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [cardImage, setCardImage] = useState("");
   const card = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let cancelled = false;
@@ -85,6 +86,7 @@ export default function ResultsClient({ id }: { id: string }) {
         cacheBust: true,
       });
       const a = document.createElement("a");
+      setCardImage(url);
       a.download = "r-we-vibing.png";
       a.href = url;
       a.click();
@@ -207,6 +209,14 @@ export default function ResultsClient({ id }: { id: string }) {
         <p className="notice" role="status">
           {notice}
         </p>
+      )}
+      {cardImage && (
+        <details className="notice" open>
+          <summary>Your shareable image — save it below if the download did not start.</summary>
+          {/* A visible image also supports browsers that suppress automatic downloads. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={cardImage} alt="Your generated music compatibility card" style={{ maxWidth: "100%", height: "auto", marginTop: 16 }} />
+        </details>
       )}
       <div className="result-detail-grid">
         <section className="detail-card">
