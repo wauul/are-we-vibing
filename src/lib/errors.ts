@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
+import { Prisma } from "@prisma/client";
 export class AppError extends Error {
   constructor(
     message: string,
@@ -27,6 +28,7 @@ export function apiError(error: unknown) {
   console.error(
     "Request failed:",
     error instanceof Error ? error.name : "UnknownError",
+    error instanceof Prisma.PrismaClientKnownRequestError ? error.code : "",
   );
   return NextResponse.json(
     { error: "Our turntables hit a snag. Please try again in a moment." },
