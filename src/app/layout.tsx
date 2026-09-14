@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AudioLines, ArrowUpRight } from "lucide-react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import "./design.css";
 import "./social.css";
@@ -38,6 +39,7 @@ export default function RootLayout({
           </span>
           <Link href="/privacy">Privacy</Link>
         </footer>
+        <SpeedInsights />
       </body>
     </html>
   );
