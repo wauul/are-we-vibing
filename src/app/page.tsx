@@ -31,7 +31,7 @@ export default function Home() {
             Start a session <ArrowRight size={19} />
           </Link>
           <p className="micro">
-            <span>✦</span> No accounts. No awkward questions. Just vibes.
+            <span>✦</span> Try as a guest. Stay for your music circle.
           </p>
           <div className="sources">
             <span>

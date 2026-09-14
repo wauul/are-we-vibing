@@ -36,7 +36,7 @@ export default function RootLayout({
           <span>
             Made for the love of music. And a little friendly judgment.
           </span>
-          <span className="footer-note">GOOD MUSIC. BETTER CONNECTIONS.</span>
+          <Link href="/privacy">Privacy</Link>
         </footer>
       </body>
     </html>
