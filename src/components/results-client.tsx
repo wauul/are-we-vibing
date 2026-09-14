@@ -17,6 +17,7 @@ import confetti from "canvas-confetti";
 import type { SessionView } from "@/lib/schema";
 import { api } from "./input-form";
 import { SoundBars } from "./vibe-visual";
+import ShareLink from "./share-link";
 const badges = {
   MANUAL: "via your own picks ♫",
   SPOTIFY: "via Spotify 🎧",
@@ -98,14 +99,6 @@ export default function ResultsClient({ id }: { id: string }) {
       );
     } finally {
       setSaving(false);
-    }
-  }
-  async function share() {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setNotice("Result link copied. Pass it on.");
-    } catch {
-      setNotice("Copy the result link from your address bar.");
     }
   }
   if (!session?.resultJson)
@@ -203,10 +196,7 @@ export default function ResultsClient({ id }: { id: string }) {
           <Download size={17} />
           {saving ? "Making your card…" : "Save vibe card"}
         </button>
-        <button className="button outline-button" onClick={share}>
-          <Link2 size={17} />
-          Copy result link
-        </button>
+        <ShareLink path={`/results/${id}`} text="Our musical chemistry is in. R We Vibing?" compact />
       </div>
       {notice && (
         <p className="notice" role="status">

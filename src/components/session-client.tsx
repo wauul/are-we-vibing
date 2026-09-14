@@ -6,6 +6,8 @@ import type { SessionView } from "@/lib/schema";
 import { InputForm, api } from "./input-form";
 import { isCreator } from "@/lib/client-api";
 import { SoundBars } from "./vibe-visual";
+import ShareLink from "./share-link";
+import Link from "next/link";
 export function Matching() {
   return (
     <div className="matching" role="status">
@@ -27,8 +29,13 @@ export default function SessionClient({ id }: { id: string }) {
   const [owner, setOwner] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [copied, setCopied] = useState(false);
   const [joinHere, setJoinHere] = useState(false);
+  const [friendUsername, setFriendUsername] = useState<string>();
+  useEffect(() => {
+    const friend = new URLSearchParams(window.location.search).get("friend");
+    if (isNew && friend && /^[a-z0-9_]{3,24}$/.test(friend)) setFriendUsername(friend);
+    else setFriendUsername(undefined);
+  }, [isNew]);
   const refresh = useCallback(async () => {
     if (isNew) return;
     try {
@@ -64,21 +71,13 @@ export default function SessionClient({ id }: { id: string }) {
       setBusy(false);
     }
   }
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(`${window.location.origin}/session/${id}`);
-      setCopied(true);
-    } catch {
-      setError("Copy the session link from the address bar to share.");
-    }
-  }
   if (!isNew && !session)
     return (
       <main className="flow-shell">
-        <p role="status">{error || "Loading your mixtape…"}</p>
+        <p role="status">{error || "Loading your mixtape…"}</p>{error && <Link className="button" href="/friends">Sign in / open your music circle</Link>}
       </main>
     );
-  const waiting = owner && !joinHere && session?.status === "waiting";
+  const waiting = (owner || session?.isOwner) && !joinHere && session?.status === "waiting";
   const matching = busy || session?.status === "matching";
   return (
     <main className="flow-shell">
@@ -125,14 +124,12 @@ export default function SessionClient({ id }: { id: string }) {
                   typeof window !== "undefined" ? `${window.location.origin}/session/${id}` : ""
                 }
               />
-              <button className="button full" onClick={copy}>
-                {copied ? "Link copied ✓" : "Copy invite link"}
-                <Link2 size={18} />
-              </button>
+              <ShareLink path={`/session/${id}`} />
+              {session?.isDirect && <p className="direct-banner">Your friend’s invitation is in their music circle. Only they can join this session.</p>}
               <p className="micro">
                 This page updates automatically when they join.
               </p>
-              <button className="same-device" onClick={() => setJoinHere(true)}>Together in person? Add their taste on this device →</button>
+              {!session?.isDirect && <button className="same-device" onClick={() => setJoinHere(true)}>Together in person? Add their taste on this device →</button>}
             </div>
           ) : session?.status === "retry" ? (
             <div className="waiting">
@@ -151,6 +148,7 @@ export default function SessionClient({ id }: { id: string }) {
           ) : (
             <InputForm
               id={isNew ? undefined : id}
+              friendUsername={isNew ? friendUsername : undefined}
               onBusy={setBusy}
               onDone={(s) => {
                 if (isNew) router.push(`/session/${s.id}`);

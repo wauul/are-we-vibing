@@ -3,7 +3,7 @@ import { db } from "./db";
 import { analyze } from "./ai";
 import { AppError } from "./errors";
 import { resultSchema, type SessionView } from "./schema";
-export function sessionView(s: Session): SessionView {
+export function sessionView(s: Session, viewerId?: string): SessionView {
   const matching =
     s.generationStartedAt &&
     Date.now() - s.generationStartedAt.getTime() < 60000;
@@ -15,6 +15,8 @@ export function sessionView(s: Session): SessionView {
     personBInputType: s.personBInputType,
     resultJson: s.resultJson ? resultSchema.parse(s.resultJson) : null,
     generationAttempts: s.generationAttempts,
+    isOwner: Boolean(viewerId && s.ownerId === viewerId),
+    isDirect: Boolean(s.invitedUserId),
     status: s.resultJson
       ? "ready"
       : matching

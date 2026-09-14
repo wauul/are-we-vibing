@@ -1,6 +1,6 @@
 # R We Vibing?
 
-Two people, two music tastes, one lovingly honest vibe check. Next.js 15.5.24 App Router (upgraded from 14 with user approval for security fixes), React, Tailwind, Neon Postgres, Prisma, Groq, Zod, Recharts, html-to-image and canvas-confetti. No user accounts.
+Two people, two music tastes, one lovingly honest vibe check. Next.js 15.5.24 App Router (upgraded from 14 with user approval for security fixes), React, Tailwind, Neon Postgres, Prisma, Groq, Zod, Recharts, html-to-image and canvas-confetti. Optional Google accounts add friends and direct invitations; guest sessions remain available.
 
 ## Run locally
 
@@ -76,3 +76,18 @@ The interface includes an animated record-player scene with a pause control, sou
 ## Artist and song autocomplete
 
 My picks searches Apple’s public iTunes Search API after a short typing pause (minimum two characters). No API key or paid service is needed. Only the active search fragment is sent to the catalog; identical searches are cached for an hour. Select with a click or Arrow keys and Enter; Escape dismisses matches. Suggestions replace the active comma/newline-separated entry and never prevent typing custom music. Catalog limits or outages fall back to free text. No album artwork or audio previews are fetched. Spotify remains disabled and is labeled Coming soon.
+
+## Google accounts, friends, and mobile sharing
+
+In Google Cloud, select the app project, open Google Auth Platform, configure an External audience and create an OAuth client of type Web application. Only basic OpenID, email and profile scopes are needed. Add these authorized redirect URIs:
+
+- `https://are-we-vibing.vercel.app/api/auth/callback/google`
+- `http://localhost:3000/api/auth/callback/google`
+
+Set `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and a random `NEXTAUTH_SECRET` (generate with `openssl rand -base64 32`). Set `NEXTAUTH_URL=http://localhost:3000` locally and `NEXTAUTH_URL=https://are-we-vibing.vercel.app` in Vercel production. Add each using `vercel env add NAME production`, apply `npm run db:deploy`, and redeploy. Google apps in Testing allow only explicitly listed test users; publish the consent configuration when ready for other users. No billing is required.
+
+At `/friends`, sign in, choose a display name and unique username, then add a friend by their exact username. The recipient must accept before either person can send a direct vibe invitation. Direct sessions require the creator or invited Google account to view, and only the invited account can join. Invitations and recent sessions appear in the friends dashboard. Removing a friendship does not erase existing sessions or revoke an existing invitation.
+
+Google identities are keyed by Google's stable subject identifier. The app stores that identifier, username and display name; it does not persist Google access or refresh tokens. Account sessions use encrypted, HTTP-only cookies lasting seven days. Public profiles expose neither Google identifiers nor email addresses. Guest session links retain their original bearer-link behavior. There is no automatic profile or session deletion.
+
+Share invite/result invokes the native share sheet on supported browsers, including mobile browsers with Web Share support. The operating system decides which installed apps appear. Other browsers fall back to copying the link; Copy link is also available directly. Canceling the share sheet does not copy unexpectedly.

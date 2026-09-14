@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ManualPicks from "./manual-picks";
 import { ArrowRight, Headphones, Music2, Play } from "lucide-react";
 import { submission, type InputType, type SessionView } from "@/lib/schema";
@@ -9,16 +9,23 @@ export function InputForm({
   id,
   onDone,
   onBusy,
+  friendUsername,
 }: {
   id?: string;
   onDone: (s: SessionView) => void;
   onBusy: (busy: boolean) => void;
+  friendUsername?: string;
 }) {
   const [type, setType] = useState<InputType>("MANUAL");
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    let active = true;
+    api<{ user: { name: string } | null }>("/api/profile").then(data => { if (active && data.user) setName(current => current || data.user!.name); }).catch(() => {});
+    return () => { active = false; };
+  }, []);
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -33,7 +40,7 @@ export function InputForm({
     try {
       const s = await api<SessionView>(
         id ? `/api/sessions/${id}/join` : "/api/sessions",
-        parsed.data,
+        { ...parsed.data, ...(friendUsername ? { friendUsername } : {}) },
       );
       await new Promise((r) =>
         setTimeout(r, Math.max(0, 1800 - (Date.now() - start))),
@@ -49,6 +56,7 @@ export function InputForm({
   }
   return (
     <form onSubmit={submit} className="input-form">
+      {friendUsername && <p className="direct-banner">Direct vibe for <strong>@{friendUsername}</strong> · Only your friend can join.</p>}
       <label htmlFor="name">What should we call you?</label>
       <input
         id="name"
@@ -126,8 +134,7 @@ export function InputForm({
         <ArrowRight size={18} />
       </button>
       <p className="privacy">
-        Anyone with your link can join and view your names and result. Share it
-        with your person.
+        {friendUsername ? "Your friend will find this invitation in Friends & account." : "Anyone with your link can join and view your names and result. Share it with your person."}
       </p>
     </form>
   );

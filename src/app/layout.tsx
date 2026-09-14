@@ -3,6 +3,8 @@ import Link from "next/link";
 import { AudioLines, ArrowUpRight } from "lucide-react";
 import "./globals.css";
 import "./design.css";
+import "./social.css";
+import AccountNav from "@/components/account-nav";
 export const metadata: Metadata = {
   title: "R We Vibing? — Find your musical chemistry",
   description: "Two people. Two music tastes. One very honest vibe check.",
@@ -22,9 +24,9 @@ export default function RootLayout({
             </span>
             r we vibing<span className="orange">?</span>
           </Link>
-          <Link className="nav-link" href="/session/new">
+          <nav className="header-actions"><AccountNav /><Link className="nav-link" href="/session/new">
             Find your frequency <ArrowUpRight size={16} />
-          </Link>
+          </Link></nav>
         </header>
         {children}
         <footer>

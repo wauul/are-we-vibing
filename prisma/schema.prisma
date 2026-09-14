@@ -26,4 +26,39 @@ model Session {
   createdAt             DateTime   @default(now())
   generationStartedAt   DateTime?
   generationAttempts    Int        @default(0)
+  ownerId               String?
+  participantBId        String?
+  invitedUserId         String?
+  owner                 User? @relation("OwnedSessions", fields: [ownerId], references: [id], onDelete: SetNull)
+  participantB          User? @relation("JoinedSessions", fields: [participantBId], references: [id], onDelete: SetNull)
+  invitedUser           User? @relation("InvitedSessions", fields: [invitedUserId], references: [id], onDelete: Restrict)
+  @@index([ownerId, createdAt])
+  @@index([participantBId, createdAt])
+  @@index([invitedUserId, createdAt])
+}
+
+model User {
+  id String @id @default(uuid())
+  googleId String @unique
+  username String @unique
+  name String
+  createdAt DateTime @default(now())
+  sentRequests Friendship[] @relation("FriendSender")
+  receivedRequests Friendship[] @relation("FriendRecipient")
+  ownedSessions Session[] @relation("OwnedSessions")
+  joinedSessions Session[] @relation("JoinedSessions")
+  invitedSessions Session[] @relation("InvitedSessions")
+}
+
+model Friendship {
+  id String @id @default(uuid())
+  pairKey String @unique
+  senderId String
+  recipientId String
+  accepted Boolean @default(false)
+  createdAt DateTime @default(now())
+  sender User @relation("FriendSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User @relation("FriendRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  @@index([senderId])
+  @@index([recipientId])
 }

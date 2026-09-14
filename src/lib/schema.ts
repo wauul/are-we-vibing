@@ -41,4 +41,6 @@ export type SessionView = {
   resultJson: VibeResult | null;
   status: "waiting" | "matching" | "ready" | "retry";
   generationAttempts: number;
+  isOwner?: boolean;
+  isDirect?: boolean;
 };
