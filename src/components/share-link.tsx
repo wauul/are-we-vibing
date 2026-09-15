@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Share2, Link2 } from "lucide-react";
+import { Capacitor } from "@capacitor/core";
 
 export default function ShareLink({ path, text = "Let’s find out if our music tastes vibe.", compact = false }: { path: string; text?: string; compact?: boolean }) {
   const [notice, setNotice] = useState("");
@@ -10,6 +11,10 @@ export default function ShareLink({ path, text = "Let’s find out if our music 
   }
   async function share() {
     const data = { title: "R We Vibing?", text, url: new URL(path, window.location.origin).href };
+    if (Capacitor.isNativePlatform()) {
+      const { Share } = await import("@capacitor/share");
+      await Share.share(data).catch(() => {}); return;
+    }
     if (navigator.share) {
       try { await navigator.share(data); setNotice(""); return; }
       catch (error) { if ((error as Error).name === "AbortError") return; }

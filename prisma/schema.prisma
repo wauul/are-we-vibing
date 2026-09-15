@@ -23,6 +23,10 @@ model Session {
   personBInputType      InputType?
   personBNormalizedList Json?
   resultJson            Json?
+  playlistJson          Json?
+  deviceToken           String?
+  creatorSecretHash     String?
+  pushSentAt            DateTime?
   createdAt             DateTime   @default(now())
   generationStartedAt   DateTime?
   generationAttempts    Int        @default(0)
@@ -61,4 +65,14 @@ model Friendship {
   recipient User @relation("FriendRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
   @@index([senderId])
   @@index([recipientId])
+}
+
+// Short-lived, single-use proof-bound transfer from system-browser Google login to WebView.
+model NativeLogin {
+  id String @id @default(uuid())
+  challenge String
+  userId String?
+  expiresAt DateTime
+  consumedAt DateTime?
+  @@index([expiresAt])
 }

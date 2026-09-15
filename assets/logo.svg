@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 64 64" fill="none">
+  <title>R We Vibing? — music waveform</title>
+  <defs>
+    <linearGradient id="background" x1="8" y1="4" x2="56" y2="62" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EE7647"/>
+      <stop offset="1" stop-color="#DC4E28"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="url(#background)"/>
+  <g stroke="#FFFAF2" stroke-width="4" stroke-linecap="round">
+    <path d="M14 28V36"/>
+    <path d="M23 21V43"/>
+    <path d="M32 15V49"/>
+    <path d="M41 24V40"/>
+    <path d="M50 28V36"/>
+  </g>
+</svg>

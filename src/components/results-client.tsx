@@ -18,6 +18,9 @@ import type { SessionView } from "@/lib/schema";
 import { api } from "./input-form";
 import { SoundBars } from "./vibe-visual";
 import ShareLink from "./share-link";
+import ShareableResultCard from "./ShareableResultCard";
+import ListenTogether from "./listen-together";
+import { Capacitor } from "@capacitor/core";
 const badges = {
   MANUAL: "via your own picks ♫",
   SPOTIFY: "via Spotify 🎧",
@@ -82,17 +85,20 @@ export default function ResultsClient({ id }: { id: string }) {
     if (!card.current) return;
     setSaving(true);
     try {
+      await Promise.all(Array.from(card.current.querySelectorAll("img")).map(img => img.decode().catch(() => {})));
       const url = await toPng(card.current, {
         pixelRatio: 2,
-        backgroundColor: "#fbf8f1",
-        cacheBust: true,
+        backgroundColor: "#211d30",
+        imagePlaceholder: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=",
       });
-      const a = document.createElement("a");
       setCardImage(url);
-      a.download = "r-we-vibing.png";
-      a.href = url;
-      a.click();
-      setNotice("Your vibe card is ready for its group-chat debut.");
+      if (Capacitor.isNativePlatform()) {
+        const { saveNativeCard } = await import("@/lib/native-card");
+        await saveNativeCard(url);
+      } else {
+        const a = document.createElement("a"); a.download = "r-we-vibing.png"; a.href = url; a.click();
+      }
+      setNotice(Capacitor.isNativePlatform() ? "Saved to your Gallery · Pictures / Are We Vibing." : "Your vibe card is ready for its group-chat debut.");
     } catch {
       setNotice(
         "Could not save the card. Try copying the result link instead.",
@@ -135,7 +141,7 @@ export default function ResultsClient({ id }: { id: string }) {
           unofficial vibe check
         </p>
       </div>
-      <div ref={card} className="share-card">
+      <div className="share-card">
         <div className="score-panel">
           <div className="eyebrow">R WE VIBING?</div>
           <div className="score-orbits" aria-hidden="true"><i /><i /><span>✦</span><b>✧</b></div>
@@ -191,6 +197,7 @@ export default function ResultsClient({ id }: { id: string }) {
           r we vibing? <span>TWO TASTES. ONE FREQUENCY.</span>
         </div>
       </div>
+      <div className="visual-card-preview"><ShareableResultCard ref={card} session={session} /></div>
       <div className="result-actions">
         <button className="button" onClick={download} disabled={saving}>
           <Download size={17} />
@@ -211,6 +218,7 @@ export default function ResultsClient({ id }: { id: string }) {
           <img src={cardImage} alt="Your generated music compatibility card" style={{ maxWidth: "100%", height: "auto", marginTop: 16 }} />
         </details>
       )}
+      <ListenTogether tracks={session.playlist || []} />
       <div className="result-detail-grid">
         <section className="detail-card">
           <div className="eyebrow">THE CROSSOVER EPISODE</div>
@@ -266,7 +274,7 @@ export default function ResultsClient({ id }: { id: string }) {
         </section>
         <section className="detail-card">
           <div className="eyebrow">ADD TO YOUR SHARED ROTATION</div>
-          <h2>Your next three favorites</h2>
+          <h2>Your next {r.recommendations.length} favorites</h2>
           <div className="recommendations">
             {r.recommendations.map((track, i) => (
               <a
@@ -275,7 +283,7 @@ export default function ResultsClient({ id }: { id: string }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className="track-number">0{i + 1}</span>
+                <span className="track-number">{String(i + 1).padStart(2, "0")}</span>
                 <Music2 size={18} />
                 <span>{track}</span>
                 <ArrowUpRight size={17} />

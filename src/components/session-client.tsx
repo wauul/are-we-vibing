@@ -8,6 +8,7 @@ import { isCreator } from "@/lib/client-api";
 import { SoundBars } from "./vibe-visual";
 import ShareLink from "./share-link";
 import Link from "next/link";
+import NativePush from "./native-push";
 export function Matching() {
   return (
     <div className="matching" role="status">
@@ -125,6 +126,7 @@ export default function SessionClient({ id }: { id: string }) {
                 }
               />
               <ShareLink path={`/session/${id}`} />
+              <NativePush sessionId={id} />
               {session?.isDirect && <p className="direct-banner">Your friend’s invitation is in their music circle. Only they can join this session.</p>}
               <p className="micro">
                 This page updates automatically when they join.
