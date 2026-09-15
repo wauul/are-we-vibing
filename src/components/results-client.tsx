@@ -93,13 +93,12 @@ export default function ResultsClient({ id }: { id: string }) {
       });
       setCardImage(url);
       if (Capacitor.isNativePlatform()) {
-        const [{ Filesystem, Directory }, { Share }] = await Promise.all([import("@capacitor/filesystem"), import("@capacitor/share")]);
-        const file = await Filesystem.writeFile({ path: "r-we-vibing.png", directory: Directory.Cache, data: url.split(",")[1] });
-        await Share.share({ title: "Our vibe card", files: [file.uri] }).catch(() => {});
+        const { saveNativeCard } = await import("@/lib/native-card");
+        await saveNativeCard(url);
       } else {
         const a = document.createElement("a"); a.download = "r-we-vibing.png"; a.href = url; a.click();
       }
-      setNotice("Your vibe card is ready for its group-chat debut.");
+      setNotice(Capacitor.isNativePlatform() ? "Saved to your Gallery · Pictures / Are We Vibing." : "Your vibe card is ready for its group-chat debut.");
     } catch {
       setNotice(
         "Could not save the card. Try copying the result link instead.",

@@ -10,11 +10,23 @@ export default function ListenTogether({ tracks }: { tracks: PlaylistTrack[] }) 
   const [ready, setReady] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const [started, setStarted] = useState(false);
+  const selected = useRef(0);
+  const playTrack = (index: number) => {
+    selected.current = index; setCurrent(index); setUnavailable(false);
+    // Queue from the chosen song. YouTube can silently remove unavailable IDs.
+    player.current?.loadPlaylist({ playlist: tracks.slice(index).map(t => t.videoId), index: 0 });
+  };
   useEffect(() => {
     if (!tracks.length || !host.current) return;
     let cancelled = false;
     const failed = new Set<number>();
     setReady(false); setUnavailable(false); setCurrent(0); setStarted(false);
+    selected.current = 0;
+    const originalIndex = (target: YouTubePlayer) => {
+      const videoId = target.getPlaylist()?.[target.getPlaylistIndex()];
+      const index = tracks.findIndex(track => track.videoId === videoId);
+      return index >= 0 ? index : selected.current;
+    };
     const target = document.createElement("div"); host.current.appendChild(target);
     void loadYouTubePlayer().then(YT => {
       if (cancelled) return;
@@ -22,13 +34,13 @@ export default function ListenTogether({ tracks }: { tracks: PlaylistTrack[] }) 
         width: "100%", height: "100%", playerVars: { playsinline: 1, controls: 1, autoplay: 0, origin: window.location.origin, rel: 0 },
         events: {
           onReady: event => { if (!cancelled) { event.target.cuePlaylist({ playlist: tracks.map(t => t.videoId), index: 0 }); setReady(true); } },
-          onStateChange: event => { if (!cancelled) { setCurrent(Math.max(0, event.target.getPlaylistIndex())); if (event.data === 1) setStarted(true); } },
+          onStateChange: event => { if (!cancelled) { const index = originalIndex(event.target); selected.current = index; setCurrent(index); if (event.data === 1) setStarted(true); } },
           onError: event => {
             if (cancelled) return;
-            const index = Math.max(0, event.target.getPlaylistIndex()); failed.add(index);
+            const index = originalIndex(event.target); failed.add(index);
             console.warn("Skipping unavailable YouTube track", tracks[index]?.videoId, event.data);
             const next = nextPlayableIndex(index, tracks.length, failed);
-            if (next !== null) { setCurrent(next); event.target.playVideoAt(next); }
+            if (next !== null) { selected.current = next; setCurrent(next); event.target.loadPlaylist({ playlist: tracks.slice(next).map(t => t.videoId), index: 0 }); }
             else { event.target.pauseVideo(); setUnavailable(true); }
           },
         },
@@ -43,11 +55,11 @@ export default function ListenTogether({ tracks }: { tracks: PlaylistTrack[] }) 
   return <section className="listen-section detail-card"><div className="eyebrow">YOUR SHARED ROTATION · YOUTUBE</div><h2>Press play on your chemistry.</h2>
     <p className="field-help">{tracks.length} shared picks. The same track list for both of you; playback is controlled separately.</p>
     <div className="listen-grid"><div><div ref={host} className="youtube-player" aria-label="Shared YouTube playlist player" />
-      <button className="button" disabled={!ready} onClick={() => { player.current?.playVideoAt(current); setStarted(true); }}>{started ? "Play selected track" : "Listen together"} ▶</button>
+      <button className="button" disabled={!ready} onClick={() => { playTrack(current); setStarted(true); }}>{started ? "Play selected track" : "Listen together"} ▶</button>
       <p className="field-help">Tap to start sound. Playback pauses when you leave the app.</p>
       {unavailable && <p role="status" className="notice">Some tracks can’t play here right now. Try a track below or open it on YouTube.</p>}
     </div><ol className="playlist-tracks">{tracks.map((track, index) => <li key={track.videoId} className={current === index ? "playing" : ""}>
-      <button type="button" disabled={!ready} aria-current={current === index ? "true" : undefined} onClick={() => { setCurrent(index); player.current?.playVideoAt(index); }}>
+      <button type="button" disabled={!ready} aria-current={current === index ? "true" : undefined} onClick={() => playTrack(index)}>
         {/* YouTube-provided thumbnails accompany their videos, not audio extraction. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={track.thumbnailUrl} alt="" width={88} height={66} loading="lazy" /><span><small>{String(index + 1).padStart(2, "0")}{current === index ? " · SELECTED" : ""}</small>{track.title}</span>

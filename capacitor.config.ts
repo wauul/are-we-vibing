@@ -10,8 +10,9 @@ const config: CapacitorConfig = {
   server: { url: 'https://are-we-vibing.vercel.app', cleartext: false, errorPath: 'index.html' },
   backgroundColor: '#f7f3e8',
   plugins: {
+    SocialLogin: { providers: { google: true, facebook: false, apple: false, twitter: false }, logLevel: 0 },
     SplashScreen: { launchShowDuration: 1200, launchAutoHide: true, backgroundColor: '#f7f3e8', showSpinner: false },
-    SystemBars: { insetsHandling: 'native' },
+    SystemBars: { insetsHandling: 'native', style: 'LIGHT', initialViewportFitValueHint: 'cover' },
     PushNotifications: { presentationOptions: ['badge', 'sound', 'alert'] },
   },
 };

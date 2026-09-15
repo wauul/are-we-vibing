@@ -120,7 +120,7 @@ Firebase project `r-we-vibing` uses the free Spark plan. Register an Android app
 
 Only the native creator waiting screen requests notification permission and registers FCM. `POST /api/push-tokens` associates the token with that session, authorized by the signed-in owner or a seven-day HttpOnly creator-proof cookie; possession of the shared link is insufficient. After a result is saved, an optional Firebase Admin delivery sends “Your friend just vibed!” and its result URL. Missing tokens/configuration and delivery failures never fail result generation. Invalid tokens are cleared. Delivery is best effort; OS settings/network conditions can delay or suppress it. Browser code exits before touching native notification APIs. Tokens are currently session-specific, so a new device does not retroactively register old sessions.
 
-Push taps and Android App Links accept only the app's HTTPS result/session URLs. Native Google sign-in opens a system browser, because Google blocks OAuth inside embedded WebViews. A five-minute, single-use challenge/verifier exchange brings the authenticated session back to the native app; Google tokens are not stored.
+Push taps and Android App Links accept only the app's HTTPS result/session URLs. Native Google sign-in uses Android Credential Manager through the free, open-source `@capgo/capacitor-social-login` plugin. It opens the native Google account picker. The backend verifies Google's signed ID token, audience, issuer, expiry and single-use nonce, then issues the same app session cookie used by browser accounts. Google tokens are not persisted. Register an Android OAuth client in the same Google Cloud project as the existing web client, using package `com.wauul.arewevibing` and the installed APK's SHA-1. Add a separate client for the Play App Signing certificate before store release. No additional Google API scopes or paid Capgo service are used. The older browser-handoff endpoint remains only for earlier test APKs.
 
 ### Ten shared songs and playback
 
@@ -130,7 +130,7 @@ The IFrame Player API queues the ordered videos, highlights the active track, an
 
 Quota note: the older quota model charged 100 units per search (10 searches = 1,000 of 10,000 daily units). Current [YouTube search documentation](https://developers.google.com/youtube/v3/docs/search/list) instead describes a separate default **100-search daily limit**, effectively around **10 complete new playlists/day**. Check your project's actual console quota. This is suitable for small demos, not unlimited traffic; there is no automatic paid upgrade. Manual input and results continue to work if searches run out.
 
-`ShareableResultCard.tsx` is shared by web and Android: a portrait score reveal, connected names, verdict quote, genre chips and a stack of available thumbnails. A fixed-host thumbnail proxy supports reliable html-to-image export. Browsers download a PNG; Android saves it to app cache and opens the native share sheet.
+`ShareableResultCard.tsx` is shared by web and Android: a portrait score reveal, connected names, verdict quote, genre chips and a stack of available thumbnails. A fixed-host thumbnail proxy supports reliable html-to-image export. Browsers download a PNG; Android's Save vibe card writes it to Pictures / Are We Vibing using MediaStore, visible in Gallery. Android 10+ needs no library access for an app-created image; Android 7–9 requests legacy write permission only when saving. Share invite/result remains a separate native share-sheet action.
 
 ### Android App Links and future publishing
 

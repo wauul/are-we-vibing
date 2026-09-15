@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { storedResultSchema, resultSchema } from "../src/lib/schema";
 import { hashCreatorSecret, hasCreatorProof } from "../src/lib/creator-proof";
 import { appLinkPath } from "../src/lib/native-links";
-import { findSharedPlaylist } from "../src/lib/youtube-playlist";
+import { findSharedPlaylist, isSongMatch, decodeVideoTitle } from "../src/lib/youtube-playlist";
 import { nextPlayableIndex } from "../src/lib/youtube-player";
 const result = { personA: { genres: ["pop"], vibeSummary: "Bright" }, personB: { genres: ["pop"], vibeSummary: "Warm" }, compatibilityScore: 80, verdict: "A match", recommendations: ["A", "B", "C"], superlatives: [{ title: "DJ", person: "A" }, { title: "Singer", person: "B" }] };
 test("legacy results remain readable while new AI must supply ten tracks", () => {
@@ -25,6 +25,11 @@ test("native links reject foreign origins and non-result navigation", () => {
 test("failed embedded tracks skip forward and terminate without an error loop", () => {
   assert.equal(nextPlayableIndex(0, 4, new Set([0, 1])), 2);
   assert.equal(nextPlayableIndex(3, 4, new Set([3])), null);
+});
+test("song matching rejects unrelated videos and decodes readable titles", () => {
+  assert.equal(isSongMatch("Parcels — Pipedream", "Building your first action component", "Pipedream"), false);
+  assert.equal(isSongMatch("Air — La Femme d'Argent", "La femme d'argent (Official Audio)", "AIR"), true);
+  assert.equal(decodeVideoTitle("AIR - La femme d&#39;argent &amp; more"), "AIR - La femme d'argent & more");
 });
 test("YouTube matches preserve order, cap ten searches and tolerate partial failure", async () => {
   const original = global.fetch; const key = process.env.YOUTUBE_API_KEY; process.env.YOUTUBE_API_KEY = "test"; let calls = 0;

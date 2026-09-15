@@ -1,5 +1,7 @@
 export type YouTubePlayer = {
   cuePlaylist(options: { playlist: string[]; index: number }): void;
+  loadPlaylist(options: { playlist: string[]; index: number }): void;
+  getPlaylist(): string[];
   playVideoAt(index: number): void;
   playVideo(): void;
   pauseVideo(): void;

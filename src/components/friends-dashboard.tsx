@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { signIn, signOut } from "next-auth/react";
 import { Capacitor } from "@capacitor/core";
-import { beginNativeSignIn } from "@/lib/native-auth";
+import { nativeGoogleSignIn } from "@/lib/native-google";
 import { Users, UserPlus, Music2, ArrowUpRight, Sparkles } from "lucide-react";
 import { api } from "@/lib/client-api";
 type Profile = { id: string; name: string; username: string };
@@ -41,7 +41,7 @@ export default function FriendsDashboard() {
     finally { setBusy(false); }
   }
   if (!loaded) return <main className="flow-shell"><p role="status">Opening your music circle…</p></main>;
-  if (!profile) return <main className="flow-shell account-welcome"><div className="waiting-icon"><Users size={30} /></div><div className="eyebrow">YOUR PEOPLE. YOUR FREQUENCY.</div><h1>Your music circle,<br /><span className="serif orange">all in one place.</span></h1><p>Add friends, send a vibe straight to their inbox, and keep your shared results together.</p><button className="button" disabled={!available || busy} onClick={() => { setBusy(true); void (Capacitor.isNativePlatform() ? beginNativeSignIn() : signIn("google", { callbackUrl: "/friends" })).catch(() => { setBusy(false); setMessage("Could not open Google sign-in. Try again."); }); }}><span className="google-g">G</span> Continue with Google</button>{!available && <p className="field-help">Google sign-in is being connected. Guest vibe links still work.</p>}{message && <p className="error" role="alert">{message}</p>}<Link className="another-session" href="/session/new">Just here for a vibe? Continue as a guest →</Link><p className="privacy">We use Google to confirm your identity. Friends see your chosen name and username, never your email.</p></main>;
+  if (!profile) return <main className="flow-shell account-welcome"><div className="waiting-icon"><Users size={30} /></div><div className="eyebrow">YOUR PEOPLE. YOUR FREQUENCY.</div><h1>Your music circle,<br /><span className="serif orange">all in one place.</span></h1><p>Add friends, send a vibe straight to their inbox, and keep your shared results together.</p><button className="button" disabled={!available || busy} onClick={() => { setBusy(true); void (Capacitor.isNativePlatform() ? nativeGoogleSignIn() : signIn("google", { callbackUrl: "/friends" })).catch(() => { setBusy(false); setMessage("Could not open Google sign-in. Try again."); }); }}><span className="google-g">G</span> Continue with Google</button>{!available && <p className="field-help">Google sign-in is being connected. Guest vibe links still work.</p>}{message && <p className="error" role="alert">{message}</p>}<Link className="another-session" href="/session/new">Just here for a vibe? Continue as a guest →</Link><p className="privacy">We use Google to confirm your identity. Friends see your chosen name and username, never your email.</p></main>;
   const friends = social.connections.filter(c => c.accepted);
   const requests = social.connections.filter(c => !c.accepted);
   return <main className="friends-shell">
