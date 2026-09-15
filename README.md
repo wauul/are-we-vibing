@@ -130,7 +130,7 @@ The IFrame Player API queues the ordered videos, highlights the active track, an
 
 Quota note: the older quota model charged 100 units per search (10 searches = 1,000 of 10,000 daily units). Current [YouTube search documentation](https://developers.google.com/youtube/v3/docs/search/list) instead describes a separate default **100-search daily limit**, effectively around **10 complete new playlists/day**. Check your project's actual console quota. This is suitable for small demos, not unlimited traffic; there is no automatic paid upgrade. Manual input and results continue to work if searches run out.
 
-`ShareableResultCard.tsx` is shared by web and Android: a portrait score reveal, connected names, verdict quote, genre chips and a stack of available thumbnails. A fixed-host thumbnail proxy supports reliable html-to-image export. Browsers download a PNG; Android's Save vibe card writes it to Pictures / Are We Vibing using MediaStore, visible in Gallery. Android 10+ needs no library access for an app-created image; Android 7–9 requests legacy write permission only when saving. Share invite/result remains a separate native share-sheet action.
+`ShareableResultCard.tsx` is shared by web and Android: a portrait score reveal, connected names, verdict quote, both participants’ special award titles and a stack of available thumbnails. A fixed-host thumbnail proxy supports reliable html-to-image export. Browsers download a PNG; Android's Save vibe card writes it to Pictures / Are We Vibing using MediaStore, visible in Gallery. Android 10+ needs no library access for an app-created image; Android 7–9 requests legacy write permission only when saving. Share invite/result remains a separate native share-sheet action.
 
 ### Android App Links and future publishing
 
@@ -143,3 +143,7 @@ Before Play Store submission: obtain the $25 developer account, choose and safel
 ### Migration and verification
 
 `202609140002_mobile` adds nullable session playlist/token/creator-proof/push-delivery fields and a temporary native-login handoff table. It preserves all existing records. Apply `npm run db:deploy` before deploying the changed web code. Run `npm test`, `npm run typecheck`, and `npm run build`; then test a fresh guest create/share/join/results flow in a regular browser and on Android. Verify legacy results, permission denial, background push receipt and tap, playlist skips, card export, and native Google sign-in. Actual device delivery must be checked on a connected device; a successful APK build or Firebase API call alone does not prove it.
+
+### Visual system and card downloads
+
+The shared interface follows TypeUI fundamentals; see DESIGN.md for tokens, responsive rules, and accessibility decisions. Save vibe card renders a fixed 480×600 composition at 2× resolution (960×1200 PNG), outside the page layout. Saving never injects a duplicate preview. The orange logo is preserved. Web-only visual updates appear in the installed Android shell automatically.

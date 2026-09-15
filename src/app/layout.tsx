@@ -7,6 +7,7 @@ import "./social.css";
 import AccountNav from "@/components/account-nav";
 import NativeRuntime from "@/components/native-runtime";
 import "./mobile-features.css";
+import "./typeui.css";
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#f7f3e8" };
 export const metadata: Metadata = {
   title: "R We Vibing? — Find your musical chemistry",

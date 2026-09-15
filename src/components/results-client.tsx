@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Download, Link2, ArrowUpRight, Sparkles, Music2 } from "lucide-react";
+import { Download, ArrowUpRight, Sparkles, Music2 } from "lucide-react";
 import {
   BarChart,
   Bar,
@@ -12,7 +12,6 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { toPng } from "html-to-image";
 import confetti from "canvas-confetti";
 import type { SessionView } from "@/lib/schema";
 import { api } from "./input-form";
@@ -33,7 +32,6 @@ export default function ResultsClient({ id }: { id: string }) {
   const [notice, setNotice] = useState("");
   const [score, setScore] = useState(0);
   const [saving, setSaving] = useState(false);
-  const [cardImage, setCardImage] = useState("");
   const card = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let cancelled = false;
@@ -82,23 +80,28 @@ export default function ResultsClient({ id }: { id: string }) {
     return () => cancelAnimationFrame(frame);
   }, [session]);
   async function download() {
-    if (!card.current) return;
+    if (!card.current || saving) return;
     setSaving(true);
+    setNotice("");
     try {
       await Promise.all(Array.from(card.current.querySelectorAll("img")).map(img => img.decode().catch(() => {})));
+      await document.fonts.ready;
+      const { toPng } = await import("html-to-image");
+      // Export a fixed composition: no viewport/container units to shift in the SVG clone.
       const url = await toPng(card.current, {
+        width: 480,
+        height: 600,
         pixelRatio: 2,
-        backgroundColor: "#211d30",
+        backgroundColor: "#f7f3e8",
         imagePlaceholder: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=",
       });
-      setCardImage(url);
       if (Capacitor.isNativePlatform()) {
         const { saveNativeCard } = await import("@/lib/native-card");
         await saveNativeCard(url);
       } else {
-        const a = document.createElement("a"); a.download = "r-we-vibing.png"; a.href = url; a.click();
+        const a = document.createElement("a"); a.download = "r-we-vibing.png"; a.href = url; document.body.appendChild(a); a.click(); a.remove();
       }
-      setNotice(Capacitor.isNativePlatform() ? "Saved to your Gallery · Pictures / Are We Vibing." : "Your vibe card is ready for its group-chat debut.");
+      setNotice(Capacitor.isNativePlatform() ? "Saved to your Gallery · Pictures / Are We Vibing." : "Download started. Your vibe card is ready.");
     } catch {
       setNotice(
         "Could not save the card. Try copying the result link instead.",
@@ -197,9 +200,10 @@ export default function ResultsClient({ id }: { id: string }) {
           r we vibing? <span>TWO TASTES. ONE FREQUENCY.</span>
         </div>
       </div>
-      <div className="visual-card-preview"><ShareableResultCard ref={card} session={session} /></div>
+      {/* Render outside the page layout, but keep pixels available to html-to-image. */}
+      <div className="card-export-stage" aria-hidden="true"><ShareableResultCard ref={card} session={session} /></div>
       <div className="result-actions">
-        <button className="button" onClick={download} disabled={saving}>
+        <button className="button save-card-button" onClick={download} disabled={saving} aria-busy={saving}>
           <Download size={17} />
           {saving ? "Making your card…" : "Save vibe card"}
         </button>
@@ -209,14 +213,6 @@ export default function ResultsClient({ id }: { id: string }) {
         <p className="notice" role="status">
           {notice}
         </p>
-      )}
-      {cardImage && (
-        <details className="notice" open>
-          <summary>Your shareable image — save it below if the download did not start.</summary>
-          {/* A visible image also supports browsers that suppress automatic downloads. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={cardImage} alt="Your generated music compatibility card" style={{ maxWidth: "100%", height: "auto", marginTop: 16 }} />
-        </details>
       )}
       <ListenTogether tracks={session.playlist || []} />
       <div className="result-detail-grid">
@@ -257,14 +253,14 @@ export default function ResultsClient({ id }: { id: string }) {
                 <Bar
                   dataKey="A"
                   name={session.personAName}
-                  fill="#e9794c"
+                  fill="#bd4828"
                   radius={[0, 4, 4, 0]}
                   isAnimationActive={false}
                 />
                 <Bar
                   dataKey="B"
                   name={session.personBName!}
-                  fill="#739288"
+                  fill="#48695b"
                   radius={[0, 4, 4, 0]}
                   isAnimationActive={false}
                 />
