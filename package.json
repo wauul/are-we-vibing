@@ -26,6 +26,7 @@
     "@capgo/capacitor-social-login": "^8.5.8",
     "@prisma/adapter-pg": "6.19.0",
     "@prisma/client": "6.19.0",
+    "@vercel/speed-insights": "^2.0.0",
     "canvas-confetti": "^1.9.3",
     "firebase-admin": "^14.4.0",
     "google-auth-library": "^11.0.2",
