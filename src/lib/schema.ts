@@ -18,7 +18,7 @@ export const resultSchema = z
     personB: person,
     compatibilityScore: z.number().int().min(0).max(100),
     verdict: z.string().trim().min(1).max(400),
-    recommendations: z.array(z.string().trim().min(1).max(200)).length(3),
+    recommendations: z.array(z.string().trim().min(1).max(200)).length(10),
     superlatives: z
       .array(
         z
@@ -32,6 +32,16 @@ export const resultSchema = z
   })
   .strict();
 export type VibeResult = z.infer<typeof resultSchema>;
+// Existing shared links keep their original three recommendations. New AI output is strict ten.
+export const storedResultSchema = resultSchema.extend({
+  recommendations: z.array(z.string().trim().min(1).max(200)).refine(v => v.length === 3 || v.length === 10),
+});
+export const playlistTrackSchema = z.object({
+  videoId: z.string().regex(/^[A-Za-z0-9_-]{11}$/),
+  title: z.string().max(300),
+  thumbnailUrl: z.string().url(),
+});
+export type PlaylistTrack = z.infer<typeof playlistTrackSchema>;
 export type SessionView = {
   id: string;
   personAName: string;
@@ -39,6 +49,7 @@ export type SessionView = {
   personBName: string | null;
   personBInputType: InputType | null;
   resultJson: VibeResult | null;
+  playlist?: PlaylistTrack[];
   status: "waiting" | "matching" | "ready" | "retry";
   generationAttempts: number;
   isOwner?: boolean;

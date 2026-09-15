@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Are We Vibing</string>
+    <string name="title_activity_main">Are We Vibing</string>
+    <string name="package_name">com.wauul.arewevibing</string>
+    <string name="custom_url_scheme">com.wauul.arewevibing</string>
+</resources>

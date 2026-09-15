@@ -2,7 +2,10 @@ import { Prisma, type Session } from "@prisma/client";
 import { db } from "./db";
 import { analyze } from "./ai";
 import { AppError } from "./errors";
-import { resultSchema, type SessionView } from "./schema";
+import { storedResultSchema, playlistTrackSchema, type SessionView } from "./schema";
+import { findSharedPlaylist } from "./youtube-playlist";
+import { notifyCreator } from "./push";
+import { after } from "next/server";
 export function sessionView(s: Session, viewerId?: string): SessionView {
   const matching =
     s.generationStartedAt &&
@@ -13,7 +16,8 @@ export function sessionView(s: Session, viewerId?: string): SessionView {
     personAInputType: s.personAInputType,
     personBName: s.personBName,
     personBInputType: s.personBInputType,
-    resultJson: s.resultJson ? resultSchema.parse(s.resultJson) : null,
+    resultJson: s.resultJson ? storedResultSchema.parse(s.resultJson) : null,
+    playlist: playlistTrackSchema.array().max(10).safeParse(s.playlistJson).data || [],
     generationAttempts: s.generationAttempts,
     isOwner: Boolean(viewerId && s.ownerId === viewerId),
     isDirect: Boolean(s.invitedUserId),
@@ -53,10 +57,12 @@ export async function generate(id: string) {
       s.personANormalizedList as string[],
       s.personBNormalizedList as string[],
     );
-    await db.session.updateMany({
+    const playlist = await findSharedPlaylist(result.recommendations);
+    const saved = await db.session.updateMany({
       where: { id, generationStartedAt: now },
-      data: { resultJson: result, generationStartedAt: null },
+      data: { resultJson: result, playlistJson: playlist, generationStartedAt: null },
     });
+    if (saved.count) after(() => notifyCreator(id).catch(() => console.warn("Optional notification unavailable")));
   } catch (error) {
     await db.session.updateMany({
       where: { id, generationStartedAt: now },

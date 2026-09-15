@@ -6,6 +6,10 @@ node_modules/
 .tools/
 *.tsbuildinfo
 test-results/
+android/app/google-services.json
+*.jks
+*.keystore
+artifacts/
 
 .vercel
 .env*

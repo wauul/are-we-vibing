@@ -91,3 +91,55 @@ At `/friends`, sign in, choose a display name and unique username, then add a fr
 Google identities are keyed by Google's stable subject identifier. The app stores that identifier, username and display name; it does not persist Google access or refresh tokens. Account sessions use encrypted, HTTP-only cookies lasting seven days. Public profiles expose neither Google identifiers nor email addresses. Guest session links retain their original bearer-link behavior. There is no automatic profile or session deletion.
 
 Share invite/result invokes the native share sheet on supported browsers, including mobile browsers with Web Share support. The operating system decides which installed apps appear. Other browsers fall back to copying the link; Copy link is also available directly. Canceling the share sheet does not copy unexpectedly.
+
+## Android: one app, two shells
+
+The Android app loads **https://are-we-vibing.vercel.app** using `server.url` in `capacitor.config.ts`. The existing Next.js app, APIs, database and Vercel deployment remain the single source of truth. There is no static export, second frontend or separate mobile backend. Web deployments appear in Android automatically; **web-only changes do not require a new APK or `cap sync`**. Native plugin, manifest, icon or Capacitor configuration changes require `npm run android:sync` and a rebuilt APK. Remote loading needs internet; `native-shell/index.html` supplies an offline retry screen. Only the trusted HTTPS app host is loaded with native privileges.
+
+The Android package is `com.wauul.arewevibing`. Install Node 22+, Android Studio, SDK Platform 36, and JDK 21. On this Windows ARM computer, JDK 21 is available locally under `.tools/jdk21`; the installed Studio JDK 25 cannot run this project's Gradle version. Google does not support the Android Studio emulator on Windows ARM: use a physical Android phone with USB debugging, or an emulator on a supported host. No iOS project is installed.
+
+```sh
+npm ci
+npm run android:sync
+npm run android:open
+# Or from android/ with JAVA_HOME pointing to JDK 21:
+./gradlew assembleDebug
+# Windows: .\gradlew.bat assembleDebug
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+A fresh clone also needs its Firebase Android configuration at `android/app/google-services.json` (excluded from Git). In Android Studio select the project in `android/`, select your device, then Run. CSS safe-area insets and Capacitor's native system-bar handling protect the content; browsers with no insets receive zero padding.
+
+### Icons and splash
+
+Replace `assets/logo.svg` with your source artwork, or supply `assets/icon-only.png` and `assets/splash.png` following [Capacitor Assets](https://github.com/ionic-team/capacitor-assets). Run `npm run android:assets`, then `npm run android:sync` and rebuild. The current orange waveform artwork is a placeholder based on the web favicon. Generated Android resources are committed; signing keys and Firebase configuration are not.
+
+### Firebase push notifications
+
+Firebase project `r-we-vibing` uses the free Spark plan. Register an Android application with the exact package above and download its `google-services.json`. Under Project settings → Service accounts → Firebase Admin SDK, generate an Admin service-account JSON. Keep it private, outside Git. Set its one-line JSON as **server-only** `FIREBASE_SERVICE_ACCOUNT_JSON` locally and in Vercel production (`vercel env add FIREBASE_SERVICE_ACCOUNT_JSON production`). Do not use a NEXT_PUBLIC variable. FCM requires a Google Play-enabled device/emulator.
+
+Only the native creator waiting screen requests notification permission and registers FCM. `POST /api/push-tokens` associates the token with that session, authorized by the signed-in owner or a seven-day HttpOnly creator-proof cookie; possession of the shared link is insufficient. After a result is saved, an optional Firebase Admin delivery sends “Your friend just vibed!” and its result URL. Missing tokens/configuration and delivery failures never fail result generation. Invalid tokens are cleared. Delivery is best effort; OS settings/network conditions can delay or suppress it. Browser code exits before touching native notification APIs. Tokens are currently session-specific, so a new device does not retroactively register old sessions.
+
+Push taps and Android App Links accept only the app's HTTPS result/session URLs. Native Google sign-in opens a system browser, because Google blocks OAuth inside embedded WebViews. A five-minute, single-use challenge/verifier exchange brings the authenticated session back to the native app; Google tokens are not stored.
+
+### Ten shared songs and playback
+
+New Groq results request exactly ten specific songs, validated by Zod with one stricter retry. Existing three-recommendation results remain valid and readable. Ten server-side YouTube `search.list` requests seek embeddable, syndicated music videos; unique matches (ID, title and thumbnail) are stored in `Session.playlistJson`. Searches happen during result generation, never on every page load. Partial matches are shown; a total lookup failure preserves the text recommendations and compatibility result.
+
+The IFrame Player API queues the ordered videos, highlights the active track, and advances past failed videos without looping indefinitely. Both participants receive the same playlist; playback positions are independent, not a synchronized listening room. Sound requires a first tap. Backgrounding pauses playback; there is no native background audio. YouTube can remove/restrict a video after lookup, and its normal ads and controls remain.
+
+Quota note: the older quota model charged 100 units per search (10 searches = 1,000 of 10,000 daily units). Current [YouTube search documentation](https://developers.google.com/youtube/v3/docs/search/list) instead describes a separate default **100-search daily limit**, effectively around **10 complete new playlists/day**. Check your project's actual console quota. This is suitable for small demos, not unlimited traffic; there is no automatic paid upgrade. Manual input and results continue to work if searches run out.
+
+`ShareableResultCard.tsx` is shared by web and Android: a portrait score reveal, connected names, verdict quote, genre chips and a stack of available thumbnails. A fixed-host thumbnail proxy supports reliable html-to-image export. Browsers download a PNG; Android saves it to app cache and opens the native share sheet.
+
+### Android App Links and future publishing
+
+Set `ANDROID_SHA256_FINGERPRINTS` to comma-separated signing certificate SHA-256 fingerprints. `/.well-known/assetlinks.json` publishes the association for `com.wauul.arewevibing`; the manifest declares verified HTTPS links. `cd android && ./gradlew signingReport` prints the debug fingerprint. For Play releases add the **Play App Signing certificate** from Play Console, not merely the upload certificate, then redeploy Vercel. Verify on a connected device with `adb shell pm verify-app-links --re-verify com.wauul.arewevibing` and `adb shell pm get-app-links com.wauul.arewevibing`.
+
+Before Play Store submission: obtain the $25 developer account, choose and safely back up an upload signing key, build a signed release AAB, configure Play App Signing fingerprint, complete privacy/Data Safety/content-rating declarations, and satisfy your account's current testing requirements. This debug APK is for testing, not store publication. Native updates still require a new store build; remote web delivery does not override store review policies.
+
+**iOS deferred:** on a Mac later, add the Capacitor iOS platform, configure an Apple team/bundle ID and Associated Domains entitlement (`applinks:are-we-vibing.vercel.app`), serve an `apple-app-site-association` file identifying that team/bundle and session/results paths, configure APNs with Firebase, then test Universal Links and notification delivery on iOS. None of that is implemented or tested in this pass; Apple membership is a separate $99/year cost.
+
+### Migration and verification
+
+`202609140002_mobile` adds nullable session playlist/token/creator-proof/push-delivery fields and a temporary native-login handoff table. It preserves all existing records. Apply `npm run db:deploy` before deploying the changed web code. Run `npm test`, `npm run typecheck`, and `npm run build`; then test a fresh guest create/share/join/results flow in a regular browser and on Android. Verify legacy results, permission denial, background push receipt and tap, playlist skips, card export, and native Google sign-in. Actual device delivery must be checked on a connected device; a successful APK build or Firebase API call alone does not prove it.
