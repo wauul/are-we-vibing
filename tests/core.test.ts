@@ -8,7 +8,7 @@ const result = {
   personB: { genres: ["soul"], vibeSummary: "Chill" },
   compatibilityScore: 85,
   verdict: "Aux allies",
-  recommendations: ["A — B", "C — D", "E — F"],
+  recommendations: Array.from({ length: 10 }, (_, i) => `Artist — Song ${i + 1}`),
   superlatives: [
     { title: "DJ sunshine", person: "A" },
     { title: "Night owl", person: "B" },

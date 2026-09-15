@@ -8,6 +8,8 @@ import { z } from "zod";
 import { currentUser } from "@/lib/auth";
 import { friendPair } from "@/lib/social";
 import { AppError } from "@/lib/errors";
+import { randomBytes } from "node:crypto";
+import { creatorCookie, hashCreatorSecret } from "@/lib/creator-proof";
 export const maxDuration = 60;
 export async function POST(request: Request) {
   try {
@@ -24,6 +26,7 @@ export async function POST(request: Request) {
     requireEnv("DATABASE_URL");
     requireEnv("GROQ_API_KEY");
     const list = await normalizeInput(input.type, input.value);
+    const creatorSecret = randomBytes(32).toString("hex");
     const s = await db.session.create({
       data: {
         personAName: input.name,
@@ -31,9 +34,12 @@ export async function POST(request: Request) {
         personANormalizedList: list,
         ownerId: user?.id,
         invitedUserId,
+        creatorSecretHash: hashCreatorSecret(creatorSecret),
       },
     });
-    return NextResponse.json(sessionView(s, user?.id), { status: 201 });
+    const response = NextResponse.json(sessionView(s, user?.id), { status: 201 });
+    response.cookies.set(creatorCookie(s.id), creatorSecret, { httpOnly: true, secure: new URL(request.url).protocol === "https:", sameSite: "lax", path: "/api/push-tokens", maxAge: 7 * 86400 });
+    return response;
   } catch (error) {
     return apiError(error);
   }
