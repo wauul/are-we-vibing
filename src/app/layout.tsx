@@ -6,6 +6,8 @@ import "./design.css";
 import "./social.css";
 import AccountNav from "@/components/account-nav";
 import NativeRuntime from "@/components/native-runtime";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./mobile-features.css";
 import "./typeui.css";
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#f7f3e8" };
@@ -34,6 +36,8 @@ export default function RootLayout({
           </Link></nav>
         </header>
         {children}
+        <Analytics />
+        <SpeedInsights />
         <footer>
           <Link className="brand" href="/">
             r we vibing?
