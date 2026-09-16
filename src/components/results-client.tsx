@@ -20,6 +20,7 @@ import ShareLink from "./share-link";
 import ShareableResultCard from "./ShareableResultCard";
 import ListenTogether from "./listen-together";
 import { Capacitor } from "@capacitor/core";
+import ResultsLoading from "./results-loading";
 const badges = {
   MANUAL: "via your own picks ♫",
   SPOTIFY: "via Spotify 🎧",
@@ -111,16 +112,16 @@ export default function ResultsClient({ id }: { id: string }) {
     }
   }
   if (!session?.resultJson)
-    return (
+    return error ? (
       <main className="flow-shell">
-        <p role="status">{error || "Putting the needle on your result…"}</p>
+        <p role="alert">{error}</p>
         {error && (
           <Link href="/" className="button">
             Start again
           </Link>
         )}
       </main>
-    );
+    ) : <ResultsLoading />;
   const r = session.resultJson;
   const genres = Array.from(
     new Set(
