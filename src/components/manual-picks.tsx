@@ -1,4 +1,6 @@
 "use client";
+import { T, useLanguage } from "@/components/language-provider";
+
 import { useEffect, useRef, useState } from "react";
 import { Mic2, Music2 } from "lucide-react";
 import { activePick, completePick, type MusicSuggestion } from "@/lib/autocomplete";
@@ -6,7 +8,9 @@ import { activePick, completePick, type MusicSuggestion } from "@/lib/autocomple
 export default function ManualPicks({ value, onChange, disabled }: {
   value: string; onChange: (value: string) => void; disabled: boolean;
 }) {
+  const { t } = useLanguage();
   const input = useRef<HTMLTextAreaElement>(null);
+  const blurTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [caret, setCaret] = useState(0);
   const [focused, setFocused] = useState(false);
   const [dismissed, setDismissed] = useState(false);
@@ -15,6 +19,8 @@ export default function ManualPicks({ value, onChange, disabled }: {
   const [status, setStatus] = useState("");
   const query = activePick(value, caret).query;
   const open = focused && !dismissed && !disabled && query.length >= 2 && query.length <= 80;
+
+  useEffect(() => () => { if (blurTimer.current) clearTimeout(blurTimer.current); }, []);
 
   useEffect(() => {
     setSuggestions([]);
@@ -51,14 +57,17 @@ export default function ManualPicks({ value, onChange, disabled }: {
 
   return <div className="autocomplete-wrap">
     <textarea ref={input} id="music" rows={5} maxLength={5000}
-      placeholder={"Start typing an artist or song…\nFrank Ocean, SZA, Daft Punk"}
+      placeholder="Frank Ocean, SZA, Daft Punk…"
       value={value} disabled={disabled} required
+      role="combobox" aria-expanded={open} aria-haspopup="listbox"
       aria-autocomplete="list" aria-controls={open ? "music-matches" : undefined}
       aria-activedescendant={open && selected >= 0 ? `music-match-${selected}` : undefined}
-      aria-describedby="autocomplete-help"
+      aria-describedby="picks-guidance"
       onChange={event => { onChange(event.target.value); setCaret(event.target.selectionStart); setDismissed(false); }}
       onSelect={event => setCaret(event.currentTarget.selectionStart)}
-      onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+      onFocus={() => { if (blurTimer.current) clearTimeout(blurTimer.current); setFocused(true); }}
+      // Keep the in-flow panel stable through pointer-up so clicking Submit works.
+      onBlur={() => { blurTimer.current = setTimeout(() => setFocused(false), 150); }}
       onKeyDown={event => {
         if (!open) return;
         if (event.key === "Escape") { event.preventDefault(); setDismissed(true); }
@@ -70,19 +79,18 @@ export default function ManualPicks({ value, onChange, disabled }: {
         }
         if (event.key === "Enter" && selected >= 0 && suggestions[selected]) { event.preventDefault(); choose(suggestions[selected]); }
       }} />
-    <p id="autocomplete-help" className="autocomplete-help">Type 2+ letters for artist & song matches. ↓ ↑ to browse, Enter to choose.</p>
     {open && <div className="autocomplete-panel">
-      <div className="autocomplete-heading">FIND YOUR ON-REPEAT <span>Artists & songs</span></div>
-      {status && <p role="status" className="autocomplete-status">{status}</p>}
-      <ul id="music-matches" role="listbox" aria-label="Artist and song suggestions">
+      <div className="autocomplete-heading"><T text={"Music suggestions"} /> <span><T text={"Artists & songs"} /></span></div>
+      {status && <p role="status" className="autocomplete-status">{t(status)}</p>}
+      <ul id="music-matches" role="listbox" aria-label={t("Artist and song suggestions")}>
         {suggestions.map((suggestion, index) => <li key={`${suggestion.kind}:${suggestion.label}`} id={`music-match-${index}`} role="option" aria-selected={selected === index}
           className={selected === index ? "selected" : ""}
           onPointerDown={event => event.preventDefault()} onClick={() => choose(suggestion)}>
           <span className="match-icon">{suggestion.kind === "artist" ? <Mic2 size={17} /> : <Music2 size={17} />}</span>
-          <span>{suggestion.label}<small>{suggestion.kind === "artist" ? "Artist" : "Song"}</small></span><b>↵</b>
+          <span>{suggestion.label}<small>{suggestion.kind === "artist" ? t("Artist") : t("Song")}</small></span>
         </li>)}
       </ul>
-      <small className="catalog-credit">Search results from Apple’s music catalog · Your own picks always work.</small>
+      <small className="catalog-credit"><T text={"Apple music catalog. You can always type your own pick."} /></small>
     </div>}
   </div>;
 }

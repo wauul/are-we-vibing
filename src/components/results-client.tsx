@@ -1,319 +1,90 @@
 "use client";
+import { T, useLanguage } from "@/components/language-provider";
+
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Download, ArrowUpRight, Sparkles, Music2 } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
-import confetti from "canvas-confetti";
+import { Download, ArrowUpRight, Check, Minus } from "lucide-react";
 import type { SessionView } from "@/lib/schema";
-import { api } from "./input-form";
-import { SoundBars } from "./vibe-visual";
+import { api } from "@/lib/client-api";
 import ShareLink from "./share-link";
-import ShareableResultCard from "./ShareableResultCard";
+import ShareableResultCard, { coverSize } from "./ShareableResultCard";
+import CoverPreview from "./cover-preview";
+import { TrophyArt } from "./music-art";
 import ListenTogether from "./listen-together";
+import { Feedback, Side } from "./ui";
 import { Capacitor } from "@capacitor/core";
 import ResultsLoading from "./results-loading";
-const badges = {
-  MANUAL: "via your own picks ♫",
-  SPOTIFY: "via Spotify 🎧",
-  YOUTUBE: "via YouTube ▶",
-};
+const badges = { MANUAL: "Personal picks", SPOTIFY: "Spotify", YOUTUBE: "YouTube playlist" };
+
 export default function ResultsClient({ id }: { id: string }) {
+  const { t } = useLanguage();
   const router = useRouter();
   const [session, setSession] = useState<SessionView | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
-  const [score, setScore] = useState(0);
+  const [saveFailed, setSaveFailed] = useState(false);
   const [saving, setSaving] = useState(false);
   const card = useRef<HTMLDivElement>(null);
+  const score = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     let cancelled = false;
-    api<SessionView>(`/api/sessions/${id}`)
-      .then((s) => {
-        if (cancelled) return;
-        if (!s.resultJson) {
-          router.replace(`/session/${id}`);
-          return;
-        }
-        setSession(s);
-      })
-      .catch((e) => {
-        if (!cancelled) setError(e.message);
-      });
-    return () => {
-      cancelled = true;
-    };
+    api<SessionView>(`/api/sessions/${id}`).then(s => {
+      if (cancelled) return;
+      if (!s.resultJson) { router.replace(`/session/${id}`); return; }
+      setSession(s);
+    }).catch(e => { if (!cancelled) setError(e.message); });
+    return () => { cancelled = true; };
   }, [id, router]);
   useEffect(() => {
-    if (!session?.resultJson) return;
+    if (!session?.resultJson || !score.current) return;
     const target = session.resultJson.compatibilityScore;
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (reduced) {
-      setScore(target);
-      return;
-    }
-    let frame: number;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let frame: number; let cancelled = false;
     const start = performance.now();
     function tick(t: number) {
-      const p = Math.min((t - start) / 1500, 1);
-      setScore(Math.round(target * (1 - Math.pow(1 - p, 3))));
-      if (p < 1) frame = requestAnimationFrame(tick);
-      else if (target > 80)
-        void confetti({
-          particleCount: 100,
-          spread: 80,
-          origin: { y: 0.65 },
-          colors: ["#e76e3c", "#ecc76d", "#739288"],
-          disableForReducedMotion: true,
-        });
+      const progress = Math.min((t - start) / 900, 1);
+      if (score.current) score.current.textContent = String(Math.round(target * (1 - Math.pow(1 - progress, 3))));
+      if (progress < 1) frame = requestAnimationFrame(tick);
+      else if (target > 80) void import("canvas-confetti").then(({ default: confetti }) => {
+        if (!cancelled) void confetti({ particleCount:60, spread:65, origin:{ y:.6 }, colors:["#ed642f","#62354b","#edc9d7"], disableForReducedMotion:true });
+      });
     }
     frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
+    return () => { cancelled = true; cancelAnimationFrame(frame); };
   }, [session]);
   async function download() {
     if (!card.current || saving) return;
-    setSaving(true);
-    setNotice("");
+    setSaving(true); setNotice(""); setSaveFailed(false);
     try {
       await Promise.all(Array.from(card.current.querySelectorAll("img")).map(img => img.decode().catch(() => {})));
       await document.fonts.ready;
       const { toPng } = await import("html-to-image");
-      // Export a fixed composition: no viewport/container units to shift in the SVG clone.
-      const url = await toPng(card.current, {
-        width: 480,
-        height: 600,
-        pixelRatio: 2,
-        backgroundColor: "#f7f3e8",
-        imagePlaceholder: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=",
-      });
-      if (Capacitor.isNativePlatform()) {
-        const { saveNativeCard } = await import("@/lib/native-card");
-        await saveNativeCard(url);
-      } else {
-        const a = document.createElement("a"); a.download = "r-we-vibing.png"; a.href = url; document.body.appendChild(a); a.click(); a.remove();
-      }
-      setNotice(Capacitor.isNativePlatform() ? "Saved to your Gallery · Pictures / Are We Vibing." : "Download started. Your vibe card is ready.");
-    } catch {
-      setNotice(
-        "Could not save the card. Try copying the result link instead.",
-      );
-    } finally {
-      setSaving(false);
-    }
+      const url = await toPng(card.current, { ...coverSize, pixelRatio:2, backgroundColor:"#2a202c", imagePlaceholder:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=" });
+      if (Capacitor.isNativePlatform()) { const { saveNativeCard } = await import("@/lib/native-card"); await saveNativeCard(url); }
+      else { const a = document.createElement("a"); a.download="r-we-vibing.png"; a.href=url; document.body.appendChild(a); a.click(); a.remove(); }
+      setNotice(Capacitor.isNativePlatform() ? "Saved to Gallery in Pictures / Are We Vibing." : "Your vibe card download has started.");
+    } catch { setSaveFailed(true); setNotice("The card couldn’t be saved. Try again or copy your result link."); }
+    finally { setSaving(false); }
   }
-  if (!session?.resultJson)
-    return error ? (
-      <main className="flow-shell">
-        <p role="alert">{error}</p>
-        {error && (
-          <Link href="/" className="button">
-            Start again
-          </Link>
-        )}
-      </main>
-    ) : <ResultsLoading />;
-  const r = session.resultJson;
-  const genres = Array.from(
-    new Set(
-      [...r.personA.genres, ...r.personB.genres].map((g) => g.toLowerCase()),
-    ),
-  );
-  const chart = genres.map((g) => ({
-    genre: g,
-    A: r.personA.genres.some((x) => x.toLowerCase() === g) ? 1 : 0,
-    B: r.personB.genres.some((x) => x.toLowerCase() === g) ? 1 : 0,
-  }));
-  return (
-    <main className="results-shell">
-      <div className="result-heading">
-        <div className="eyebrow">THE RESULTS ARE ON REPEAT</div>
-        <h1>
-          Your musical <span className="serif orange">chemistry.</span>
-        </h1>
-        <p>
-          {session.personAName} + {session.personBName} · the official
-          unofficial vibe check
-        </p>
-      </div>
-      <div className="share-card">
-        <div className="score-panel">
-          <div className="eyebrow">R WE VIBING?</div>
-          <div className="score-orbits" aria-hidden="true"><i /><i /><span>✦</span><b>✧</b></div>
-          <div
-            className="score"
-            aria-label={`${r.compatibilityScore} percent compatibility`}
-          >
-            {score}
-            <span>%</span>
-          </div>
-          <span className="score-label">{r.compatibilityScore > 80 ? "CERTIFIED AUX-CORD SOULMATES" : r.compatibilityScore >= 50 ? "THERE’S A FREQUENCY HERE" : "DIFFERENT WORLDS. FRESH DISCOVERIES."}</span>
-          <SoundBars className="result-wave" />
-          <h2>{r.verdict}</h2>
-          <p className="micro">
-            {session.personAName} × {session.personBName}
-          </p>
-        </div>
-        <div className="person-grid">
-          {[
-            {
-              key: "A",
-              name: session.personAName,
-              type: session.personAInputType,
-              data: r.personA,
-            },
-            {
-              key: "B",
-              name: session.personBName,
-              type: session.personBInputType!,
-              data: r.personB,
-            },
-          ].map((p) => (
-            <article key={p.key} className="person-card">
-              <div className="person-top">
-                <span className={`avatar avatar-${p.key}`}>
-                  {p.name?.slice(0, 1).toUpperCase()}
-                </span>
-                <div>
-                  <h3>{p.name}</h3>
-                  <small>{badges[p.type]}</small>
-                </div>
-              </div>
-              <p>{p.data.vibeSummary}</p>
-              <div className="genre-tags">
-                {p.data.genres.map((g) => (
-                  <span key={g}>{g}</span>
-                ))}
-              </div>
-            </article>
-          ))}
-        </div>
-        <div className="card-brand">
-          r we vibing? <span>TWO TASTES. ONE FREQUENCY.</span>
-        </div>
-      </div>
-      {/* Render outside the page layout, but keep pixels available to html-to-image. */}
-      <div className="card-export-stage" aria-hidden="true"><ShareableResultCard ref={card} session={session} /></div>
-      <div className="result-actions">
-        <button className="button save-card-button" onClick={download} disabled={saving} aria-busy={saving}>
-          <Download size={17} />
-          {saving ? "Making your card…" : "Save vibe card"}
-        </button>
-        <ShareLink path={`/results/${id}`} text="Our musical chemistry is in. R We Vibing?" compact />
-      </div>
-      {notice && (
-        <p className="notice" role="status">
-          {notice}
-        </p>
-      )}
-      <ListenTogether tracks={session.playlist || []} />
-      <div className="result-detail-grid">
-        <section className="detail-card">
-          <div className="eyebrow">THE CROSSOVER EPISODE</div>
-          <h2>Where your worlds meet</h2>
-          <p className="field-help">
-            Genres inferred by AI. Bars indicate presence, not measured
-            intensity.
-          </p>
-          <div
-            className="chart"
-            role="img"
-            aria-label={`Inferred genres. ${session.personAName}: ${r.personA.genres.join(", ")}. ${session.personBName}: ${r.personB.genres.join(", ")}.`}
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={chart}
-                layout="vertical"
-                margin={{ left: 10, right: 20 }}
-              >
-                <XAxis type="number" domain={[0, 1]} hide />
-                <YAxis
-                  type="category"
-                  dataKey="genre"
-                  width={100}
-                  tick={{ fontSize: 12 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip
-                  formatter={(value, name) => [
-                    value ? "Present" : "Not inferred",
-                    name,
-                  ]}
-                />
-                <Legend />
-                <Bar
-                  dataKey="A"
-                  name={session.personAName}
-                  fill="#bd4828"
-                  radius={[0, 4, 4, 0]}
-                  isAnimationActive={false}
-                />
-                <Bar
-                  dataKey="B"
-                  name={session.personBName!}
-                  fill="#48695b"
-                  radius={[0, 4, 4, 0]}
-                  isAnimationActive={false}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-        <section className="detail-card">
-          <div className="eyebrow">ADD TO YOUR SHARED ROTATION</div>
-          <h2>Your next {r.recommendations.length} favorites</h2>
-          <div className="recommendations">
-            {r.recommendations.map((track, i) => (
-              <a
-                key={track}
-                href={`https://www.youtube.com/results?search_query=${encodeURIComponent(track)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="track-number">{String(i + 1).padStart(2, "0")}</span>
-                <Music2 size={18} />
-                <span>{track}</span>
-                <ArrowUpRight size={17} />
-              </a>
-            ))}
-          </div>
-          <p className="field-help">
-            AI-picked songs to explore together. Links open YouTube search.
-          </p>
-        </section>
-      </div>
-      <section className="awards">
-        {r.superlatives.map((s, i) => (
-          <article key={i}>
-            <Sparkles size={23} />
-            <div>
-              <div className="eyebrow">THE UNOFFICIAL AWARDS</div>
-              <h3>{s.title}</h3>
-              <p>
-                Goes to{" "}
-                {s.person === "A" ? session.personAName : session.personBName}
-              </p>
-            </div>
-          </article>
-        ))}
-      </section>
-      <p className="results-disclaimer">
-        A playful AI interpretation of your music, not a scientific
-        compatibility test.
-      </p>
-      <Link className="another-session" href="/session/new">
-        Different friend. Different frequency. Try again ↗
-      </Link>
-    </main>
-  );
+  if (!session?.resultJson) return error ? <main id="content" className="flow-shell"><h1><T text={"We couldn’t open your result"} /></h1><Feedback tone="error">{error}</Feedback><div className="action-row"><Link href="/friends" className="button"><T text={"Sign in"} /></Link><Link href="/session/new" className="button outline-button"><T text={"New session"} /></Link></div></main> : <ResultsLoading />;
+  const r=session.resultJson;
+  const genres=Array.from(new Set([...r.personA.genres,...r.personB.genres].map(g => g.toLowerCase())));
+  return <main id="content" className="results-shell">
+    <div className="result-heading"><h1><T text={"Here’s your shared mix"} /></h1><p>{session.personAName} + {session.personBName}<T text={". Two tastes, a little common ground."} /></p></div>
+    <section className="result-reveal" aria-label={t("Your compatibility result")}>
+      <div className="result-cover-side"><CoverPreview session={session} scoreRef={score} /><div className="result-actions"><button className="button" onClick={download} disabled={saving}><Download size={17} aria-hidden="true" />{saving ? t("Saving card…") : t("Save vibe card")}</button><ShareLink path={`/results/${id}`} text={t("{0} and {1} got {2}% on R We Vibing. See our shared mix.", {0:session.personAName,1:session.personBName,2:r.compatibilityScore})} compact /></div></div>
+      <div className="result-details-side"><p className="result-score-text">{r.compatibilityScore}<T text={"% music compatibility ·"} /> {r.compatibilityScore>80 ? t("A lot in common") : r.compatibilityScore>=50 ? t("A promising overlap") : t("Different tastes, new discoveries")}</p><h2>{r.verdict}</h2><p className="micro"><T text={"A playful AI interpretation"} /></p>
+      <div className="person-grid">{[{ side:"A" as const,name:session.personAName,type:session.personAInputType,data:r.personA },{ side:"B" as const,name:session.personBName,type:session.personBInputType!,data:r.personB }].map(p => <article key={p.side} className="person-card"><div className="person-top"><Side side={p.side} /><div><h3>{p.name}</h3><small>{t(badges[p.type])}</small></div></div><p>{p.data.vibeSummary}</p><div className="genre-tags">{p.data.genres.map(genre => <span key={genre}>{genre}</span>)}</div></article>)}</div>
+    </div></section>
+    {notice && <Feedback tone={saveFailed ? "error" : "success"}>{notice}</Feedback>}
+    <div className="export-stage" aria-hidden="true"><ShareableResultCard ref={card} session={session} /></div>
+    <section className="trophies-section" aria-labelledby="trophies-title"><h2 id="trophies-title"><T text={"Your music trophies"} /></h2><div className="awards">{r.superlatives.map((award,index) => <article key={index}><TrophyArt title={award.title} side={award.person} /><div><h3>{award.title}</h3><p><T text={"For"} /> {award.person==="A" ? session.personAName : session.personBName}</p><small><T text={"A playful, unofficial award"} /></small></div></article>)}</div></section>
+    <ListenTogether tracks={session.playlist || []} />
+    <div className="details-grid">
+      <section className="detail-card"><h2><T text={"Where your tastes meet"} /></h2><p className="field-help"><T text={"Genres inferred from your picks. Presence, not a measured audio profile."} /></p><div className="genre-table-wrap"><table className="genre-table"><caption className="sr-only"><T text={"Inferred genres for both participants"} /></caption><thead><tr><th scope="col"><T text={"Genre"} /></th><th scope="col"><span>{session.personAName}</span></th><th scope="col"><span>{session.personBName}</span></th></tr></thead><tbody>{genres.map(genre => <tr key={genre}><th scope="row">{genre}</th>{[r.personA,r.personB].map((person,index) => { const present=person.genres.some(g => g.toLowerCase()===genre); return <td key={index} className={present ? `genre-present genre-${index}` : ""}>{present ? <Check size={18} aria-label={t("Inferred")} /> : <Minus size={16} aria-label={t("Not inferred")} />}</td>; })}</tr>)}</tbody></table></div></section>
+      <section className="detail-card"><h2>{r.recommendations.length}{" "}<T text={"songs for both of you"} /></h2><div className="recommendations">{r.recommendations.map((track,index) => <a key={`${index}:${track}`} href={`https://www.youtube.com/results?search_query=${encodeURIComponent(track)}`} target="_blank" rel="noopener noreferrer"><span className="track-number">{String(index+1).padStart(2,"0")}</span><span>{track}</span><ArrowUpRight size={16} aria-label={t("Opens YouTube in a new tab")} /></a>)}</div><p className="field-help"><T text={"AI suggestions to explore. Links open YouTube search."} /></p></section>
+    </div>
+    <p className="results-disclaimer"><T text={"Music taste is one part of a connection. This result is a playful interpretation, not a scientific compatibility test."} /></p><Link className="another-session" href="/session/new"><T text={"Compare with someone else"} /></Link>
+  </main>;
 }

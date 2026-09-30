@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     const updated = await db.user.update({ where: { id: user.id }, data: body, select: { id: true, name: true, username: true } });
     return NextResponse.json(updated);
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") return apiError(new AppError("That username already has a DJ. Try another one.", 409));
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") return apiError(new AppError("That username is taken. Try another one.", 409));
     return apiError(error);
   }
 }

@@ -35,7 +35,7 @@ export async function analyze(a: string[], b: string[]) {
     );
     if (!response.ok)
       throw new AppError(
-        "Our DJ is taking a breather. Try regenerating in a minute.",
+        "The music analysis is unavailable. Try regenerating in a minute.",
         503,
       );
     const data = await response.json();
@@ -54,7 +54,7 @@ export async function analyze(a: string[], b: string[]) {
     }
   }
   throw new AppError(
-    "Our DJ got tongue-tied. Hit regenerate for a fresh take.",
+    "The analysis could not be validated. Try regenerate for another attempt.",
     502,
   );
 }

@@ -27,8 +27,8 @@ export async function POST(request: Request) {
     const user = await requireUser();
     if (body.action === "add") {
       const target = await db.user.findUnique({ where: { username: body.username } });
-      if (!target) throw new AppError("No DJ with that username yet. Ask your friend to sign in and share their username.", 404);
-      if (target.id === user.id) throw new AppError("Your own biggest fan? Add a friend's username instead.");
+      if (!target) throw new AppError("No account has that username. Ask your friend to sign in and share their username.", 404);
+      if (target.id === user.id) throw new AppError("That is your username. Enter your friend’s username instead.");
       await db.friendship.create({ data: { senderId: user.id, recipientId: target.id, pairKey: friendPair(user.id, target.id) } });
     } else {
       const match = await db.friendship.findUnique({ where: { id: body.id } });

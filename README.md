@@ -26,11 +26,11 @@ All keys remain server-side and are excluded from Git. Never prefix them with NE
 3. Creator gets `/session/[id]`; a localStorage marker keeps that browser in the waiting state. Their friend opens the same link in another browser and submits to `POST /api/sessions/[id]/join`.
 4. An atomic database update claims the second seat. A 60-second generation lease prevents duplicate concurrent Groq calls. Failed or interrupted generation can be retried from the shared page, up to five attempts per session.
 5. One Groq call analyzes both lists. Zod validates JSON, score bounds and exact recommendation/award counts. Invalid output gets exactly one stricter retry. API failures return a friendly error without fabricated results.
-6. Both clients poll `GET /api/sessions/[id]` every three seconds and navigate to `/results/[id]`. Results show score animation, genre presence chart, recommendations, awards, input badges and a downloadable image. Scores above 80 trigger confetti, respecting reduced-motion preferences.
+6. Both clients poll `GET /api/sessions/[id]` every three seconds and navigate to `/results/[id]`. Results show score animation, an accessible genre presence table, recommendations, awards, input badges and a downloadable image. Scores above 80 trigger confetti, respecting reduced-motion preferences.
 
 `POST /api/sessions/[id]/regenerate` with `{}` retries failed generation. Existing successful results cannot be overwritten. A/B values in AI superlatives map to actual display names in the UI.
 
-The Prisma model includes the requested fields plus `generationStartedAt` and `generationAttempts` for durable concurrency and retry control. Genre charts show inferred genre presence, not invented audio metrics. All analysis is playful and subjective.
+The Prisma model includes the requested fields plus `generationStartedAt` and `generationAttempts` for durable concurrency and retry control. Genre tables show inferred genre presence, not invented audio metrics. All analysis is playful and subjective.
 
 ## GitHub and Vercel
 
@@ -54,7 +54,7 @@ Use Vercel's Hobby account and Neon Free. Do not select paid integrations. Set t
 
 ## Privacy and operating limits
 
-Session links are bearer links: anyone with a link may join before the second seat is filled and view names/results. Keep links private if desired. Normalized music lists are stored in the database but omitted from public GET responses. Names/music are sent to Groq to generate the result; music providers receive playlist lookups. There is no automatic session deletion. Share-card downloads are generated in the browser.
+Session links are bearer links: anyone with a link may join before the second seat is filled and view names/results. Keep links private if desired. Normalized music lists are stored in the database but omitted from public GET responses. Submitted music under participant labels A and B is sent to Groq to generate the result; music providers receive playlist lookups. There is no automatic session deletion. Share-card downloads are generated in the browser.
 
 Input length limits, provider timeouts, fixed API hosts, same-origin browser mutation checks and a per-session generation cap bound individual requests. Free API quotas still apply; high-traffic public use may need an additional shared IP rate limiter. A free quota exhaustion is surfaced as an error, never an automatic paid upgrade.
 
@@ -70,7 +70,7 @@ Repository: https://github.com/wauul/are-we-vibing
 
 Always use https://are-we-vibing.vercel.app. Vercel deployment-specific URLs are immutable snapshots: the old `are-we-vibing-mdsydv21b-wauuls-projects.vercel.app` snapshot predates the Prisma WASM fix and still fails to create sessions. Do not share that old link.
 
-The interface includes an animated record-player scene with a pause control, sound bars, floating cards, a session progress indicator, and a score reveal. All motion respects reduced-motion preferences. The waiting screen supports entering the second person's music on the same device. Browser storage is optional; an in-memory fallback preserves the creator state during the current visit, and invitations contain only the shared session ID. Network errors preserve the form, and automatic mutation retries are deliberately avoided to prevent duplicate sessions.
+The Mixtape Exchange identity uses an illustrated orange record player, A/B contributor labels and ruled song lists. Bricolage Grotesque and Manrope are self-hosted with their OFL licenses. Semantic tokens in `src/app/globals.css` define light and dark palettes; one sun/moon button switches between them and remembers the choice before paint. Until a choice is made, the app follows the system theme. Music Circle has record-label avatars, visual mix previews and on-demand profile editing; New Session uses a headphone/record illustration and concise input guidance. Artwork visibly sways, records rotate, notes travel and cover streams flow. Scroll reveals, source changes, taps, feedback and loading states animate. Offscreen motion pauses automatically; device reduced-motion preferences stop decorative animation. No animation pause/play buttons are shown, per the user request. Title-specific trophy sculptures represent each award, with vinyl as a fallback for unfamiliar titles. The illustrated music-universe cover animates in the app and exports the same artwork and composition as a static 960 × 1708 PNG. `/terms` describes use and sharing rules and is linked beside Privacy in every footer. See `DESIGN.md` for the system and `ASSETS.md` for artwork provenance. The waiting screen supports entering the second person's music on the same device. Browser storage is optional; an in-memory fallback preserves the creator state during the current visit, and invitations contain only the shared session ID. Network errors preserve the form, and automatic mutation retries are deliberately avoided to prevent duplicate sessions.
 
 
 ## Artist and song autocomplete
@@ -146,4 +146,6 @@ Before Play Store submission: obtain the $25 developer account, choose and safel
 
 ### Visual system and card downloads
 
-The shared interface follows TypeUI fundamentals; see DESIGN.md for tokens, responsive rules, and accessibility decisions. Save vibe card renders a fixed 480×600 composition at 2× resolution (960×1200 PNG), outside the page layout. Saving never injects a duplicate preview. The orange logo is preserved. Web-only visual updates appear in the installed Android shell automatically.
+The shared interface follows the Mixtape Exchange design system; see DESIGN.md for tokens, responsive rules and accessibility decisions. Save vibe card renders the same illustrated 480×854 composition as the app preview at 2× resolution (960×1708 PNG). The saved card is static. Saving never injects a duplicate preview. The orange waveform logo is preserved. Web-only visual updates appear in the installed Android shell after the website is deployed.
+
+The header language selector offers English and French. It translates interface text, accessibility labels, known API errors, sharing messages and legal pages. A functional `vibing-language` cookie supplies the server-rendered language; local storage supplies a fallback when cookies are unavailable. The choice applies immediately without clearing entered music and survives navigation/reloads. `src/lib/translations-fr.json` is the translation catalog. Participant names, usernames, song titles and stored AI-generated verdicts/awards remain in their original language. Retry, exhausted-attempt and private-invitation screens use separate original illustrations with reduced-motion support; all assets and exact prompts are listed in ASSETS.md.

@@ -2,9 +2,9 @@ import { z } from "zod";
 export const inputType = z.enum(["SPOTIFY", "YOUTUBE", "MANUAL"]);
 export type InputType = z.infer<typeof inputType>;
 export const submission = z.object({
-  name: z.string().trim().min(1, "Give your DJ a name.").max(40),
+  name: z.string().trim().min(1, "Enter your name.").max(40),
   type: inputType,
-  value: z.string().trim().min(1, "Add a little music first.").max(5000),
+  value: z.string().trim().min(1, "Add at least one artist or song.").max(5000),
 });
 const person = z
   .object({

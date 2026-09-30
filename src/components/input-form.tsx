@@ -1,7 +1,10 @@
 "use client";
+import { T, useLanguage } from "@/components/language-provider";
+
 import { useEffect, useState } from "react";
 import ManualPicks from "./manual-picks";
-import { ArrowRight, Headphones, Music2, Play } from "lucide-react";
+import { Headphones, Music2, Play } from "lucide-react";
+import { Feedback } from "./ui";
 import { submission, type InputType, type SessionView } from "@/lib/schema";
 import { api, rememberCreator } from "@/lib/client-api";
 export { api } from "@/lib/client-api";
@@ -16,6 +19,7 @@ export function InputForm({
   onBusy: (busy: boolean) => void;
   friendUsername?: string;
 }) {
+  const { t } = useLanguage();
   const [type, setType] = useState<InputType>("MANUAL");
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
@@ -36,14 +40,10 @@ export function InputForm({
     }
     setBusy(true);
     onBusy(true);
-    const start = Date.now();
     try {
       const s = await api<SessionView>(
         id ? `/api/sessions/${id}/join` : "/api/sessions",
         { ...parsed.data, ...(friendUsername ? { friendUsername } : {}) },
-      );
-      await new Promise((r) =>
-        setTimeout(r, Math.max(0, 1800 - (Date.now() - start))),
       );
       if (!id) rememberCreator(s.id);
       onDone(s);
@@ -56,19 +56,19 @@ export function InputForm({
   }
   return (
     <form onSubmit={submit} className="input-form">
-      {friendUsername && <p className="direct-banner">Direct vibe for <strong>@{friendUsername}</strong> · Only your friend can join.</p>}
-      <label htmlFor="name">What should we call you?</label>
+      {friendUsername && <p className="direct-banner"><T text={"An invitation for"} /> <strong>@{friendUsername}</strong><T text={". Only they can join."} /></p>}
+      <label htmlFor="name"><T text={"Your name"} /></label>
       <input
         id="name"
         autoComplete="nickname"
         maxLength={40}
-        placeholder="Your name or DJ alter ego"
+        placeholder={t("Your name")}
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
         disabled={busy}
       />
-      <label id="method-label">Choose your music source</label>
+      <label id="method-label"><T text={"Music source"} /></label>
       <div className="method-tabs" role="group" aria-labelledby="method-label">
         {(
           [
@@ -89,16 +89,15 @@ export function InputForm({
             }}
             disabled={busy}
           >
-            <m.icon size={17} />
-            <span>{m.label}{m.id === "SPOTIFY" && <small className="coming-soon-badge">Experimental</small>}</span>
+            <m.icon size={25} aria-hidden="true" />
+              <span>{t(m.label)}{m.id === "SPOTIFY" && <small className="coming-soon-badge"><T text={"Experimental"} /></small>}</span>
           </button>
         ))}
       </div>
-      <p className="source-note"><Headphones size={13} /> Use My picks for favorites from any music app, or bring a public playlist.</p>
       <label htmlFor="music">
         {type === "MANUAL"
-          ? "Your on-repeat artists & songs"
-          : "Your playlist share link"}
+          ? t("Your music")
+          : t("Your playlist share link")}
       </label>
       {type === "MANUAL" ? (
         <ManualPicks value={value} onChange={setValue} disabled={busy} />
@@ -117,24 +116,21 @@ export function InputForm({
           disabled={busy}
         />
       )}
-      <p className="field-help">
+      <p className="field-help" id="picks-guidance">
         {type === "MANUAL"
-          ? `${Math.min(value.split(/[\n,]/).filter((s) => s.trim()).length, 15)}/15 picks · Separate with commas or new lines. First 15 used.`
+          ? t("{0}/15 picks · Use commas or new lines", {0:Math.min(value.split(/[\n,]/).filter((s) => s.trim()).length, 15)})
           : type === "SPOTIFY"
-            ? "Public playlists only. We use up to 20 songs exposed by the public preview. No Spotify sign-in needed. If import fails, use My picks."
-            : "Public or unlisted playlists · First 20 videos."}
+            ? t("Public playlists · Up to 20 songs · No sign-in needed. If import fails, use My picks.")
+            : t("Public or unlisted playlists · First 20 videos")}
       </p>
       {error && (
-        <p className="error" role="alert">
-          {error}
-        </p>
+        <Feedback tone="error">{error}</Feedback>
       )}
       <button className="button full" disabled={busy}>
-        {busy ? "Spinning up…" : id ? "Check our vibe" : "Make my session"}
-        <ArrowRight size={18} />
+        {busy ? t("Saving your picks…") : id ? t("Compare our music") : t("Create my session")}
       </button>
       <p className="privacy">
-        {friendUsername ? "Your friend will find this invitation in Friends & account." : "Anyone with your link can join and view your names and result. Share it with your person."}
+        {friendUsername ? t("Only your invited friend can join.") : t("Anyone with your link can join and see your names and result.")}
       </p>
     </form>
   );

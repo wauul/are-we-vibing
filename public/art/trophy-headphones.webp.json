@@ -1,0 +1,7 @@
+{
+  "prompt": "Use case: stylized-concept\nAsset type: transparent personal music trophy illustration for a mobile music sharing app\nPrimary request: a stunning little sculptural award made of oversized rose-pink enamel headphones wrapped around a midnight-black vinyl record, mounted upright on a rounded dark-plum pedestal\nSubject: one charming premium music trophy, softly padded pink ear cups, cream center label with a silver spindle, brushed silver stem, playful carefully crafted proportions\nStyle/medium: premium tactile 3D illustration matching an orange enamel vintage turntable; glossy lacquer, engraved vinyl grooves, polished metal accents, art-directed small object\nComposition: centered front three-quarter view, whole trophy visible, large clear silhouette readable at 120px, isolated on genuinely transparent alpha with soft contact shadow\nPalette: rose #edc9d7, plum #62354b, cream #f7f0e7, black #242426, accents of orange #ed642f and silver\nConstraints: no text, letters, numbers, logos, stars, sparkles, laurels, people, watermark, UI or backdrop; one object only; avoid generic gold sports cup",
+  "tool": "built-in image_gen",
+  "transparentBackground": true,
+  "derivative": "Resized to 640px (player) or 320px (trophy), WebP quality 88; alpha preserved.",
+  "createdAt": "2026-09-30"
+}

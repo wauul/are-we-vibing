@@ -22,7 +22,7 @@ export function apiError(error: unknown) {
     );
   if (error instanceof SyntaxError)
     return NextResponse.json(
-      { error: "That request was off-beat. Please try again." },
+      { error: "This request could not be read. Please try again." },
       { status: 400 },
     );
   console.error(
@@ -31,7 +31,7 @@ export function apiError(error: unknown) {
     error instanceof Prisma.PrismaClientKnownRequestError ? error.code : "",
   );
   return NextResponse.json(
-    { error: "Our turntables hit a snag. Please try again in a moment." },
+    { error: "This request could not finish. Please try again in a moment." },
     { status: 503 },
   );
 }
@@ -51,6 +51,6 @@ export async function readBody(request: Request) {
   )
     throw new AppError("Please submit from this app.", 403);
   const text = await request.text();
-  if (text.length > 12000) throw new AppError("That mixtape is too long.", 413);
+  if (text.length > 12000) throw new AppError("This request is too large. Try fewer picks.", 413);
   return JSON.parse(text);
 }

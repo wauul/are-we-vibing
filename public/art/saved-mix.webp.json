@@ -1,0 +1,7 @@
+{
+  "prompt": "Use case: stylized-concept. Asset type: transparent illustration for a mobile music compatibility app's retry screen. Primary request: show that both people's music lists are safely saved and ready to mix again. Subject: a sculptural little burnt-orange record crate holding two distinct black vinyl records with cream/orange and plum/pink center labels, and two cream/pink patterned record sleeves; a large tactile cream circular replay arrow rests at the front of the crate. Style: polished playful dimensional 3D editorial illustration, rounded physical forms, fine vinyl grooves, subtle material detail, matching a retro orange/plum turntable app aesthetic. Composition: a single compact square object grouping in three-quarter view, centered with generous transparent space around every edge, all objects fully visible. Color palette: orange #ed642f, plum #62354b, cream #f7f0e7, pink #edc9d7, charcoal #242426. Soft studio lighting with crisp believable depth. Truly transparent background including around shadows. No floor or background scene, no UI, no letters, no words, no watermark, no sad faces, no broken records.",
+  "tool": "Built-in image_gen",
+  "createdAt": "2026-09-30",
+  "source": "exec-3c437532-41ac-4edd-ac8e-75a8e1f45cb2.png",
+  "derivative": "Resized to 640px and compressed as WebP; generated alpha preserved"
+}

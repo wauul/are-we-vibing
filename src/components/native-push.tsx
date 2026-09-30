@@ -1,9 +1,11 @@
 "use client";
+import { useLanguage } from "@/components/language-provider";
 import { useEffect, useState } from "react";
 import { Capacitor } from "@capacitor/core";
 import { api } from "@/lib/client-api";
 
 export default function NativePush({ sessionId }: { sessionId: string }) {
+  const { t } = useLanguage();
   const [notice, setNotice] = useState("");
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
@@ -29,5 +31,5 @@ export default function NativePush({ sessionId }: { sessionId: string }) {
     })().catch(() => { if (active) setNotice("Notifications unavailable on this device."); });
     return () => { active = false; removers.forEach(remove => void remove()); };
   }, [sessionId]);
-  return notice ? <p className="micro" role="status">{notice}</p> : null;
+  return notice ? <p className="micro" role="status">{t(notice)}</p> : null;
 }

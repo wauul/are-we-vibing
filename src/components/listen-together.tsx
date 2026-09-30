@@ -1,9 +1,13 @@
 "use client";
+import { T, useLanguage } from "@/components/language-provider";
+
 import { useEffect, useRef, useState } from "react";
 import type { PlaylistTrack } from "@/lib/schema";
 import { loadYouTubePlayer, nextPlayableIndex, type YouTubePlayer } from "@/lib/youtube-player";
+import { ArrowUpRight, Play } from "lucide-react";
 
 export default function ListenTogether({ tracks }: { tracks: PlaylistTrack[] }) {
+  const { t } = useLanguage();
   const host = useRef<HTMLDivElement>(null);
   const player = useRef<YouTubePlayer>();
   const [current, setCurrent] = useState(0);
@@ -52,17 +56,17 @@ export default function ListenTogether({ tracks }: { tracks: PlaylistTrack[] }) 
     return () => { cancelled = true; document.removeEventListener("visibilitychange", visibility); window.removeEventListener("vibe:pause-player", pause); player.current?.destroy(); player.current = undefined; target.remove(); };
   }, [tracks]);
   if (!tracks.length) return null;
-  return <section className="listen-section detail-card"><div className="eyebrow">YOUR SHARED ROTATION · YOUTUBE</div><h2>Press play on your chemistry.</h2>
-    <p className="field-help">{tracks.length} shared picks. The same track list for both of you; playback is controlled separately.</p>
-    <div className="listen-grid"><div><div ref={host} className="youtube-player" aria-label="Shared YouTube playlist player" />
-      <button className="button" disabled={!ready} onClick={() => { playTrack(current); setStarted(true); }}>{started ? "Play selected track" : "Listen together"} ▶</button>
-      <p className="field-help">Tap to start sound. Playback pauses when you leave the app.</p>
-      {unavailable && <p role="status" className="notice">Some tracks can’t play here right now. Try a track below or open it on YouTube.</p>}
+  return <section className="listen-section detail-card"><h2><T text={"Your shared rotation"} /></h2>
+    <p className="field-help">{tracks.length}{" "}<T text={"songs found on YouTube. You each control your own playback."} /></p>
+    <div className="listen-grid"><div><div ref={host} className="youtube-player" aria-label={t("Shared YouTube playlist player")} />
+      <button className="button" disabled={!ready} onClick={() => { playTrack(current); setStarted(true); }}><Play size={16} aria-hidden="true" />{!ready ? t("Loading player…") : started ? t("Play selected song") : t("Play your mix")}</button>
+      <p className="field-help"><T text={"Tap to start sound. Playback pauses when you leave the app."} /></p>
+      {unavailable && <p role="status" className="notice"><T text={"Some tracks can’t play here right now. Try a track below or open it on YouTube."} /></p>}
     </div><ol className="playlist-tracks">{tracks.map((track, index) => <li key={track.videoId} className={current === index ? "playing" : ""}>
       <button type="button" disabled={!ready} aria-current={current === index ? "true" : undefined} onClick={() => playTrack(index)}>
         {/* YouTube-provided thumbnails accompany their videos, not audio extraction. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={track.thumbnailUrl} alt="" width={88} height={66} loading="lazy" /><span><small>{String(index + 1).padStart(2, "0")}{current === index ? " · SELECTED" : ""}</small>{track.title}</span>
-      </button><a href={`https://www.youtube.com/watch?v=${track.videoId}`} target="_blank" rel="noopener noreferrer" aria-label={`Open ${track.title} on YouTube`}>↗</a>
+        <img src={track.thumbnailUrl} alt="" width={88} height={66} loading="lazy" /><span><small>{String(index + 1).padStart(2, "0")}{current === index ? t(" · Playing") : ""}</small>{track.title}</span>
+      </button><a href={`https://www.youtube.com/watch?v=${track.videoId}`} target="_blank" rel="noopener noreferrer" aria-label={t("Open {0} on YouTube", {0:track.title})}><ArrowUpRight size={18} aria-hidden="true" /></a>
     </li>)}</ol></div></section>;
 }

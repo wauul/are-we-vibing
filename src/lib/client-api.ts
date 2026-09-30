@@ -10,10 +10,10 @@ export async function api<T>(url: string, body?: unknown): Promise<T> {
       }),
     });
   } catch {
-    throw new Error("The connection skipped a beat. Check your internet and try again. Your picks are still here.");
+    throw new Error("Could not connect. Check your internet and try again. Your picks are still here.");
   }
   const data = await response.json().catch(() => null);
-  if (!response.ok || !data) throw new Error(data?.error || "The music room is taking a moment. Please retry, or open are-we-vibing.vercel.app for the latest version.");
+  if (!response.ok || !data) throw new Error(data?.error || "The app could not complete this request. Try again, or open are-we-vibing.vercel.app for the latest version.");
   return data as T;
 }
 

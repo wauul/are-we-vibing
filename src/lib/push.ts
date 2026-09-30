@@ -14,7 +14,7 @@ export async function notifyCreator(id: string) {
       credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON!)),
     }, "vibe-push");
     await getMessaging(app).send({ token,
-      notification: { title: "Your friend just vibed!", body: "See how compatible you two really are 👀" },
+      notification: { title: "Your shared mix is ready", body: "Open your music compatibility result." },
       data: { url: `https://are-we-vibing.vercel.app/results/${id}`, sessionId: id },
       android: { priority: "high", ttl: 86400000, notification: { channelId: "vibe-results", tag: id, icon: "ic_stat_vibe", color: "#e9794c" } },
     });

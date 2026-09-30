@@ -1,52 +1,40 @@
 import type { Metadata, Viewport } from "next";
-import Link from "next/link";
-import { AudioLines, ArrowUpRight } from "lucide-react";
+import { cookies } from "next/headers";
+import localFont from "next/font/local";
 import "./globals.css";
-import "./design.css";
-import "./social.css";
-import AccountNav from "@/components/account-nav";
+import { themeBootstrap } from "@/lib/theme";
+import { LanguageProvider } from "@/components/language-provider";
+import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { localeCookie, validLocale } from "@/lib/i18n";
 import NativeRuntime from "@/components/native-runtime";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import "./mobile-features.css";
-import "./typeui.css";
-export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#f7f3e8" };
+const display = localFont({ src: "./fonts/BricolageGrotesque.ttf", variable: "--font-display", display: "swap" });
+const body = localFont({ src: "./fonts/Manrope.ttf", variable: "--font-body", display: "swap" });
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#f3f3ef" };
 export const metadata: Metadata = {
-  title: "R We Vibing? — Find your musical chemistry",
-  description: "Two people. Two music tastes. One very honest vibe check.",
+  title: "R We Vibing? — Compare your music taste",
+  description: "Compare music with someone you know. Get a playful compatibility result and songs to explore together.",
 };
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const savedLocale = (await cookies()).get(localeCookie)?.value;
+  const locale = validLocale(savedLocale) ? savedLocale : "en";
   return (
-    <html lang="en">
+    <html lang={locale} className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head>
       <body>
+        <LanguageProvider initialLocale={locale}>
         <NativeRuntime />
-        <header className="site-header">
-          <Link href="/" className="brand">
-            <span className="brand-icon">
-              <AudioLines size={21} />
-            </span>
-            r we vibing<span className="orange">?</span>
-          </Link>
-          <nav className="header-actions"><AccountNav /><Link className="nav-link" href="/session/new">
-            Find your frequency <ArrowUpRight size={16} />
-          </Link></nav>
-        </header>
+        <SiteHeader />
         {children}
         <Analytics />
         <SpeedInsights />
-        <footer>
-          <Link className="brand" href="/">
-            r we vibing?
-          </Link>
-          <span>
-            Made for the love of music. And a little friendly judgment.
-          </span>
-          <Link href="/privacy">Privacy</Link>
-        </footer>
+        <SiteFooter />
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -1,0 +1,1480 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-30T16:24:37.573Z",
+  "title": "Design System: R We Vibing? — Mixtape Exchange",
+  "extensions": {
+    "sourceRefs": [
+      {
+        "path": "src/app/globals.css",
+        "purpose": "Normative semantic colors, shapes, observed spacing, final cascade, component states, breakpoints and keyframes."
+      },
+      {
+        "path": "src/app/layout.tsx",
+        "purpose": "Self-hosted Bricolage Grotesque and Manrope; cookie-backed server locale and document language."
+      },
+      {
+        "path": "src/components/ui.tsx",
+        "purpose": "Waveform Brand, circular Side and semantic Feedback."
+      },
+      {
+        "path": "src/components/site-chrome.tsx",
+        "purpose": "Header/footer and localized navigation/accessible brand label."
+      },
+      {
+        "path": "src/components/language-provider.tsx",
+        "purpose": "Persistent EN/FR control and input-preserving context."
+      },
+      {
+        "path": "src/components/theme-control.tsx",
+        "purpose": "Two-state icon control, persistence, OS default and native system bars."
+      },
+      {
+        "path": "src/components/account-nav.tsx",
+        "purpose": "Responsive Music Circle navigation."
+      },
+      {
+        "path": "src/components/ShareableResultCard.tsx",
+        "purpose": "Canonical 480x854 composition, complete name policies, waveform and artwork excerpts."
+      },
+      {
+        "path": "src/components/cover-preview.tsx",
+        "purpose": "Scaled live cover with automatic offscreen motion state; no manual animation control."
+      },
+      {
+        "path": "src/components/results-client.tsx",
+        "purpose": "Static 2x export, ruled lists and participant detail."
+      },
+      {
+        "path": "src/components/music-art.tsx",
+        "purpose": "Title-selected trophies, scenes and state-specific animated recovery art."
+      },
+      {
+        "path": "src/components/app-motion.tsx",
+        "purpose": "Reduced-motion state, offscreen pause and surface arrival."
+      },
+      {
+        "path": "src/lib/trophy-art.ts",
+        "purpose": "Bounded title-to-subject vocabulary and vinyl fallback."
+      },
+      {
+        "path": "src/lib/i18n.ts",
+        "purpose": "Locale fallback, translation keys and interpolation."
+      },
+      {
+        "path": "PRODUCT.md",
+        "purpose": "Preserved waveform/name and durable contribution/reading constraints."
+      },
+      {
+        "path": "ASSETS.md",
+        "purpose": "Original artwork inventory and provenance."
+      },
+      {
+        "path": "artifacts/DIRECTION.md",
+        "purpose": "Confirmed Mixtape Exchange world and refinements."
+      },
+      {
+        "path": "artifacts/QUALITY_BAR.md",
+        "purpose": "Code-led qualitative contract."
+      },
+      {
+        "path": "artifacts/REDESIGN_VERIFICATION.md",
+        "purpose": "Reported validation scope and integration limits; not independent documenter verification."
+      }
+    ],
+    "documentation": {
+      "mode": "scan",
+      "authority": "Approved whole-app identity replacement and selected Mixtape Exchange direction.",
+      "reviewDisposition": "See artifacts/review/current-finish-review.md; no disposition is asserted here.",
+      "primitiveAuthority": "DESIGN.md frontmatter; values extracted from current source.",
+      "writeBoundary": [
+        "DESIGN.md",
+        ".impeccable/design.json"
+      ],
+      "notCanonized": "No removed side stripes, decorative scene grid, invented kickers, glyph icons or system display face are carried forward as system rules."
+    },
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Warm page ground",
+        "canonical": "#f3f3ef",
+        "tonalRamp": [
+          "oklch(15% 0.00530 106.50)",
+          "oklch(26% 0.00530 106.50)",
+          "oklch(37% 0.00530 106.50)",
+          "oklch(49% 0.00530 106.50)",
+          "oklch(60% 0.00530 106.50)",
+          "oklch(72% 0.00530 106.50)",
+          "oklch(84% 0.00530 106.50)",
+          "oklch(95% 0.00530 106.50)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--bg",
+        "theme": "light"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Form paper",
+        "canonical": "#fff",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(26% 0.00000 89.88)",
+          "oklch(37% 0.00000 89.88)",
+          "oklch(49% 0.00000 89.88)",
+          "oklch(60% 0.00000 89.88)",
+          "oklch(72% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--surface",
+        "theme": "light"
+      },
+      "quiet": {
+        "role": "neutral",
+        "displayName": "Quiet surface",
+        "canonical": "#e9e9e4",
+        "tonalRamp": [
+          "oklch(15% 0.00667 106.53)",
+          "oklch(26% 0.00667 106.53)",
+          "oklch(37% 0.00667 106.53)",
+          "oklch(49% 0.00667 106.53)",
+          "oklch(60% 0.00667 106.53)",
+          "oklch(72% 0.00667 106.53)",
+          "oklch(84% 0.00667 106.53)",
+          "oklch(95% 0.00667 106.53)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--quiet",
+        "theme": "light"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Reading carbon",
+        "canonical": "#242426",
+        "tonalRamp": [
+          "oklch(15% 0.00369 286.14)",
+          "oklch(26% 0.00369 286.14)",
+          "oklch(37% 0.00369 286.14)",
+          "oklch(49% 0.00369 286.14)",
+          "oklch(60% 0.00369 286.14)",
+          "oklch(72% 0.00369 286.14)",
+          "oklch(84% 0.00369 286.14)",
+          "oklch(95% 0.00369 286.14)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--ink",
+        "theme": "light"
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Supporting gray",
+        "canonical": "#626267",
+        "tonalRamp": [
+          "oklch(15% 0.00786 286.11)",
+          "oklch(26% 0.00786 286.11)",
+          "oklch(37% 0.00786 286.11)",
+          "oklch(49% 0.00786 286.11)",
+          "oklch(60% 0.00786 286.11)",
+          "oklch(72% 0.00786 286.11)",
+          "oklch(84% 0.00786 286.11)",
+          "oklch(95% 0.00786 286.11)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--muted",
+        "theme": "light"
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Ruled divider",
+        "canonical": "#ceced0",
+        "tonalRamp": [
+          "oklch(15% 0.00274 286.34)",
+          "oklch(26% 0.00274 286.34)",
+          "oklch(37% 0.00274 286.34)",
+          "oklch(49% 0.00274 286.34)",
+          "oklch(60% 0.00274 286.34)",
+          "oklch(72% 0.00274 286.34)",
+          "oklch(84% 0.00274 286.34)",
+          "oklch(95% 0.00274 286.34)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--line",
+        "theme": "light"
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Listening accent",
+        "canonical": "#b83e16",
+        "tonalRamp": [
+          "oklch(15% 0.16497 36.99)",
+          "oklch(26% 0.16497 36.99)",
+          "oklch(37% 0.16497 36.99)",
+          "oklch(49% 0.16497 36.99)",
+          "oklch(60% 0.16497 36.99)",
+          "oklch(72% 0.16497 36.99)",
+          "oklch(84% 0.16497 36.99)",
+          "oklch(95% 0.16497 36.99)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--accent",
+        "theme": "light"
+      },
+      "on-accent": {
+        "role": "primary",
+        "displayName": "Action lettering",
+        "canonical": "#fff",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(26% 0.00000 89.88)",
+          "oklch(37% 0.00000 89.88)",
+          "oklch(49% 0.00000 89.88)",
+          "oklch(60% 0.00000 89.88)",
+          "oklch(72% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--on-accent",
+        "theme": "light"
+      },
+      "orange": {
+        "role": "primary",
+        "displayName": "Label orange",
+        "canonical": "#ed642f",
+        "tonalRamp": [
+          "oklch(15% 0.18165 39.96)",
+          "oklch(26% 0.18165 39.96)",
+          "oklch(37% 0.18165 39.96)",
+          "oklch(49% 0.18165 39.96)",
+          "oklch(60% 0.18165 39.96)",
+          "oklch(72% 0.18165 39.96)",
+          "oklch(84% 0.18165 39.96)",
+          "oklch(95% 0.18165 39.96)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--orange",
+        "theme": "fixed"
+      },
+      "side-b": {
+        "role": "secondary",
+        "displayName": "Second-side plum",
+        "canonical": "#62354b",
+        "tonalRamp": [
+          "oklch(15% 0.07095 350.16)",
+          "oklch(26% 0.07095 350.16)",
+          "oklch(37% 0.07095 350.16)",
+          "oklch(49% 0.07095 350.16)",
+          "oklch(60% 0.07095 350.16)",
+          "oklch(72% 0.07095 350.16)",
+          "oklch(84% 0.07095 350.16)",
+          "oklch(95% 0.07095 350.16)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--side-b",
+        "theme": "light"
+      },
+      "focus": {
+        "role": "secondary",
+        "displayName": "Focus plum",
+        "canonical": "#62354b",
+        "tonalRamp": [
+          "oklch(15% 0.07095 350.16)",
+          "oklch(26% 0.07095 350.16)",
+          "oklch(37% 0.07095 350.16)",
+          "oklch(49% 0.07095 350.16)",
+          "oklch(60% 0.07095 350.16)",
+          "oklch(72% 0.07095 350.16)",
+          "oklch(84% 0.07095 350.16)",
+          "oklch(95% 0.07095 350.16)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--focus",
+        "theme": "light"
+      },
+      "error": {
+        "role": "semantic",
+        "displayName": "Error rose",
+        "canonical": "#ab2735",
+        "tonalRamp": [
+          "oklch(15% 0.16730 20.66)",
+          "oklch(26% 0.16730 20.66)",
+          "oklch(37% 0.16730 20.66)",
+          "oklch(49% 0.16730 20.66)",
+          "oklch(60% 0.16730 20.66)",
+          "oklch(72% 0.16730 20.66)",
+          "oklch(84% 0.16730 20.66)",
+          "oklch(95% 0.16730 20.66)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--error",
+        "theme": "light"
+      },
+      "error-bg": {
+        "role": "semantic",
+        "displayName": "Error wash",
+        "canonical": "#fff0f2",
+        "tonalRamp": [
+          "oklch(15% 0.01640 8.16)",
+          "oklch(26% 0.01640 8.16)",
+          "oklch(37% 0.01640 8.16)",
+          "oklch(49% 0.01640 8.16)",
+          "oklch(60% 0.01640 8.16)",
+          "oklch(72% 0.01640 8.16)",
+          "oklch(84% 0.01640 8.16)",
+          "oklch(95% 0.01640 8.16)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--error-bg",
+        "theme": "light"
+      },
+      "success": {
+        "role": "semantic",
+        "displayName": "Success green",
+        "canonical": "#236648",
+        "tonalRamp": [
+          "oklch(15% 0.08394 160.76)",
+          "oklch(26% 0.08394 160.76)",
+          "oklch(37% 0.08394 160.76)",
+          "oklch(49% 0.08394 160.76)",
+          "oklch(60% 0.08394 160.76)",
+          "oklch(72% 0.08394 160.76)",
+          "oklch(84% 0.08394 160.76)",
+          "oklch(95% 0.08394 160.76)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--success",
+        "theme": "light"
+      },
+      "success-bg": {
+        "role": "semantic",
+        "displayName": "Success wash",
+        "canonical": "#edf7f1",
+        "tonalRamp": [
+          "oklch(15% 0.01319 159.92)",
+          "oklch(26% 0.01319 159.92)",
+          "oklch(37% 0.01319 159.92)",
+          "oklch(49% 0.01319 159.92)",
+          "oklch(60% 0.01319 159.92)",
+          "oklch(72% 0.01319 159.92)",
+          "oklch(84% 0.01319 159.92)",
+          "oklch(95% 0.01319 159.92)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--success-bg",
+        "theme": "light"
+      },
+      "dark-bg": {
+        "role": "neutral",
+        "displayName": "Night page ground",
+        "canonical": "#171719",
+        "tonalRamp": [
+          "oklch(15% 0.00392 286.05)",
+          "oklch(26% 0.00392 286.05)",
+          "oklch(37% 0.00392 286.05)",
+          "oklch(49% 0.00392 286.05)",
+          "oklch(60% 0.00392 286.05)",
+          "oklch(72% 0.00392 286.05)",
+          "oklch(84% 0.00392 286.05)",
+          "oklch(95% 0.00392 286.05)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--bg",
+        "theme": "dark"
+      },
+      "dark-surface": {
+        "role": "neutral",
+        "displayName": "Night form surface",
+        "canonical": "#222225",
+        "tonalRamp": [
+          "oklch(15% 0.00559 285.99)",
+          "oklch(26% 0.00559 285.99)",
+          "oklch(37% 0.00559 285.99)",
+          "oklch(49% 0.00559 285.99)",
+          "oklch(60% 0.00559 285.99)",
+          "oklch(72% 0.00559 285.99)",
+          "oklch(84% 0.00559 285.99)",
+          "oklch(95% 0.00559 285.99)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--surface",
+        "theme": "dark"
+      },
+      "dark-quiet": {
+        "role": "neutral",
+        "displayName": "Night quiet surface",
+        "canonical": "#2c2c30",
+        "tonalRamp": [
+          "oklch(15% 0.00718 285.95)",
+          "oklch(26% 0.00718 285.95)",
+          "oklch(37% 0.00718 285.95)",
+          "oklch(49% 0.00718 285.95)",
+          "oklch(60% 0.00718 285.95)",
+          "oklch(72% 0.00718 285.95)",
+          "oklch(84% 0.00718 285.95)",
+          "oklch(95% 0.00718 285.95)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--quiet",
+        "theme": "dark"
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Night reading paper",
+        "canonical": "#f4f4ef",
+        "tonalRamp": [
+          "oklch(15% 0.00662 106.52)",
+          "oklch(26% 0.00662 106.52)",
+          "oklch(37% 0.00662 106.52)",
+          "oklch(49% 0.00662 106.52)",
+          "oklch(60% 0.00662 106.52)",
+          "oklch(72% 0.00662 106.52)",
+          "oklch(84% 0.00662 106.52)",
+          "oklch(95% 0.00662 106.52)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--ink",
+        "theme": "dark"
+      },
+      "dark-muted": {
+        "role": "neutral",
+        "displayName": "Night supporting gray",
+        "canonical": "#b8b8be",
+        "tonalRamp": [
+          "oklch(15% 0.00840 286.20)",
+          "oklch(26% 0.00840 286.20)",
+          "oklch(37% 0.00840 286.20)",
+          "oklch(49% 0.00840 286.20)",
+          "oklch(60% 0.00840 286.20)",
+          "oklch(72% 0.00840 286.20)",
+          "oklch(84% 0.00840 286.20)",
+          "oklch(95% 0.00840 286.20)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--muted",
+        "theme": "dark"
+      },
+      "dark-line": {
+        "role": "neutral",
+        "displayName": "Night ruled divider",
+        "canonical": "#49494f",
+        "tonalRamp": [
+          "oklch(15% 0.00993 285.95)",
+          "oklch(26% 0.00993 285.95)",
+          "oklch(37% 0.00993 285.95)",
+          "oklch(49% 0.00993 285.95)",
+          "oklch(60% 0.00993 285.95)",
+          "oklch(72% 0.00993 285.95)",
+          "oklch(84% 0.00993 285.95)",
+          "oklch(95% 0.00993 285.95)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--line",
+        "theme": "dark"
+      },
+      "dark-accent": {
+        "role": "primary",
+        "displayName": "Night listening peach",
+        "canonical": "#ff986b",
+        "tonalRamp": [
+          "oklch(15% 0.13762 43.91)",
+          "oklch(26% 0.13762 43.91)",
+          "oklch(37% 0.13762 43.91)",
+          "oklch(49% 0.13762 43.91)",
+          "oklch(60% 0.13762 43.91)",
+          "oklch(72% 0.13762 43.91)",
+          "oklch(84% 0.13762 43.91)",
+          "oklch(95% 0.13762 43.91)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--accent",
+        "theme": "dark"
+      },
+      "dark-on-accent": {
+        "role": "primary",
+        "displayName": "Night action ink",
+        "canonical": "#231710",
+        "tonalRamp": [
+          "oklch(15% 0.02353 51.36)",
+          "oklch(26% 0.02353 51.36)",
+          "oklch(37% 0.02353 51.36)",
+          "oklch(49% 0.02353 51.36)",
+          "oklch(60% 0.02353 51.36)",
+          "oklch(72% 0.02353 51.36)",
+          "oklch(84% 0.02353 51.36)",
+          "oklch(95% 0.02353 51.36)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--on-accent",
+        "theme": "dark"
+      },
+      "dark-side-b": {
+        "role": "secondary",
+        "displayName": "Night second-side pink",
+        "canonical": "#d7aac4",
+        "tonalRamp": [
+          "oklch(15% 0.06265 343.06)",
+          "oklch(26% 0.06265 343.06)",
+          "oklch(37% 0.06265 343.06)",
+          "oklch(49% 0.06265 343.06)",
+          "oklch(60% 0.06265 343.06)",
+          "oklch(72% 0.06265 343.06)",
+          "oklch(84% 0.06265 343.06)",
+          "oklch(95% 0.06265 343.06)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--side-b",
+        "theme": "dark"
+      },
+      "dark-focus": {
+        "role": "secondary",
+        "displayName": "Night focus gold",
+        "canonical": "#f2c77d",
+        "tonalRamp": [
+          "oklch(15% 0.10439 80.22)",
+          "oklch(26% 0.10439 80.22)",
+          "oklch(37% 0.10439 80.22)",
+          "oklch(49% 0.10439 80.22)",
+          "oklch(60% 0.10439 80.22)",
+          "oklch(72% 0.10439 80.22)",
+          "oklch(84% 0.10439 80.22)",
+          "oklch(95% 0.10439 80.22)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--focus",
+        "theme": "dark"
+      },
+      "dark-error": {
+        "role": "semantic",
+        "displayName": "Night error rose",
+        "canonical": "#ff9ba8",
+        "tonalRamp": [
+          "oklch(15% 0.12010 11.76)",
+          "oklch(26% 0.12010 11.76)",
+          "oklch(37% 0.12010 11.76)",
+          "oklch(49% 0.12010 11.76)",
+          "oklch(60% 0.12010 11.76)",
+          "oklch(72% 0.12010 11.76)",
+          "oklch(84% 0.12010 11.76)",
+          "oklch(95% 0.12010 11.76)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--error",
+        "theme": "dark"
+      },
+      "dark-error-bg": {
+        "role": "semantic",
+        "displayName": "Night error wash",
+        "canonical": "#3b242b",
+        "tonalRamp": [
+          "oklch(15% 0.03663 359.83)",
+          "oklch(26% 0.03663 359.83)",
+          "oklch(37% 0.03663 359.83)",
+          "oklch(49% 0.03663 359.83)",
+          "oklch(60% 0.03663 359.83)",
+          "oklch(72% 0.03663 359.83)",
+          "oklch(84% 0.03663 359.83)",
+          "oklch(95% 0.03663 359.83)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--error-bg",
+        "theme": "dark"
+      },
+      "dark-success": {
+        "role": "semantic",
+        "displayName": "Night success mint",
+        "canonical": "#8ed6b5",
+        "tonalRamp": [
+          "oklch(15% 0.08632 164.02)",
+          "oklch(26% 0.08632 164.02)",
+          "oklch(37% 0.08632 164.02)",
+          "oklch(49% 0.08632 164.02)",
+          "oklch(60% 0.08632 164.02)",
+          "oklch(72% 0.08632 164.02)",
+          "oklch(84% 0.08632 164.02)",
+          "oklch(95% 0.08632 164.02)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--success",
+        "theme": "dark"
+      },
+      "dark-success-bg": {
+        "role": "semantic",
+        "displayName": "Night success wash",
+        "canonical": "#22362c",
+        "tonalRamp": [
+          "oklch(15% 0.03152 162.12)",
+          "oklch(26% 0.03152 162.12)",
+          "oklch(37% 0.03152 162.12)",
+          "oklch(49% 0.03152 162.12)",
+          "oklch(60% 0.03152 162.12)",
+          "oklch(72% 0.03152 162.12)",
+          "oklch(84% 0.03152 162.12)",
+          "oklch(95% 0.03152 162.12)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--success-bg",
+        "theme": "dark"
+      },
+      "art-paper": {
+        "role": "artwork",
+        "displayName": "Artwork cream",
+        "canonical": "#f7f0e7",
+        "tonalRamp": [
+          "oklch(15% 0.01416 74.42)",
+          "oklch(26% 0.01416 74.42)",
+          "oklch(37% 0.01416 74.42)",
+          "oklch(49% 0.01416 74.42)",
+          "oklch(60% 0.01416 74.42)",
+          "oklch(72% 0.01416 74.42)",
+          "oklch(84% 0.01416 74.42)",
+          "oklch(95% 0.01416 74.42)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--art-paper",
+        "theme": "fixed"
+      },
+      "art-ink": {
+        "role": "artwork",
+        "displayName": "Vinyl carbon",
+        "canonical": "#242426",
+        "tonalRamp": [
+          "oklch(15% 0.00369 286.14)",
+          "oklch(26% 0.00369 286.14)",
+          "oklch(37% 0.00369 286.14)",
+          "oklch(49% 0.00369 286.14)",
+          "oklch(60% 0.00369 286.14)",
+          "oklch(72% 0.00369 286.14)",
+          "oklch(84% 0.00369 286.14)",
+          "oklch(95% 0.00369 286.14)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--art-ink",
+        "theme": "fixed"
+      },
+      "art-orange": {
+        "role": "artwork",
+        "displayName": "Artwork label orange",
+        "canonical": "#ed642f",
+        "tonalRamp": [
+          "oklch(15% 0.18165 39.96)",
+          "oklch(26% 0.18165 39.96)",
+          "oklch(37% 0.18165 39.96)",
+          "oklch(49% 0.18165 39.96)",
+          "oklch(60% 0.18165 39.96)",
+          "oklch(72% 0.18165 39.96)",
+          "oklch(84% 0.18165 39.96)",
+          "oklch(95% 0.18165 39.96)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--art-orange",
+        "theme": "fixed"
+      },
+      "art-plum": {
+        "role": "artwork",
+        "displayName": "Artwork plum",
+        "canonical": "#62354b",
+        "tonalRamp": [
+          "oklch(15% 0.07095 350.16)",
+          "oklch(26% 0.07095 350.16)",
+          "oklch(37% 0.07095 350.16)",
+          "oklch(49% 0.07095 350.16)",
+          "oklch(60% 0.07095 350.16)",
+          "oklch(72% 0.07095 350.16)",
+          "oklch(84% 0.07095 350.16)",
+          "oklch(95% 0.07095 350.16)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--art-plum",
+        "theme": "fixed"
+      },
+      "art-pink": {
+        "role": "artwork",
+        "displayName": "Artwork pink",
+        "canonical": "#edc9d7",
+        "tonalRamp": [
+          "oklch(15% 0.04441 352.67)",
+          "oklch(26% 0.04441 352.67)",
+          "oklch(37% 0.04441 352.67)",
+          "oklch(49% 0.04441 352.67)",
+          "oklch(60% 0.04441 352.67)",
+          "oklch(72% 0.04441 352.67)",
+          "oklch(84% 0.04441 352.67)",
+          "oklch(95% 0.04441 352.67)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "cssCustomProperty": "--art-pink",
+        "theme": "fixed"
+      },
+      "cover-ground": {
+        "role": "artwork",
+        "displayName": "Cover night plum",
+        "canonical": "#2a202c",
+        "tonalRamp": [
+          "oklch(15% 0.02629 320.68)",
+          "oklch(26% 0.02629 320.68)",
+          "oklch(37% 0.02629 320.68)",
+          "oklch(49% 0.02629 320.68)",
+          "oklch(60% 0.02629 320.68)",
+          "oklch(72% 0.02629 320.68)",
+          "oklch(84% 0.02629 320.68)",
+          "oklch(95% 0.02629 320.68)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "theme": "fixed"
+      },
+      "scene-ground": {
+        "role": "artwork",
+        "displayName": "Listening scene plum",
+        "canonical": "#302932",
+        "tonalRamp": [
+          "oklch(15% 0.01884 318.67)",
+          "oklch(26% 0.01884 318.67)",
+          "oklch(37% 0.01884 318.67)",
+          "oklch(49% 0.01884 318.67)",
+          "oklch(60% 0.01884 318.67)",
+          "oklch(72% 0.01884 318.67)",
+          "oklch(84% 0.01884 318.67)",
+          "oklch(95% 0.01884 318.67)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "theme": "fixed"
+      },
+      "scene-deck": {
+        "role": "artwork",
+        "displayName": "Listening deck carbon",
+        "canonical": "#201d25",
+        "tonalRamp": [
+          "oklch(15% 0.01571 302.29)",
+          "oklch(26% 0.01571 302.29)",
+          "oklch(37% 0.01571 302.29)",
+          "oklch(49% 0.01571 302.29)",
+          "oklch(60% 0.01571 302.29)",
+          "oklch(72% 0.01571 302.29)",
+          "oklch(84% 0.01571 302.29)",
+          "oklch(95% 0.01571 302.29)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "theme": "fixed"
+      },
+      "art-peach": {
+        "role": "artwork",
+        "displayName": "Artwork peach",
+        "canonical": "#ed986c",
+        "tonalRamp": [
+          "oklch(15% 0.11819 47.73)",
+          "oklch(26% 0.11819 47.73)",
+          "oklch(37% 0.11819 47.73)",
+          "oklch(49% 0.11819 47.73)",
+          "oklch(60% 0.11819 47.73)",
+          "oklch(72% 0.11819 47.73)",
+          "oklch(84% 0.11819 47.73)",
+          "oklch(95% 0.11819 47.73)"
+        ],
+        "rampPurpose": "Synthesized display-only OKLCH lightness strip; not additional production tokens.",
+        "sourceRef": "src/app/globals.css",
+        "theme": "fixed"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Desktop home title, fluid 4rem–6rem.",
+        "sourceRef": "src/app/globals.css",
+        "fontSource": "src/app/layout.tsx"
+      },
+      "display-mobile": {
+        "displayName": "Display Mobile",
+        "purpose": "Final home title override below 767px.",
+        "sourceRef": "src/app/globals.css",
+        "fontSource": "src/app/layout.tsx"
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Default page title and result heading.",
+        "sourceRef": "src/app/globals.css",
+        "fontSource": "src/app/layout.tsx"
+      },
+      "headline-mobile": {
+        "displayName": "Headline Mobile",
+        "purpose": "Default phone page and result title.",
+        "sourceRef": "src/app/globals.css",
+        "fontSource": "src/app/layout.tsx"
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Default second-level section heading.",
+        "sourceRef": "src/app/globals.css",
+        "fontSource": "src/app/layout.tsx"
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Default third-level item heading.",
+        "sourceRef": "src/app/globals.css",
+        "fontSource": "src/app/layout.tsx"
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Base Manrope reading text; ordinary paragraphs max 68ch.",
+        "sourceRef": "src/app/globals.css",
+        "fontSource": "src/app/layout.tsx"
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Native form label.",
+        "sourceRef": "src/app/globals.css",
+        "fontSource": "src/app/layout.tsx"
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Common primary and outline action label.",
+        "sourceRef": "src/app/globals.css",
+        "fontSource": "src/app/layout.tsx"
+      },
+      "cover-score": {
+        "displayName": "Cover Score",
+        "purpose": "Fixed cover's ordinary two-digit score; 100 uses the documented exception.",
+        "sourceRef": "src/app/globals.css",
+        "fontSource": "src/app/layout.tsx"
+      }
+    },
+    "themeBindings": {
+      "default": "light values in :root",
+      "dark": ":root[data-theme=\"dark\"]",
+      "system": "prefers-color-scheme:dark when no data-theme is set",
+      "fixedArtwork": [
+        "orange",
+        "art-paper",
+        "art-ink",
+        "art-orange",
+        "art-plum",
+        "art-pink",
+        "cover-ground",
+        "scene-ground",
+        "scene-deck",
+        "art-peach"
+      ],
+      "tokenMapping": {
+        "--bg": {
+          "light": "bg",
+          "dark": "dark-bg"
+        },
+        "--surface": {
+          "light": "surface",
+          "dark": "dark-surface"
+        },
+        "--quiet": {
+          "light": "quiet",
+          "dark": "dark-quiet"
+        },
+        "--ink": {
+          "light": "ink",
+          "dark": "dark-ink"
+        },
+        "--muted": {
+          "light": "muted",
+          "dark": "dark-muted"
+        },
+        "--line": {
+          "light": "line",
+          "dark": "dark-line"
+        },
+        "--accent": {
+          "light": "accent",
+          "dark": "dark-accent"
+        },
+        "--on-accent": {
+          "light": "on-accent",
+          "dark": "dark-on-accent"
+        },
+        "--side-b": {
+          "light": "side-b",
+          "dark": "dark-side-b"
+        },
+        "--focus": {
+          "light": "focus",
+          "dark": "dark-focus"
+        },
+        "--error": {
+          "light": "error",
+          "dark": "dark-error"
+        },
+        "--error-bg": {
+          "light": "error-bg",
+          "dark": "dark-error-bg"
+        },
+        "--success": {
+          "light": "success",
+          "dark": "dark-success"
+        },
+        "--success-bg": {
+          "light": "success-bg",
+          "dark": "dark-success-bg"
+        }
+      }
+    },
+    "shadows": [
+      {
+        "name": "surface-light",
+        "value": "0 12px 32px #24242618",
+        "purpose": "Available --shadow light token; current major task cards remain flat.",
+        "sourceRef": "src/app/globals.css::root"
+      },
+      {
+        "name": "surface-dark",
+        "value": "0 12px 32px #0004",
+        "purpose": "Available --shadow explicit dark override.",
+        "sourceRef": "src/app/globals.css::root[data-theme=\"dark\"]"
+      },
+      {
+        "name": "record-identity",
+        "value": "0 6px 12px #0002",
+        "purpose": "Vinyl avatar physical presence.",
+        "sourceRef": "src/app/globals.css:.record-avatar"
+      },
+      {
+        "name": "record-identity-hover",
+        "value": "0 9px 18px #0003",
+        "purpose": "Pointer-hover response on friend record identities.",
+        "sourceRef": "src/app/globals.css:@media(hover:hover)"
+      },
+      {
+        "name": "portrait-cover",
+        "value": "0 10px 28px #0002",
+        "purpose": "Scaled album cover.",
+        "sourceRef": "src/app/globals.css:.cover-preview"
+      },
+      {
+        "name": "scene-vinyl",
+        "value": "0 7px 10px #0005",
+        "purpose": "A/B records against a fixed scene ground.",
+        "sourceRef": "src/app/globals.css:.scene-side>span"
+      }
+    ],
+    "focus": {
+      "value": "3px solid var(--focus)",
+      "offset": "4px",
+      "purpose": "Visible keyboard focus; light plum/dark warm gold.",
+      "sourceRef": "src/app/globals.css::focus-visible"
+    },
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(.2,.8,.2,1)",
+        "purpose": "Shared state easing (--ease).",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "control-transition",
+        "value": "180ms var(--ease)",
+        "purpose": "Final button, icon button and source-control transition.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "surface-arrive",
+        "value": "surface-arrive .55s var(--ease) both",
+        "purpose": "One-time route/scroll arrival.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "machine-dance",
+        "value": "machine-dance 4s ease-in-out infinite",
+        "purpose": "Visible record-player sway; 7px to -9px travel with rotation/scale.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "scene-record-turn",
+        "value": "record-turn 6s linear infinite",
+        "purpose": "Final A/B scene vinyl rotation; second side reverses.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "notes-rise",
+        "value": "notes-rise 4s ease-in-out infinite",
+        "purpose": "Scene notes rise and fade with staggered layers.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "artwork-dance",
+        "value": "artwork-dance 4.5s ease-in-out infinite",
+        "purpose": "Entry headphone/record kit movement.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "friends-dance",
+        "value": "friends-dance 5s ease-in-out infinite",
+        "purpose": "Listening-pair artwork.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "trophy-showcase",
+        "value": "trophy-showcase 4s ease-in-out infinite",
+        "purpose": "Sculpture lift/rotation; second contributor is offset.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "trophy-orbit",
+        "value": "trophy-orbit 3s ease-in-out infinite",
+        "purpose": "Sculpture ground ring.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "music-flow",
+        "value": "music-flow 2s linear infinite",
+        "purpose": "Cover dashed streams; last path reverses.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "shooting-star",
+        "value": "shooting-star 6s ease-in-out infinite",
+        "purpose": "Cover musical-world sky accent.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "universe-drift",
+        "value": "universe-drift 7s ease-in-out infinite alternate",
+        "purpose": "Final live cover's slow illustration drift.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "star-breathe",
+        "value": "star-breathe 4s ease-in-out infinite alternate",
+        "purpose": "Cover star opacity and scale.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "moon-float",
+        "value": "moon-float 3.5s ease-in-out infinite alternate",
+        "purpose": "Final live cover moon.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "recovery-lift",
+        "value": "recovery-lift 4s ease-in-out infinite",
+        "purpose": "Saved-mix retry artwork.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "records-rest",
+        "value": "records-rest 5s ease-in-out infinite",
+        "purpose": "Exhausted-attempt record case; not a timer.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "invitation-sway",
+        "value": "invitation-sway 4s ease-in-out infinite",
+        "purpose": "Protected invitation artwork.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "recovery-ripple",
+        "value": "recovery-ripple 3s ease-in-out infinite",
+        "purpose": "Recovery backing rings.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "key-swing",
+        "value": "key-swing 2.8s ease-in-out infinite",
+        "purpose": "Protected invitation token.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "feedback-arrive",
+        "value": "feedback-arrive .3s var(--ease)",
+        "purpose": "Inline feedback entrance.",
+        "sourceRef": "src/app/globals.css"
+      },
+      {
+        "name": "loading-sweep",
+        "value": "loading-sweep 1.6s ease-in-out infinite",
+        "purpose": "Loading shimmer alongside status text.",
+        "sourceRef": "src/app/globals.css"
+      }
+    ],
+    "keyframes": {
+      "machine-dance": "@keyframes machine-dance { 0%,100% { transform:translateY(7px) rotate(-2deg) scale(.98); } 50% { transform:translateY(-9px) rotate(2deg) scale(1.04); } }",
+      "record-turn": "@keyframes record-turn { to { transform:rotate(360deg); } }",
+      "notes-rise": "@keyframes notes-rise { 0% { transform:translate(0,12px) rotate(-18deg) scale(.7); opacity:0; } 20%,65% { opacity:1; } 100% { transform:translate(22px,-90px) rotate(18deg) scale(1.15); opacity:0; } }",
+      "artwork-dance": "@keyframes artwork-dance { 0%,100% { transform:translateY(6px) rotate(-5deg) rotateY(-6deg) scale(.97); } 50% { transform:translateY(-12px) rotate(5deg) rotateY(6deg) scale(1.04); } }",
+      "friends-dance": "@keyframes friends-dance { 0%,100% { transform:translateY(6px) rotate(-1.5deg) scale(.98); } 50% { transform:translateY(-10px) rotate(1.5deg) scale(1.025); } }",
+      "trophy-showcase": "@keyframes trophy-showcase { 0%,100% { transform:translateY(4px) rotate(-4deg) scale(.97); } 50% { transform:translateY(-10px) rotate(4deg) scale(1.05); } }",
+      "trophy-orbit": "@keyframes trophy-orbit { 50% { transform:rotateX(22deg) scale(1.1); opacity:.4; } }",
+      "music-flow": "@keyframes music-flow { to { stroke-dashoffset:-124; } }",
+      "shooting-star": "@keyframes shooting-star { 0%,15% { transform:translate(0,0) rotate(24deg); opacity:0; } 25% { opacity:.9; } 55%,100% { transform:translate(590px,150px) rotate(24deg); opacity:0; } }",
+      "universe-drift": "@keyframes universe-drift { from { transform:scale(1.025) translate(-3px,-3px); } to { transform:scale(1.045) translate(3px,4px); } }",
+      "star-breathe": "@keyframes star-breathe { to { opacity:.2; transform:scale(.6); } }",
+      "moon-float": "@keyframes moon-float { to { transform:translate(-8px,-5px) rotate(18deg); } }",
+      "recovery-lift": "@keyframes recovery-lift { 0%,100% { transform:translateY(6px) rotate(-3deg); } 50% { transform:translateY(-10px) rotate(3deg); } }",
+      "records-rest": "@keyframes records-rest { 0%,100% { transform:translateY(3px) rotate(-1deg); } 50% { transform:translateY(-7px) rotate(1deg); } }",
+      "invitation-sway": "@keyframes invitation-sway { 0%,100% { transform:translateY(5px) rotate(-4deg); } 50% { transform:translateY(-9px) rotate(4deg); } }",
+      "recovery-ripple": "@keyframes recovery-ripple { 50% { transform:scale(1.08); opacity:.4; } }",
+      "key-swing": "@keyframes key-swing { 0%,100% { transform:rotate(-14deg); } 50% { transform:rotate(14deg); } }",
+      "surface-arrive": "@keyframes surface-arrive { from { opacity:.65; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }",
+      "feedback-arrive": "@keyframes feedback-arrive { from { opacity:.6; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }",
+      "loading-sweep": "@keyframes loading-sweep { to { transform:translateX(100%); } }"
+    },
+    "motionBehavior": {
+      "reducedMotion": "@media(prefers-reduced-motion:reduce) stops animation and transitions; AppMotion mirrors it in data-motion.",
+      "offscreen": "Observed surfaces at IntersectionObserver threshold .08 pause their descendants; cover additionally observes its own bounds.",
+      "manualControls": "Absent for every animation by the latest confirmed user instruction.",
+      "export": "Static ShareableResultCard; no live animation in exported PNG."
+    },
+    "breakpoints": [
+      {
+        "name": "wide-home",
+        "value": "1400px",
+        "condition": "min-width",
+        "purpose": "Home section block padding grows."
+      },
+      {
+        "name": "compact-desktop",
+        "value": "1024px",
+        "condition": "max-width",
+        "purpose": "Reduced split gaps and illustration dimensions."
+      },
+      {
+        "name": "phone",
+        "value": "767px",
+        "condition": "max-width",
+        "purpose": "Stack main layouts and simplify navigation."
+      },
+      {
+        "name": "narrow-phone",
+        "value": "390px",
+        "condition": "max-width",
+        "purpose": "Small card/action adjustments; later phone cascade governs home actions."
+      },
+      {
+        "name": "compact-navigation",
+        "value": "370px",
+        "condition": "max-width",
+        "purpose": "Narrow header brand, spacing and language control."
+      },
+      {
+        "name": "compact-entry",
+        "value": "350px",
+        "condition": "max-width",
+        "purpose": "Final entry kit width 124px and title 1.9rem."
+      }
+    ],
+    "responsiveType": {
+      "sessionEntry": {
+        "desktop": "3.25rem",
+        "max1024": "2.75rem",
+        "max767": "2.05rem",
+        "max350": "1.9rem"
+      },
+      "circleBanner": {
+        "desktop": "3rem",
+        "max767": "2.4rem"
+      },
+      "accountWelcome": {
+        "desktop": "3.5rem",
+        "max767": "2.6rem"
+      },
+      "recoveryTitle": {
+        "desktop": "3rem",
+        "max767": "2.3rem"
+      },
+      "sourceRef": "src/app/globals.css final cascade"
+    },
+    "artwork": {
+      "palettePolicy": "Fixed, theme-independent album/art palette; surrounding UI uses semantic theme tokens.",
+      "inventoryRef": "ASSETS.md",
+      "assetsRoot": "public/art/",
+      "provenance": "Each generated production WebP has an adjacent .webp.json exact-prompt/provenance record.",
+      "signatureAssets": [
+        "record-player.webp",
+        "music-universe.webp",
+        "music-picks.webp",
+        "friends-exchange.webp"
+      ],
+      "recovery": {
+        "retry": "saved-mix.webp",
+        "capped": "mix-rest.webp",
+        "invite": "private-invite.webp"
+      },
+      "trophyVocabulary": {
+        "night": "crescent moon",
+        "aux": "aux cable",
+        "dance": "disco ball",
+        "voice": "microphone",
+        "explorer": "compass",
+        "heart": "split heart",
+        "rock": "guitar",
+        "sun": "sun",
+        "headphones": "headphones",
+        "vinyl": "fallback vinyl sculpture"
+      },
+      "trophySelection": "First matching bounded award-title keyword group in src/lib/trophy-art.ts; unfamiliar titles use vinyl."
+    },
+    "shareCover": {
+      "geometry": {
+        "width": 480,
+        "height": 854
+      },
+      "previewMaxWidth": "360px",
+      "render": {
+        "pixelRatio": 2,
+        "width": 960,
+        "height": 1708
+      },
+      "component": "src/components/ShareableResultCard.tsx",
+      "asset": "public/art/music-universe.webp",
+      "palette": "fixed",
+      "participantNames": "Full strings; wrapping retained. Main name font 14px, 12px above 20 characters, 11px above 28. Award identity 10px, 9px above 24.",
+      "score100": "120px number, -4px tracking; 38px percent.",
+      "verdict": "Artwork excerpt limited to 155 characters / three lines; full result remains in the reading surface.",
+      "awardTitle": "Artwork excerpt limited to three lines; full award is in the result surface.",
+      "controls": "No manual animation controls; artwork identities and print footer remain unobstructed.",
+      "sourceRefs": [
+        "src/components/ShareableResultCard.tsx",
+        "src/components/cover-preview.tsx",
+        "src/components/results-client.tsx",
+        "src/app/globals.css"
+      ]
+    },
+    "localization": {
+      "locales": [
+        "en",
+        "fr"
+      ],
+      "control": "Compact native EN/FR select",
+      "persistence": "vibing-language functional cookie (one year) and vibing:language local storage.",
+      "documentLanguage": "Server cookie selects initial html lang; client choice updates it immediately.",
+      "translatedScope": [
+        "navigation",
+        "forms",
+        "known errors",
+        "legal pages",
+        "sharing/export labels",
+        "accessible labels"
+      ],
+      "preservedContent": [
+        "participant names",
+        "song/artist titles",
+        "entered fields",
+        "stored AI text"
+      ],
+      "sourceRefs": [
+        "src/components/language-provider.tsx",
+        "src/lib/i18n.ts",
+        "src/app/layout.tsx"
+      ]
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main session or save action; semantic colors follow the theme.",
+      "sourceRefs": [
+        "src/app/globals.css:.button",
+        "src/components/results-client.tsx"
+      ],
+      "html": "<button class=\"ds-button-primary\" type=\"button\">Save image</button>",
+      "css": ".ds-button-primary{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;border:1px solid transparent;border-radius:var(--control-radius,6px);padding:12px 21px;font-family:var(--font-body,Manrope),sans-serif;font-size:14px;font-weight:750;line-height:1.4;text-decoration:none;cursor:pointer;background:var(--accent,#b83e16);color:var(--on-accent,#fff);transition:transform 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),background-color 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),border-color 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),color 180ms var(--ease,cubic-bezier(.2,.8,.2,1));}.ds-button-primary:hover{background:color-mix(in srgb,var(--accent,#b83e16),var(--ink,#242426) 12%)}.ds-button-primary:focus-visible{outline:3px solid var(--focus,#62354b);outline-offset:4px;}.ds-button-primary:active{transform:scale(.97)}.ds-button-primary:disabled{cursor:not-allowed;background:var(--quiet,#e9e9e4);color:var(--muted,#626267);border-color:var(--line,#ceced0)}@media(hover:hover){.ds-button-primary:not(:disabled):hover{transform:translateY(-2px)}}@media(prefers-reduced-motion:reduce){.ds-button-primary{transition:none}}"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary sharing and account actions with thin rules and a quiet hover fill.",
+      "sourceRefs": [
+        "src/app/globals.css:.outline-button"
+      ],
+      "html": "<button class=\"ds-button-outline\" type=\"button\">Share link</button>",
+      "css": ".ds-button-outline{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;border:1px solid transparent;border-radius:var(--control-radius,6px);padding:12px 21px;font-family:var(--font-body,Manrope),sans-serif;font-size:14px;font-weight:750;line-height:1.4;text-decoration:none;cursor:pointer;background:transparent;color:var(--ink,#242426);border-color:var(--line,#ceced0);transition:transform 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),background-color 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),border-color 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),color 180ms var(--ease,cubic-bezier(.2,.8,.2,1));}.ds-button-outline:hover{background:var(--quiet,#e9e9e4)}.ds-button-outline:focus-visible{outline:3px solid var(--focus,#62354b);outline-offset:4px;}.ds-button-outline:active{transform:scale(.97)}.ds-button-outline:disabled{cursor:not-allowed;background:var(--quiet,#e9e9e4);color:var(--muted,#626267)}@media(hover:hover){.ds-button-outline:not(:disabled):hover{transform:translateY(-2px)}}@media(prefers-reduced-motion:reduce){.ds-button-outline{transition:none}}"
+    },
+    {
+      "name": "Text Button",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "A quiet native action using an underline and a 44px target.",
+      "sourceRefs": [
+        "src/app/globals.css:.text-button"
+      ],
+      "html": "<button class=\"ds-button-text\" type=\"button\">Cancel</button>",
+      "css": ".ds-button-text{border:0;background:transparent;color:var(--ink,#242426);text-decoration:underline;text-underline-offset:4px;min-height:44px;padding:8px 4px;font:650 14px var(--font-body,Manrope),sans-serif;cursor:pointer}.ds-button-text:hover{color:var(--accent,#b83e16)}.ds-button-text:focus-visible{outline:3px solid var(--focus,#62354b);outline-offset:4px;}.ds-button-text:disabled{color:var(--muted,#626267);cursor:not-allowed}"
+    },
+    {
+      "name": "Music Text Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "A labelled native field for a participant identity or playlist URL.",
+      "sourceRefs": [
+        "src/app/globals.css:input",
+        "src/components/input-form.tsx"
+      ],
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-name\">Your name</label><input class=\"ds-field-input\" id=\"ds-name\" name=\"name\" placeholder=\"Alex\" maxlength=\"40\" /></div>",
+      "css": ".ds-field{color:var(--ink,#242426);font-family:var(--font-body,Manrope),sans-serif}.ds-field-label{display:block;font-size:14px;font-weight:700;line-height:1.6;margin-bottom:8px}.ds-field-input{width:100%;min-height:50px;background:var(--surface,#fff);color:var(--ink,#242426);border:1px solid var(--line,#ceced0);border-radius:var(--control-radius,6px);padding:13px 15px;font:400 16px/1.6 var(--font-body,Manrope),sans-serif;caret-color:var(--accent,#b83e16);transition:border-color 160ms}.ds-field-input:hover{border-color:var(--muted,#626267)}.ds-field-input:focus{border-color:var(--focus,#62354b)}.ds-field-input:focus-visible{outline:3px solid var(--focus,#62354b);outline-offset:4px;}.ds-field-input::placeholder{color:var(--muted,#626267);opacity:1}.ds-field-input:disabled{background:var(--quiet,#e9e9e4);color:var(--muted,#626267)}.ds-field-input:user-invalid{border-color:var(--error,#ab2735)}@media(prefers-reduced-motion:reduce){.ds-field-input{transition:none}}"
+    },
+    {
+      "name": "Genre Chip",
+      "kind": "chip",
+      "refersTo": "genre-chip",
+      "description": "Passive wrapping genre labels, without invented filter or selection states.",
+      "sourceRefs": [
+        "src/app/globals.css:.genre-tags"
+      ],
+      "html": "<div class=\"ds-genre-tags\"><span class=\"ds-genre-chip\">indie</span><span class=\"ds-genre-chip\">soul</span><span class=\"ds-genre-chip\">electronic</span></div>",
+      "css": ".ds-genre-tags{display:flex;flex-wrap:wrap;gap:6px;color:var(--ink,#242426);font-family:var(--font-body,Manrope),sans-serif}.ds-genre-chip{font-size:12px;line-height:1.6;border:1px solid var(--line,#ceced0);border-radius:4px;padding:3px 8px}"
+    },
+    {
+      "name": "Task Card",
+      "kind": "card",
+      "refersTo": "task-card",
+      "description": "A flat paper panel for music entry, with responsive padding.",
+      "sourceRefs": [
+        "src/app/globals.css:.flow-card"
+      ],
+      "html": "<section class=\"ds-task-card\"><h2 class=\"ds-task-title\">Add your music</h2><p class=\"ds-task-copy\">Two tastes, one shared mix.</p></section>",
+      "css": ".ds-task-card{background:var(--surface,#fff);color:var(--ink,#242426);border-radius:12px;padding:32px}.ds-task-title{margin:0;font-family:var(--font-display,'Bricolage Grotesque'),sans-serif;font-size:2rem;font-weight:650;line-height:1.1;letter-spacing:-.025em;text-wrap:balance}.ds-task-copy{margin:16px 0 0;max-width:68ch;font:400 16px/1.6 var(--font-body,Manrope),sans-serif;color:var(--muted,#626267);overflow-wrap:anywhere}@media(max-width:767px){.ds-task-card{padding:24px 20px}}"
+    },
+    {
+      "name": "Compact Bilingual Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Waveform brand, Music Circle, persistent EN/FR selector and one two-state theme button.",
+      "sourceRefs": [
+        "src/components/site-chrome.tsx",
+        "src/components/account-nav.tsx",
+        "src/components/language-provider.tsx",
+        "src/components/theme-control.tsx",
+        "src/app/globals.css:.site-header"
+      ],
+      "html": "<header class=\"ds-navigation\"><a class=\"ds-nav-brand\" href=\"/\" aria-label=\"R We Vibing home\"><span class=\"ds-nav-wave\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M2 10v4M6 6v12M10 3v18M14 8v8M18 5v14M22 10v4\"/></svg></span><span>r we vibing<span class=\"ds-nav-question\">?</span></span></a><nav class=\"ds-nav-actions\" aria-label=\"Main navigation\"><a class=\"ds-nav-link\" href=\"/friends\" aria-label=\"Music circle\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/></svg><span class=\"ds-nav-circle-label\">Music circle</span></a><select class=\"ds-nav-language\" aria-label=\"Language\" title=\"Language\"><option value=\"en\" lang=\"en\" aria-label=\"English\">EN</option><option value=\"fr\" lang=\"fr\" aria-label=\"Français\">FR</option></select><button class=\"ds-nav-theme\" type=\"button\" aria-label=\"Dark mode\" aria-pressed=\"false\" title=\"Switch to dark mode\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42\"/></svg></button><a class=\"ds-nav-start\" href=\"/session/new\">New session</a></nav></header>",
+      "css": ".ds-navigation{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1280px;padding:calc(24px + env(safe-area-inset-top)) 40px 24px;border-bottom:1px solid var(--line,#ceced0);color:var(--ink,#242426);font-family:var(--font-body,Manrope),sans-serif}.ds-nav-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;white-space:nowrap;font:750 24px/1.2 var(--font-display,'Bricolage Grotesque'),sans-serif;letter-spacing:-.03em}.ds-nav-wave{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--orange,#ed642f);color:var(--art-ink,#242426)}.ds-nav-question{color:var(--accent,#b83e16)}.ds-nav-actions{display:flex;align-items:center;gap:16px}.ds-nav-link{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px;font-size:14px;font-weight:650;text-decoration:none}.ds-nav-link:hover{color:var(--accent,#b83e16)}.ds-nav-language{width:58px;min-width:58px;min-height:44px;padding:8px 4px;border:0;background:transparent;color:var(--ink,#242426);font:750 13px var(--font-body,Manrope),sans-serif;cursor:pointer}.ds-nav-language option{background:var(--surface,#fff);color:var(--ink,#242426)}.ds-nav-theme{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border:0;border-radius:6px;background:transparent;color:var(--ink,#242426);cursor:pointer;transition:transform 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),background-color 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),border-color 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),color 180ms var(--ease,cubic-bezier(.2,.8,.2,1));}.ds-nav-theme:hover{background:var(--quiet,#e9e9e4)}.ds-nav-theme:active{transform:scale(.97)}.ds-nav-start{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;border:1px solid transparent;border-radius:var(--control-radius,6px);padding:12px 21px;font-family:var(--font-body,Manrope),sans-serif;font-size:14px;font-weight:750;line-height:1.4;text-decoration:none;cursor:pointer;background:var(--accent,#b83e16);color:var(--on-accent,#fff);transition:transform 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),background-color 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),border-color 180ms var(--ease,cubic-bezier(.2,.8,.2,1)),color 180ms var(--ease,cubic-bezier(.2,.8,.2,1));}.ds-nav-start:hover{background:color-mix(in srgb,var(--accent,#b83e16),var(--ink,#242426) 12%)}.ds-nav-start:active{transform:scale(.97)}.ds-nav-brand:focus-visible,.ds-nav-link:focus-visible,.ds-nav-language:focus-visible,.ds-nav-theme:focus-visible,.ds-nav-start:focus-visible{outline:3px solid var(--focus,#62354b);outline-offset:4px;}@media(max-width:767px){.ds-navigation{padding:calc(16px + env(safe-area-inset-top)) 20px 16px;gap:12px}.ds-nav-brand{font-size:20px;gap:7px}.ds-nav-wave{width:32px;height:32px}.ds-nav-actions{gap:6px}.ds-nav-start,.ds-nav-circle-label{display:none}.ds-nav-link{width:44px}}@media(max-width:370px){.ds-navigation{padding-inline:16px;gap:8px}.ds-nav-brand{font-size:17px;gap:6px}.ds-nav-wave{width:28px;height:28px}.ds-nav-actions{gap:2px}.ds-nav-language{width:50px;min-width:50px}}@media(hover:hover){.ds-nav-start:hover,.ds-nav-theme:hover{transform:translateY(-2px)}}@media(prefers-reduced-motion:reduce){.ds-nav-start,.ds-nav-theme{transition:none}}"
+    },
+    {
+      "name": "Circular A/B Markers",
+      "kind": "custom",
+      "refersTo": "side-a",
+      "description": "Contributor labels retain letters as well as accent/plum color distinctions.",
+      "sourceRefs": [
+        "src/components/ui.tsx:Side",
+        "src/app/globals.css:.side-marker"
+      ],
+      "html": "<div class=\"ds-side-pair\"><span class=\"ds-side-a\" aria-label=\"Side A\">A</span><span class=\"ds-side-b\" aria-label=\"Side B\">B</span></div>",
+      "css": ".ds-side-pair{display:flex;gap:16px;align-items:center}.ds-side-a,.ds-side-b{display:inline-grid;place-items:center;width:44px;min-width:44px;height:44px;border:1px solid var(--accent,#b83e16);color:var(--accent,#b83e16);border-radius:50%;font:700 22px/1 var(--font-display,'Bricolage Grotesque'),sans-serif}.ds-side-b{border-color:var(--side-b,#62354b);color:var(--side-b,#62354b)}"
+    },
+    {
+      "name": "Ruled Recommendation List",
+      "kind": "custom",
+      "refersTo": "ruled-track",
+      "description": "Numbered, wrapping song rows with authentic external-link cues.",
+      "sourceRefs": [
+        "src/components/results-client.tsx:.recommendations",
+        "src/app/globals.css:.recommendations"
+      ],
+      "html": "<div class=\"ds-track-list\"><a class=\"ds-track-row\" href=\"https://www.youtube.com/results?search_query=Khruangbin+Friday+Morning\" target=\"_blank\" rel=\"noopener noreferrer\"><span class=\"ds-track-number\">01</span><span class=\"ds-track-name\">Khruangbin — Friday Morning</span><svg class=\"ds-track-external\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-label=\"Opens YouTube in a new tab\"><path d=\"M7 17 17 7M7 7h10v10\"/></svg></a><a class=\"ds-track-row\" href=\"https://www.youtube.com/results?search_query=Men+I+Trust+Show+Me+How\" target=\"_blank\" rel=\"noopener noreferrer\"><span class=\"ds-track-number\">02</span><span class=\"ds-track-name\">Men I Trust — Show Me How</span><svg class=\"ds-track-external\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-label=\"Opens YouTube in a new tab\"><path d=\"M7 17 17 7M7 7h10v10\"/></svg></a></div>",
+      "css": ".ds-track-list{border-top:1px solid var(--line,#ceced0);color:var(--ink,#242426);font-family:var(--font-body,Manrope),sans-serif}.ds-track-row{display:flex;align-items:center;gap:12px;padding:14px 0;min-height:52px;border-bottom:1px solid var(--line,#ceced0);color:inherit;text-decoration:none;font-size:14px;line-height:1.6}.ds-track-row:hover{color:var(--accent,#b83e16)}.ds-track-row:focus-visible{outline:3px solid var(--focus,#62354b);outline-offset:4px;}.ds-track-number{width:24px;flex-shrink:0;color:var(--muted,#626267);font-size:12px;font-variant-numeric:tabular-nums}.ds-track-name{flex:1;min-width:0;overflow-wrap:anywhere}.ds-track-external{flex-shrink:0}"
+    },
+    {
+      "name": "Semantic Feedback",
+      "kind": "custom",
+      "refersTo": "feedback-error",
+      "description": "Inline icon-and-text feedback exposes error or success status without relying on color alone.",
+      "sourceRefs": [
+        "src/components/ui.tsx:Feedback",
+        "src/app/globals.css:.feedback"
+      ],
+      "html": "<div class=\"ds-feedback-error\" role=\"alert\"><svg class=\"ds-feedback-icon\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 8v4M12 16h.01\"/></svg><span>Your music is saved. Try again when you are ready.</span></div><div class=\"ds-feedback-success\" role=\"status\"><svg class=\"ds-feedback-icon\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"m20 6-11 11-5-5\"/></svg><span>Image saved</span></div>",
+      "css": ".ds-feedback-error,.ds-feedback-success{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border-radius:6px;font:400 14px/1.6 var(--font-body,Manrope),sans-serif;margin:16px 0;animation:ds-feedback-arrive .3s var(--ease,cubic-bezier(.2,.8,.2,1))}.ds-feedback-error{background:var(--error-bg,#fff0f2);color:var(--error,#ab2735)}.ds-feedback-success{background:var(--success-bg,#edf7f1);color:var(--success,#236648)}.ds-feedback-icon{margin-top:3px;flex-shrink:0}@keyframes ds-feedback-arrive{from{opacity:.6;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){.ds-feedback-error,.ds-feedback-success{animation:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Mixtape Exchange",
+    "overview": "Mixtape Exchange treats a two-person music comparison as passing a record sleeve between listeners. Orange listening equipment, circular A/B labels, vinyl and an illustrated music universe make that exchange recognizable. The retained orange waveform ties the brand in the header, footer and shared-cover masthead to the existing product identity.\n\nBricolage Grotesque supplies expressive, tightly set display lettering; Manrope keeps repeated tasks and longer reading comfortable. Spacious split compositions introduce the experience, while ruled music rows, compact forms and record-label identities keep input, listening and Music Circle useful. Panels are calm and tonal; most dimensional depth belongs to the original artwork.\n\nThe interface has semantic light and dark themes. The collectible cover keeps its own print palette in either theme and uses the same component and assets for preview and export. Motion is visibly musical, with reduced-motion and offscreen handling; the interface has no manual animation pause/resume controls. English and French are persistent interface choices; identities, song titles and stored AI text retain their original content.",
+    "keyCharacteristics": [
+      "Orange waveform, tactile listening objects and vinyl.",
+      "Circular A/B contribution markers and ruled music lists.",
+      "Bricolage Grotesque display with Manrope reading text.",
+      "Semantic light/dark surfaces around fixed collectible artwork.",
+      "Noticeable musical motion with reduced-motion and offscreen handling.",
+      "Compact bilingual navigation and full participant identities."
+    ],
+    "rules": [
+      {
+        "name": "The Artwork Palette Rule",
+        "body": "Keep collectible artwork colors fixed across light/dark modes; use semantic theme colors for surrounding controls and reading surfaces.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Sides Rule",
+        "body": "Use the established A/B relationship consistently through input, invitation, waiting, matching, summaries and awards. Both complete participant identities must remain visible where those identities are shown.",
+        "section": "colors"
+      },
+      {
+        "name": "The Reading Voice Rule",
+        "body": "Use Bricolage Grotesque for display, headings and record labels; use Manrope for task text, controls and legal reading. Small cover print is specific to the artwork and must not set the size of actionable interface text.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tonal Surface Rule",
+        "body": "Let surface, quiet and line separate task content. Reserve soft shadows for the physical artwork, record identities and scaled cover; do not spread card shadows across every section.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preserve the orange waveform in every brand lockup, including the share cover.",
+      "Do use semantic light/dark tokens for the interface and fixed artwork tokens for the collectible cover.",
+      "Do keep A/B contribution markers, ruled song lists and complete participant identities clear.",
+      "Do use the same shared-cover component, illustration and fixed geometry for preview and static export.",
+      "Do choose trophy art from the award title's meaning and use vinyl for unfamiliar titles.",
+      "Do give retry, exhausted attempts and protected invitations their distinct saved-record, record-case and locked-envelope imagery.",
+      "Do retain visibly musical motion, reduced-motion support and automatic offscreen pause.",
+      "Do translate interface, legal, share and accessible labels for EN/FR while retaining names, songs, entered fields and stored AI content.",
+      "Do keep short labels concise, full-sentence punctuation intact and external-link cues on actual external links."
+    ],
+    "donts": [
+      "Don't restore the removed decorative flow/home side stripes or scene grid.",
+      "Don't add manual animation pause/resume controls.",
+      "Don't introduce a theme dropdown; the chosen appearance control is one two-state icon button.",
+      "Don't turn fixed album-art colors into theme-dependent interface colors.",
+      "Don't truncate participant identities to make the cover or awards fit; allow wrapping and the implemented bounded size adjustment.",
+      "Don't use system display typography, fake technical lettering, glyph icons or invented kickers.",
+      "Don't replace meaningful award subjects with one identical trophy or promise bespoke generation for every title.",
+      "Don't imply a countdown or automatic reset from the exhausted-attempt hourglass.",
+      "Don't use fabricated portraits, statistics, endorsements or scientific claims for the playful score.",
+      "Don't impose tiny decorative cover metadata sizes on task controls or legal reading."
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "prompt": "Use case: stylized-concept. Asset type: transparent illustration of a personal music trophy for a mobile app.\nStyle: premium tactile 3D miniature sculpture matching a burnt-orange enamel vintage turntable, polished enamel, midnight-black vinyl grooves, softly brushed silver, dark-plum pedestal. Warm studio illumination, art-directed beautiful object, charming rather than a generic sports cup.\nComposition: one entire award centered, front three-quarter view, distinct readable silhouette at 120px, transparent alpha and soft contact shadow only.\nPalette: #ed642f orange, #62354b plum, #f7f0e7 cream, #edc9d7 pink, #242426 black, brushed silver.\nConstraints: no text, letters, numerals, stars, sparkle icons, laurels, logos, watermark, people, UI, scene or background. Keep the trophy's semantic object unmistakable.\nSubject: a vintage silver ribbed microphone with a rose-pink enamel grille and an orange curved support, mounted on a dark-plum pedestal with a tiny black vinyl inset. This specifically represents singing / vocal / lyrical music awards.",
+  "tool": "built-in image_gen",
+  "transparentBackground": true,
+  "derivative": "Resized to 640px (player) or 320px (trophy), WebP quality 88; alpha preserved.",
+  "createdAt": "2026-09-30"
+}

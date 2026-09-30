@@ -1,0 +1,7 @@
+{
+  "prompt": "Use case: stylized-concept. Asset type: transparent personal music trophy for a mobile app.\nStyle: premium tactile 3D miniature sculpture matching a burnt-orange enamel vintage turntable, polished enamel, midnight-black vinyl grooves, brushed silver, dark-plum pedestal. Warm studio illumination, beautiful charming object rather than a generic sports cup.\nComposition: one entire centered award, front three-quarter view, distinct silhouette at 120px, genuinely transparent alpha and soft contact shadow.\nPalette: #ed642f orange, #62354b plum, #f7f0e7 cream, #edc9d7 pink, #242426 black, brushed silver.\nConstraints: no text, letters, numerals, stars, sparkle icons, laurels, logos, watermark, people, UI or backdrop. Make the semantic object unmistakable.\nSubject: a beautifully detailed pocket compass with a bright orange needle, mounted upright inside a black vinyl ring, its cream compass face has simple tick marks without letters or numbers, plum pedestal. Represents music discovery, genre explorers, eclectic taste and crate diggers.",
+  "tool": "built-in image_gen",
+  "transparentBackground": true,
+  "derivative": "Resized to 640px (player) or 320px (trophy), WebP quality 88; alpha preserved.",
+  "createdAt": "2026-09-30"
+}

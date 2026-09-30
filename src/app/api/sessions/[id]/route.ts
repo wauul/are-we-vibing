@@ -17,7 +17,7 @@ export async function GET(
       .parse((await params).id);
     const s = await db.session.findUnique({ where: { id } });
     if (!s)
-      throw new AppError("This session wandered off. Start a new one?", 404);
+      throw new AppError("This session could not be found. Check the link or start a new session.", 404);
     const user = await currentUser();
     assertSessionAccess(s, user?.id);
     return NextResponse.json(sessionView(s, user?.id), {

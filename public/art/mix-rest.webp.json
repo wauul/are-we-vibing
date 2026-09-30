@@ -1,0 +1,7 @@
+{
+  "prompt": "Use case: stylized-concept. Asset type: transparent illustration for a mobile music app's exhausted-retry state. Primary request: represent a mix that has run out of attempts while both music collections stay safe. Subject: a compact sculptural orange portable cassette-style record case standing open with two black vinyl records and cream/pink sleeves safely tucked inside, plus a little plum and cream hourglass at its front with orange sand in the lower half. The hourglass represents exhausted attempts, not a timed countdown. Style: playful polished dimensional 3D editorial illustration, rounded tactile physical forms, detailed vinyl grooves, retro orange/plum listening-equipment aesthetic. Composition: a single square grouping in three-quarter view, centered, generous transparent space, all objects completely visible. Color palette: orange #ed642f, plum #62354b, cream #f7f0e7, pink #edc9d7, charcoal #242426. Soft studio lighting. Genuine transparent background. No text, numbers, clock, countdown, UI, backdrop, watermark, broken objects or faces.",
+  "tool": "Built-in image_gen",
+  "createdAt": "2026-09-30",
+  "source": "exec-2a91a768-327f-4ba2-a4c3-3728bca22d39.png",
+  "derivative": "Resized to 640px and compressed as WebP; generated alpha preserved"
+}
