@@ -59,7 +59,15 @@ svg { flex-shrink:0; } [hidden] { display:none!important; }
 .nav-link { min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:14px; font-weight:650; text-decoration:none; padding:8px; }
 .nav-link:hover { color:var(--accent); }
 .theme-toggle { border:0; background:transparent; color:var(--ink); } .theme-toggle:hover { background:var(--quiet); } .theme-toggle svg { transition:transform 200ms var(--ease); } .theme-toggle:active svg { transform:rotate(18deg); }
-.language-control { width:58px; min-width:58px; min-height:44px; padding:8px 4px; background:transparent; color:var(--ink); border:0; font-size:13px; font-weight:750; cursor:pointer; } .language-control option { background:var(--surface); color:var(--ink); }
+.language-picker { position:relative; flex-shrink:0; }
+.language-control { display:flex; align-items:center; justify-content:center; gap:6px; width:58px; min-width:58px; min-height:44px; padding:8px 4px; background:transparent; color:var(--ink); border:0; border-radius:var(--control-radius); font-size:13px; font-weight:750; cursor:pointer; }
+.language-control:hover,.language-control[aria-expanded="true"] { background:var(--quiet); }
+.language-control[aria-expanded="true"] svg { transform:rotate(180deg); }
+.language-menu { position:absolute; top:calc(100% + 8px); right:0; z-index:40; width:168px; padding:6px; background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:var(--control-radius); }
+.language-option { display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; min-height:44px; padding:10px 12px; border:0; border-radius:var(--control-radius); background:transparent; color:var(--ink); font-size:14px; text-align:left; }
+.language-option[aria-checked="true"] { color:var(--accent); font-weight:750; }
+.language-option:hover,.language-option:focus-visible { background:var(--quiet); }
+.language-option:focus-visible { outline:2px solid var(--focus); outline-offset:-2px; }
 .home { max-width:1280px; margin:auto; }
 .hero { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; padding:80px 40px 72px; }
 .hero h1 { font-size:clamp(4rem,6.5vw,6rem); line-height:.98; letter-spacing:-.04em; font-weight:700; }
