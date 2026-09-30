@@ -6,13 +6,13 @@ export default function PrivacyPage() {
   return <main className="flow-shell"><article className="detail-card">
     <div className="eyebrow">YOUR DATA, EXPLAINED</div>
     <h1>Privacy</h1>
-    <p>Last updated: September 15, 2026.</p>
+    <p>Last updated: September 30, 2026.</p>
     <h2>What we store</h2>
     <p>Guest sessions store display names, music selections, input methods, generated compatibility results and creation times. Optional Google accounts store a Google account identifier, your chosen display name and username. We also store friend requests, friendships and session invitations.</p>
     <h2>Google sign-in</h2>
     <p>Google provides basic identity information to verify your account. We use a verified email during sign-in but do not store it in your profile or show it to friends. We do not store Google access or refresh tokens. An encrypted, HTTP-only cookie keeps you signed in for up to seven days.</p>
     <h2>Who receives information</h2>
-    <p>Vercel hosts the app and Neon stores its database. Names and submitted music are sent to Groq to generate the playful analysis. YouTube receives playlist lookups, and Apple's iTunes catalog receives autocomplete search fragments. Google handles Google sign-in. These providers process requests under their own policies; hosting services may keep operational request logs.</p>
+    <p>Vercel hosts the app and Neon stores its database. Submitted music, including imported playlist song titles and artists, is sent to Groq to generate the playful analysis. YouTube receives playlist lookups, Spotify receives anonymous public-playlist preview requests from our server, and Apple's iTunes catalog receives autocomplete search fragments. We do not request or store Spotify account credentials or cookies. Google handles Google sign-in. These providers process requests under their own policies; hosting services may keep operational request logs.</p>
     <h2>Sharing and visibility</h2>
     <p>In the Android app, optional notifications store a Firebase device token with the session you create. Firebase receives that token and a results link to deliver your notification. Browsers do not request notification permission. Android Google sign-in uses Google's native account picker. We verify its signed identity token and a single-use security challenge that expires after five minutes; identity tokens are not stored.</p>
     <p>Shared song recommendations are searched on YouTube and matching video details are stored with the result. Loading the embedded YouTube player shares playback requests with YouTube under its policies. Exported cards may contain video thumbnails.</p>

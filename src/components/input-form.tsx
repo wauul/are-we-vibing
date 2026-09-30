@@ -87,14 +87,14 @@ export function InputForm({
               setValue("");
               setError("");
             }}
-            disabled={busy || m.id === "SPOTIFY"}
+            disabled={busy}
           >
             <m.icon size={17} />
-            <span>{m.label}{m.id === "SPOTIFY" && <small className="coming-soon-badge">Coming soon</small>}</span>
+            <span>{m.label}{m.id === "SPOTIFY" && <small className="coming-soon-badge">Experimental</small>}</span>
           </button>
         ))}
       </div>
-      <p className="source-note"><Headphones size={13} /> Spotify playlist import is coming soon. For now, add favorites from any music app with My picks.</p>
+      <p className="source-note"><Headphones size={13} /> Use My picks for favorites from any music app, or bring a public playlist.</p>
       <label htmlFor="music">
         {type === "MANUAL"
           ? "Your on-repeat artists & songs"
@@ -121,7 +121,7 @@ export function InputForm({
         {type === "MANUAL"
           ? `${Math.min(value.split(/[\n,]/).filter((s) => s.trim()).length, 15)}/15 picks · Separate with commas or new lines. First 15 used.`
           : type === "SPOTIFY"
-            ? "Spotify’s developer terms do not allow its playlist data in AI vibe checks. Choose YouTube or add your own picks."
+            ? "Public playlists only. We use up to 20 songs exposed by the public preview. No Spotify sign-in needed. If import fails, use My picks."
             : "Public or unlisted playlists · First 20 videos."}
       </p>
       {error && (
@@ -129,7 +129,7 @@ export function InputForm({
           {error}
         </p>
       )}
-      <button className="button full" disabled={busy || type === "SPOTIFY"}>
+      <button className="button full" disabled={busy}>
         {busy ? "Spinning up…" : id ? "Check our vibe" : "Make my session"}
         <ArrowRight size={18} />
       </button>

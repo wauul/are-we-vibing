@@ -14,8 +14,8 @@ const result = {
     { title: "Night owl", person: "B" },
   ],
 };
-test("Spotify import is gated before provider data can reach AI", async () => {
-  await assert.rejects(() => normalizeInput("SPOTIFY", "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M"), /unavailable for AI vibe checks/);
+test("Spotify import rejects a spoofed playlist host", async () => {
+  await assert.rejects(() => normalizeInput("SPOTIFY", "https://open.spotify.com.evil.test/playlist/37i9dQZF1DXcBWIGoYBM5M"), /not a playlist/);
 });
 test("manual normalization trims, drops blanks and caps at 15", async () => {
   assert.deepEqual(

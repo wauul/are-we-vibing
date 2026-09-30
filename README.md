@@ -15,14 +15,14 @@ Prisma uses the JavaScript Postgres adapter so the app works on Windows ARM with
 - **Neon**: https://console.neon.tech → create project on the Free plan → Connect → copy the pooled connection string to `DATABASE_URL`. Keep TLS enabled. No paid upgrade or payment card is needed for this app.
 - **Groq**: https://console.groq.com/keys → Create API Key → `GROQ_API_KEY`. The code defaults to `llama-3.1-8b-instant` as originally requested, but this account no longer has that model. Production sets `GROQ_MODEL=openai/gpt-oss-20b`, which was verified with the free account and produces the same validated JSON. Stay on the free plan; quotas may temporarily prevent generation.
 - **YouTube**: https://console.cloud.google.com → new project → APIs & Services → Library → YouTube Data API v3 → Enable → Credentials → Create credentials → API key. Restrict the key to YouTube Data API v3. Set `YOUTUBE_API_KEY`. Server-side requests cannot use browser HTTP-referrer restrictions. Do not attach billing for this app.
-- **Spotify (unavailable)**: No Spotify keys are required. After accepting the terms, the account dashboard still exposed no app-creation control. New development access requires Premium, and Spotify terms restrict sending its content to AI models. The form and API disable Spotify import; the original adapter remains only as reference code. Use Manual or YouTube. See https://developer.spotify.com/blog/2026-02-06-update-on-developer-access-and-platform-security and https://developer.spotify.com/terms.
+- **Spotify (experimental)**: No API key, Spotify login or subscription change is needed. Paste a public playlist share link. The server reads song titles and artists from the public embed's structured payload and uses up to 20 distinct songs in the AI analysis. Private playlists and payload changes may prevent import; use My picks if it fails. This unofficial integration does not establish Spotify authorization for AI use; see the limitations below.
 
 All keys remain server-side and are excluded from Git. Never prefix them with NEXT*PUBLIC*. Manual input still needs Neon and Groq for persistent sessions and AI results.
 
 ## How it works
 
 1. `/session/new` submits a name and one music source to `POST /api/sessions`.
-2. `normalizeInput(type, value)` returns strings: first 20 YouTube videos or first 15 manual entries. Spotify requests return a friendly unavailable error before any provider request. Playlist URLs are validated against explicit provider hosts; the app never fetches user-supplied hosts.
+2. `normalizeInput(type, value)` returns strings: up to 20 distinct songs exposed by a Spotify public embed, first 20 YouTube videos or first 15 manual entries. Playlist URLs are validated against explicit provider hosts; the app never fetches user-supplied hosts. Spotify uses a fixed anonymous embed URL, rejects redirects and caps responses at 2 MiB with a 12-second timeout. It requests no audio, artwork, account cookies or authentication tokens.
 3. Creator gets `/session/[id]`; a localStorage marker keeps that browser in the waiting state. Their friend opens the same link in another browser and submits to `POST /api/sessions/[id]/join`.
 4. An atomic database update claims the second seat. A 60-second generation lease prevents duplicate concurrent Groq calls. Failed or interrupted generation can be retried from the shared page, up to five attempts per session.
 5. One Groq call analyzes both lists. Zod validates JSON, score bounds and exact recommendation/award counts. Invalid output gets exactly one stricter retry. API failures return a friendly error without fabricated results.
@@ -60,7 +60,7 @@ Input length limits, provider timeouts, fixed API hosts, same-origin browser mut
 
 ## Verified service limitations
 
-Spotify Developer Terms section IV.2.a.i prohibits ingesting Spotify content into an AI model, and its definition includes playlist metadata. Spotify input is therefore disabled in this AI application at both form and API levels. The requested adapter is retained as a reference implementation but never executed. No Spotify credentials are required or provisioned. Manual and YouTube flows are supported. See https://developer.spotify.com/terms.
+Spotify Developer Terms section IV.2.a.i prohibits ingesting Spotify content into an AI model, and its definition includes playlist metadata. The experimental public embed importer was implemented at the user's explicit request despite this previously explained restriction; technical access does not establish permission for this use. It does not use the user's Spotify account or modify a subscription, but this is not a guarantee about Spotify enforcement or continued availability. No Spotify credentials are required or provisioned. The implementation reads public preview metadata rather than porting SpotAPI's private token machinery. See https://developer.spotify.com/terms and `docs/spotapi-assessment.md`.
 
 Production: https://are-we-vibing.vercel.app
 Repository: https://github.com/wauul/are-we-vibing
@@ -75,7 +75,7 @@ The interface includes an animated record-player scene with a pause control, sou
 
 ## Artist and song autocomplete
 
-My picks searches Apple’s public iTunes Search API after a short typing pause (minimum two characters). No API key or paid service is needed. Only the active search fragment is sent to the catalog; identical searches are cached for an hour. Select with a click or Arrow keys and Enter; Escape dismisses matches. Suggestions replace the active comma/newline-separated entry and never prevent typing custom music. Catalog limits or outages fall back to free text. No album artwork or audio previews are fetched. Spotify remains disabled and is labeled Coming soon.
+My picks searches Apple’s public iTunes Search API after a short typing pause (minimum two characters). No API key or paid service is needed. Only the active search fragment is sent to the catalog; identical searches are cached for an hour. Select with a click or Arrow keys and Enter; Escape dismisses matches. Suggestions replace the active comma/newline-separated entry and never prevent typing custom music. Catalog limits or outages fall back to free text. No album artwork or audio previews are fetched. Spotify playlist input is labeled Experimental. Suggestions appear within the form so they never block its submit action.
 
 ## Google accounts, friends, and mobile sharing
 
