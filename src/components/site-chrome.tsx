@@ -16,9 +16,7 @@ export function SiteHeader() {
 }
 export function SiteFooter() {
   const { t } = useLanguage();
-  const pathname = usePathname();
-  const accountPage = pathname.startsWith("/settings") || pathname.startsWith("/friends") || ["/privacy", "/terms", "/delete-account"].includes(pathname);
-  return <footer className={accountPage ? "account-footer" : undefined}><Link href="/"><Brand /></Link><span>{t("Good music is better shared.")}</span><nav aria-label={t("Legal")}><Link href="/privacy">{t("Privacy")}</Link><Link href="/terms" aria-label={t("Terms of Use")}>{t("Terms")}</Link><Link href="/delete-account">{t("Delete account")}</Link></nav></footer>;
+  return <footer><Link href="/"><Brand /></Link><span>{t("Good music is better shared.")}</span><nav aria-label={t("Legal")}><Link href="/privacy">{t("Privacy")}</Link><Link href="/terms" aria-label={t("Terms of Use")}>{t("Terms")}</Link><Link href="/delete-account">{t("Delete account")}</Link></nav></footer>;
 }
 export function MobileNavigation() {
   const { t } = useLanguage();
