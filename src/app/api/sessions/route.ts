@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { submission } from "@/lib/schema";
 import { normalizeInput } from "@/lib/normalize";
+import { youTubeAccessToken } from "@/lib/youtube-account";
 import { apiError, readBody, requireEnv } from "@/lib/errors";
 import { sessionView } from "@/lib/sessions";
 import { z } from "zod";
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
     }
     requireEnv("DATABASE_URL");
     requireEnv("GROQ_API_KEY");
-    const list = await normalizeInput(input.type, input.value);
+    const list = await normalizeInput(input.type, input.value, input.type === "YOUTUBE" ? await youTubeAccessToken() : undefined);
     const creatorSecret = randomBytes(32).toString("hex");
     const s = await db.session.create({
       data: {

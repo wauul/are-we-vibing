@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { themeBootstrap } from "@/lib/theme";
 import { LanguageProvider } from "@/components/language-provider";
-import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { SiteHeader, SiteFooter, MobileNavigation } from "@/components/site-chrome";
 import { localeCookie, validLocale } from "@/lib/i18n";
 import NativeRuntime from "@/components/native-runtime";
 import { Analytics } from "@vercel/analytics/next";
@@ -34,6 +34,7 @@ export default async function RootLayout({
         <Analytics />
         <SpeedInsights />
         <SiteFooter />
+        <MobileNavigation />
         </LanguageProvider>
       </body>
     </html>

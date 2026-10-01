@@ -435,3 +435,49 @@ footer nav { display:flex; align-items:center; gap:20px; margin-left:auto; } foo
 @keyframes invitation-sway { 0%,100% { transform:translateY(5px) rotate(-4deg); } 50% { transform:translateY(-9px) rotate(4deg); } }
 @keyframes recovery-ripple { 50% { transform:scale(1.08); opacity:.4; } }
 @keyframes key-swing { 0%,100% { transform:rotate(-14deg); } 50% { transform:rotate(14deg); } }
+
+/* Account playlists and provider discovery share the existing music controls. */
+.youtube-library { margin:20px 0; padding-block:16px; border-block:1px solid var(--line); }
+.library-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.library-heading strong { font-size:14px; }
+.youtube-library .field-help { margin:8px 0 12px; }
+.youtube-library select { margin-top:12px; }
+.youtube-library .button { margin-top:4px; }
+.discovery-tabs { display:flex; gap:8px; margin-top:20px; }
+.discovery-tabs button { display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:10px 16px; border:1px solid var(--line); border-radius:var(--control-radius); background:var(--surface); color:var(--muted); }
+.discovery-tabs button[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+.mobile-navigation { display:none; }
+
+/* A touch-first shell: scrolling stays enabled, with no visible scrollbars. */
+@media(max-width:767px) {
+  html,body,body * { scrollbar-width:none; }
+  html::-webkit-scrollbar,body::-webkit-scrollbar,body *::-webkit-scrollbar { display:none; width:0; height:0; }
+  html { scroll-padding-top:96px; scroll-padding-bottom:100px; }
+  body { min-height:100dvh; padding-bottom:calc(76px + env(safe-area-inset-bottom)); }
+  .site-header { position:sticky; top:0; z-index:30; background:var(--bg); padding-block:calc(8px + env(safe-area-inset-top)) 8px; }
+  .site-header .friends-nav { display:none; }
+  .mobile-navigation { position:fixed; inset:auto 0 0; z-index:40; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); background:var(--surface); border-top:1px solid var(--line); padding:6px max(12px,env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left)); }
+  .mobile-navigation a { min-height:60px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px; text-decoration:none; color:var(--muted); border-radius:8px; font-size:12px; font-weight:700; }
+  .mobile-navigation a[aria-current="page"] { color:var(--accent); background:var(--quiet); }
+  .mobile-navigation a:active { background:var(--quiet); }
+  .hero { padding-top:24px; gap:20px; }
+  .hero h1 { font-size:clamp(2.65rem,10.5vw,3.45rem); }
+  .hero-actions { grid-row:3; }
+  .hero>.music-scene { grid-row:4; max-width:300px; }
+  .exchange-guide,.circle-invitation { padding-block:28px; }
+  .session-shell { padding-top:20px; }
+  .session-layout { gap:20px; }
+  .flow-progress { margin-bottom:20px; }
+  .session-entry { grid-template-columns:1fr 104px; gap:12px; }
+  .session-entry .picks-art { width:104px; }
+  .session-entry h1 { font-size:clamp(1.8rem,7.5vw,2.2rem); }
+  .flow-card { padding:24px 16px; }
+  .input-form .method-tabs button { min-height:76px; }
+  .input-form>.button.full { min-height:52px; margin-top:12px; }
+  .youtube-library select { font-size:16px; }
+  .discovery-tabs button { flex:1; }
+  input,textarea,select { scroll-margin-block:100px; }
+  footer { padding-block:20px; }
+  footer>.brand,footer>a:first-child,footer>span { display:none; }
+  footer nav { margin:0 auto; }
+}

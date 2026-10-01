@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { submission } from "@/lib/schema";
 import { normalizeInput } from "@/lib/normalize";
+import { youTubeAccessToken } from "@/lib/youtube-account";
 import { apiError, AppError, readBody } from "@/lib/errors";
 import { generate } from "@/lib/sessions";
 import { currentUser } from "@/lib/auth";
@@ -29,7 +30,7 @@ export async function POST(
         "Both seats are taken. Refresh to see the result.",
         409,
       );
-    const list = await normalizeInput(input.type, input.value);
+    const list = await normalizeInput(input.type, input.value, input.type === "YOUTUBE" ? await youTubeAccessToken() : undefined);
     const joined = await db.session.updateMany({
       where: { id, personBName: null },
       data: {

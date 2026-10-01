@@ -3,6 +3,7 @@ import { T, useLanguage } from "@/components/language-provider";
 
 import { useEffect, useState } from "react";
 import ManualPicks from "./manual-picks";
+import YouTubePlaylistPicker from "./youtube-playlist-picker";
 import { Headphones, Music2, Play } from "lucide-react";
 import { Feedback } from "./ui";
 import { submission, type InputType, type SessionView } from "@/lib/schema";
@@ -26,6 +27,20 @@ export function InputForm({
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   useEffect(() => {
+    const outcome = new URLSearchParams(window.location.search).get("youtube");
+    if (outcome) {
+      setType("YOUTUBE");
+      try {
+        const key = `youtube-draft:${window.location.pathname}`;
+        const draft = JSON.parse(sessionStorage.getItem(key) || "null");
+        if (typeof draft?.name === "string") setName(draft.name);
+        if (typeof draft?.value === "string") setValue(draft.value);
+        sessionStorage.removeItem(key);
+      } catch { /* Storage is optional. */ }
+      if (outcome === "failed") setError("YouTube could not connect. Try again or paste a playlist link.");
+      const url = new URL(window.location.href); url.searchParams.delete("youtube");
+      window.history.replaceState(window.history.state, "", url);
+    }
     let active = true;
     api<{ user: { name: string } | null }>("/api/profile").then(data => { if (active && data.user) setName(current => current || data.user!.name); }).catch(() => {});
     return () => { active = false; };
@@ -94,7 +109,10 @@ export function InputForm({
           </button>
         ))}
       </div>
-      <label htmlFor="music">
+      {type === "YOUTUBE" && <YouTubePlaylistPicker value={value} onChange={setValue} disabled={busy} beforeConnect={() => {
+        try { sessionStorage.setItem(`youtube-draft:${window.location.pathname}`, JSON.stringify({ name, value })); } catch { /* Storage is optional. */ }
+      }} />}
+      <label htmlFor={type === "MANUAL" ? "music" : "playlist-link"}>
         {type === "MANUAL"
           ? t("Your music")
           : t("Your playlist share link")}
@@ -103,7 +121,7 @@ export function InputForm({
         <ManualPicks value={value} onChange={setValue} disabled={busy} />
       ) : (
         <input
-          id="music"
+          id="playlist-link"
           type="url"
           placeholder={
             type === "SPOTIFY"
@@ -121,7 +139,7 @@ export function InputForm({
           ? t("{0}/15 picks · Use commas or new lines", {0:Math.min(value.split(/[\n,]/).filter((s) => s.trim()).length, 15)})
           : type === "SPOTIFY"
             ? t("Public playlists · Up to 20 songs · No sign-in needed. If import fails, use My picks.")
-            : t("Public or unlisted playlists · First 20 videos")}
+            : t("Paste a public or unlisted link, or choose your own playlist above · First 20 videos")}
       </p>
       {error && (
         <Feedback tone="error">{error}</Feedback>

@@ -12,6 +12,7 @@ import ShareableResultCard, { coverSize } from "./ShareableResultCard";
 import CoverPreview from "./cover-preview";
 import { TrophyArt } from "./music-art";
 import ListenTogether from "./listen-together";
+import SongDiscovery from "./song-discovery";
 import { Feedback, Side } from "./ui";
 import { Capacitor } from "@capacitor/core";
 import ResultsLoading from "./results-loading";
@@ -83,7 +84,7 @@ export default function ResultsClient({ id }: { id: string }) {
     <ListenTogether tracks={session.playlist || []} />
     <div className="details-grid">
       <section className="detail-card"><h2><T text={"Where your tastes meet"} /></h2><p className="field-help"><T text={"Genres inferred from your picks. Presence, not a measured audio profile."} /></p><div className="genre-table-wrap"><table className="genre-table"><caption className="sr-only"><T text={"Inferred genres for both participants"} /></caption><thead><tr><th scope="col"><T text={"Genre"} /></th><th scope="col"><span>{session.personAName}</span></th><th scope="col"><span>{session.personBName}</span></th></tr></thead><tbody>{genres.map(genre => <tr key={genre}><th scope="row">{genre}</th>{[r.personA,r.personB].map((person,index) => { const present=person.genres.some(g => g.toLowerCase()===genre); return <td key={index} className={present ? `genre-present genre-${index}` : ""}>{present ? <Check size={18} aria-label={t("Inferred")} /> : <Minus size={16} aria-label={t("Not inferred")} />}</td>; })}</tr>)}</tbody></table></div></section>
-      <section className="detail-card"><h2>{r.recommendations.length}{" "}<T text={"songs for both of you"} /></h2><div className="recommendations">{r.recommendations.map((track,index) => <a key={`${index}:${track}`} href={`https://www.youtube.com/results?search_query=${encodeURIComponent(track)}`} target="_blank" rel="noopener noreferrer"><span className="track-number">{String(index+1).padStart(2,"0")}</span><span>{track}</span><ArrowUpRight size={16} aria-label={t("Opens YouTube in a new tab")} /></a>)}</div><p className="field-help"><T text={"AI suggestions to explore. Links open YouTube search."} /></p></section>
+      <SongDiscovery tracks={r.recommendations} />
     </div>
     <p className="results-disclaimer"><T text={"Music taste is one part of a connection. This result is a playful interpretation, not a scientific compatibility test."} /></p><Link className="another-session" href="/session/new"><T text={"Compare with someone else"} /></Link>
   </main>;

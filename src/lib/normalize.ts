@@ -54,6 +54,7 @@ async function requestJson(url: string, init?: RequestInit) {
 export async function normalizeInput(
   type: InputType,
   value: string,
+  youtubeAccessToken?: string | null,
 ): Promise<string[]> {
   let tracks: string[];
   if (type === "MANUAL")
@@ -69,13 +70,13 @@ export async function normalizeInput(
       part: "snippet",
       playlistId: id,
       maxResults: "20",
-      key: requireEnv("YOUTUBE_API_KEY"),
+      ...(youtubeAccessToken ? {} : { key: requireEnv("YOUTUBE_API_KEY") }),
     }).toString();
     const data = z
       .object({
         items: z.array(z.object({ snippet: z.object({ title: z.string() }) })),
       })
-      .parse(await requestJson(url.toString()));
+      .parse(await requestJson(url.toString(), youtubeAccessToken ? { headers: { Authorization: `Bearer ${youtubeAccessToken}` } } : undefined));
     tracks = data.items
       .map((i) => i.snippet.title)
       .filter((t) => !["Private video", "Deleted video"].includes(t));

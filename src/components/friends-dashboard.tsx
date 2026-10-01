@@ -50,6 +50,7 @@ export default function FriendsDashboard() {
       {message&&<Feedback tone={failed?"error":"success"}>{message}</Feedback>}
       <Link className="button outline-button" href="/session/new"><T text={"Create a guest session"} /></Link>
       <p className="privacy"><T text={"Friends see your name and username, never your email."} /></p>
+      <Link className="privacy" href="/review-login">Review access</Link>
     </div>
   </main>;
   const friends=social.connections.filter(c=>c.accepted);const requests=social.connections.filter(c=>!c.accepted);
@@ -83,6 +84,7 @@ export default function FriendsDashboard() {
     </section>
     <details className="profile-editor"><summary><RecordAvatar name={profile.name} seed={profile.username} small /><span><strong>{profile.name}</strong><small>@{profile.username}</small></span><span className="profile-edit-label"><Pencil size={16} aria-hidden="true" /><T text={"Edit profile"} /></span></summary>
       <form onSubmit={async event=>{event.preventDefault();setBusy(true);setMessage("");setFailed(false);try{const updated=await api<Profile>("/api/profile",{name,username});setProfile(updated);setMessage("Profile saved. Share your username with friends.");}catch(error){setFailed(true);setMessage((error as Error).message);}finally{setBusy(false);}}}><label htmlFor="profile-name"><T text={"Display name"} /></label><input id="profile-name" value={name} maxLength={40} required onChange={e=>setName(e.target.value)} autoComplete="nickname" disabled={busy}/><label htmlFor="username"><T text={"Username"} /></label><input id="username" value={username} minLength={3} maxLength={24} pattern="[a-z0-9_]+" required onChange={e=>setUsername(e.target.value.toLowerCase())} autoComplete="username" disabled={busy}/><p className="field-help"><T text={"3–24 lowercase letters, numbers or underscores."} /></p><button className="button outline-button" disabled={busy}>{busy?t("Saving…"):t("Save profile")}</button></form>
+      <p><Link href="/delete-account">{t("Delete account")}</Link></p>
     </details></div>
   </main>;
 }
