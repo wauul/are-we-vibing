@@ -10,8 +10,9 @@ import ee.forgr.capacitor.social.login.ModifiedMainActivityForSocialLoginPlugin;
 
 public class MainActivity extends BridgeActivity implements ModifiedMainActivityForSocialLoginPlugin {
     @Override public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        // Register custom plugins before BridgeActivity builds the WebView bridge.
         registerPlugin(VibeCardPlugin.class);
+        super.onCreate(savedInstanceState);
     }
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
