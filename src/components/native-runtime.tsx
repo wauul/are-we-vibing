@@ -25,7 +25,12 @@ export default function NativeRuntime() {
       await listen(App.addListener("appUrlOpen", event => navigate(event.url)));
       await listen(PushNotifications.addListener("pushNotificationActionPerformed", event => navigate(event.notification.data?.url)));
       await listen(App.addListener("appStateChange", event => { if (!event.isActive) window.dispatchEvent(new Event("vibe:pause-player")); }));
-      await listen(App.addListener("backButton", event => { if (event.canGoBack) window.history.back(); else void App.minimizeApp(); }));
+      await listen(App.addListener("backButton", event => {
+        const dialog = document.querySelector<HTMLDialogElement>("dialog[open]");
+        if (dialog) dialog.close();
+        else if (event.canGoBack) window.history.back();
+        else void App.minimizeApp();
+      }));
       const launch = await App.getLaunchUrl(); if (launch) navigate(launch.url);
       await SplashScreen.hide();
     })().catch(() => console.warn("Optional native integration unavailable"));

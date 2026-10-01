@@ -22,6 +22,12 @@ test("native links reject foreign origins and non-result navigation", () => {
   assert.equal(appLinkPath("https://are-we-vibing.vercel.app" + path), path);
   for (const url of ["javascript:alert(1)", "https://evil.com" + path, "https://are-we-vibing.vercel.app.evil.com" + path, "https://are-we-vibing.vercel.app/api/auth/signout"]) assert.equal(appLinkPath(url), null);
 });
+test("friend links preserve only validated usernames on the app origin", () => {
+  const base = "https://are-we-vibing.vercel.app/friends/add";
+  assert.equal(appLinkPath(base), "/friends/add");
+  assert.equal(appLinkPath(base + "?username=sam_records&next=https://evil.example"), "/friends/add?username=sam_records");
+  for (const url of [base + "?username=ab", base + "?username=SAM", base + "?username=" + "x".repeat(25), base + "?username=%2F%2Fevil.example", "https://evil.example/friends/add?username=sam_records", "https://user:password@are-we-vibing.vercel.app/friends/add?username=sam_records"]) assert.equal(appLinkPath(url), null);
+});
 test("failed embedded tracks skip forward and terminate without an error loop", () => {
   assert.equal(nextPlayableIndex(0, 4, new Set([0, 1])), 2);
   assert.equal(nextPlayableIndex(3, 4, new Set([3])), null);

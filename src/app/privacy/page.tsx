@@ -1,10 +1,11 @@
 import { T } from "@/components/language-provider";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export const metadata = { title: "Privacy — R We Vibing?" };
 
 export default function PrivacyPage() {
-  return <main id="content" className="flow-shell"><article className="prose">
+  return <main id="content" className="flow-shell legal-shell"><Link className="back-link legal-back" href="/settings"><ArrowLeft size={20} aria-hidden="true" /><T text={"Settings"} /></Link><article className="prose">
     <h1><T text={"Privacy"} /></h1>
     <p><T text={"Last updated: October 1, 2026."} /></p>
     <h2><T text={"What we store"} /></h2>

@@ -9,7 +9,7 @@ export async function connectNativeYouTube() {
   if (login.result.responseType !== "online" || !login.result.accessToken?.token) throw new Error("YouTube access was not granted.");
   await api("/api/youtube/connect", { action: "native", accessToken: login.result.accessToken.token });
 }
-export async function nativeGoogleSignIn() {
+export async function nativeGoogleSignIn(callbackUrl = "/friends") {
   const { SocialLogin } = await import("@capgo/capacitor-social-login");
   const attempt = await api<{ id: string; nonce: string; clientId: string }>("/api/native-google", { action: "begin" });
   initialized ||= SocialLogin.initialize({ google: { webClientId: attempt.clientId, mode: "online" } }).catch(error => { initialized = undefined; throw error; });
@@ -18,5 +18,6 @@ export async function nativeGoogleSignIn() {
   const login = await SocialLogin.login({ provider: "google", options: { nonce: attempt.nonce, style: "standard", scopes: ["email", "profile"] } });
   if (login.result.responseType !== "online" || !login.result.idToken) throw new Error("Google sign-in did not finish.");
   await api("/api/native-google", { action: "finish", id: attempt.id, idToken: login.result.idToken });
-  window.location.assign("/friends");
+  const destination = new URL(callbackUrl, window.location.origin);
+  window.location.assign(destination.origin === window.location.origin ? destination.pathname + destination.search : "/friends");
 }

@@ -1,11 +1,11 @@
 import { T } from "@/components/language-provider";
 import Link from "next/link";
-import { FileText } from "lucide-react";
+import { ArrowLeft, FileText } from "lucide-react";
 
 export const metadata = { title: "Terms of Use — R We Vibing?", description: "Rules for using R We Vibing, submitting music and sharing your results." };
 
 export default function TermsPage() {
-  return <main id="content" className="flow-shell"><article className="prose">
+  return <main id="content" className="flow-shell legal-shell"><Link className="back-link legal-back" href="/settings"><ArrowLeft size={20} aria-hidden="true" /><T text={"Settings"} /></Link><article className="prose">
     <h1><T text={"Terms of Use"} /></h1>
     <div className="terms-meta"><FileText size={20} aria-hidden="true" /><span><T text={"Last updated: September 30, 2026"} /></span></div>
     <p><T text={"These terms explain how to use R We Vibing and share its results. They apply to the website and Android app."} /></p>

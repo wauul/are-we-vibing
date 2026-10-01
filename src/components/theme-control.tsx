@@ -7,14 +7,17 @@ import { Capacitor, SystemBars, SystemBarsStyle } from "@capacitor/core";
 import { themeKey } from "@/lib/theme";
 type Theme = "light" | "dark" | "system";
 
-export default function ThemeControl() {
+export default function ThemeControl({ showLabel = false }: { showLabel?: boolean }) {
   const { t } = useLanguage();
   const [theme, setTheme] = useState<Theme>("system");
   const [dark, setDark] = useState(false);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    try { const saved = localStorage.getItem(themeKey); if (saved === "light" || saved === "dark") setTheme(saved); } catch {}
+    const sync = () => { try { const saved = localStorage.getItem(themeKey); setTheme(saved === "light" || saved === "dark" ? saved : "system"); } catch {} };
+    sync();
+    window.addEventListener("vibing:theme-change", sync);
     setReady(true);
+    return () => window.removeEventListener("vibing:theme-change", sync);
   }, []);
   useEffect(() => {
     if (!ready) return;
@@ -31,8 +34,9 @@ export default function ThemeControl() {
     return () => preference.removeEventListener("change", apply);
   }, [theme, ready]);
   const Icon = dark ? Moon : Sun;
-  return <button className="theme-toggle icon-button" type="button" aria-label={t("Dark mode")} aria-pressed={dark} title={dark ? t("Switch to light mode") : t("Switch to dark mode")} onClick={() => {
+  return <button className={`theme-toggle icon-button${showLabel ? " theme-labeled" : ""}`} type="button" aria-label={t("Dark mode")} aria-pressed={dark} title={dark ? t("Switch to light mode") : t("Switch to dark mode")} onClick={() => {
     const next = dark ? "light" : "dark";
     setTheme(next); try { localStorage.setItem(themeKey, next); } catch {}
-  }}><Icon size={20} aria-hidden="true" /></button>;
+    window.dispatchEvent(new Event("vibing:theme-change"));
+  }}><Icon size={20} aria-hidden="true" />{showLabel && <span>{dark ? t("Dark") : t("Light")}</span>}</button>;
 }
