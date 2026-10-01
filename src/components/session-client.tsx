@@ -4,6 +4,7 @@ import { T, useLanguage } from "@/components/language-provider";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { AudioLines, Check, Disc3, Headphones } from "lucide-react";
 import type { SessionView } from "@/lib/schema";
 import { InputForm, api } from "./input-form";
 import { isCreator } from "@/lib/client-api";
@@ -50,10 +51,16 @@ export default function SessionClient({ id }: { id: string }) {
   const waiting = (owner || session?.isOwner) && !joinHere && session?.status === "waiting";
   const matching = busy || session?.status === "matching";
   const entry = !waiting && !matching && session?.status !== "retry";
-  const step = isNew ? 0 : session?.status === "waiting" ? 1 : 2;
+  const step = matching ? 2 : isNew ? 0 : session?.status === "waiting" ? 1 : 2;
   const capped = session?.status === "retry" && session.generationAttempts >= 5;
   return <main id="content" className="session-shell">
-    <ol className="flow-progress" aria-label={t("Session progress")}>{["Your taste", "Their taste", "Your mix"].map((label, index) => <li key={label} className={index <= step ? "done" : ""} aria-current={index === step ? "step" : undefined}><span>{index + 1}</span>{t(label)}</li>)}</ol>
+    <ol className="flow-progress" aria-label={t("Session progress")}>
+      {[{ label: "Your taste", Icon: Headphones }, { label: "Their taste", Icon: Disc3 }, { label: "Your mix", Icon: AudioLines }].map(({ label, Icon }, index) => <li key={label} className={`flow-step flow-step-${index + 1} ${index < step ? "complete" : index === step ? "current" : "upcoming"}`} aria-current={index === step ? "step" : undefined}>
+        <span className="flow-step-art" aria-hidden="true"><Icon size={24} strokeWidth={1.7} /><span className="flow-step-number">{index < step ? <Check size={11} strokeWidth={3} /> : index + 1}</span></span>
+        <span className="flow-step-label">{t(label)}</span>
+        <span className="flow-step-track" aria-hidden="true"><span className="flow-step-fill" /><span className="flow-step-pulse" /></span>
+      </li>)}
+    </ol>
     <div className="session-layout">
       <aside className={`session-context ${entry ? "session-entry" : ""}`}>
         {entry ? <div className="picks-art"><ArtworkStage kind="picks" /><Side side={isNew ? "A" : "B"} /></div> : <Side side={waiting ? "A" : "B"} />}
