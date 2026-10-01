@@ -15,6 +15,8 @@ Applied [UI Craft](https://github.com/Achref23illi/ui-craft) using its settings 
 
 Production Next.js build and all 41 unit tests passed, including translation coverage and friend-link origin/username validation. Android `bundleRelease lintRelease` passed; signed version code 4 / version name 1.3 with the existing upload key.
 
-Browser checks used an isolated local API fixture with no real account mutations: send/accept requests, reject self-add and unknown usernames, preserve failed inputs, cancellation of removal, duplicate username errors, and successful profile saves. Phone renders at 390px and compact French/dark Settings at 360px showed no horizontal overflow; desktop Settings was inspected at 1280px. Screenshots are local under `artifacts/review/ui-craft/` (excluded from Git).
+Browser checks used an isolated local API fixture with no real account mutations: send/accept requests, reject self-add and unknown usernames, preserve failed inputs, cancellation and confirmation of removal, duplicate username errors, and successful profile saves. Username copying, prefilled friend links, empty/signed-out states and recovery after a failed load were also checked. Phone renders at 390px and compact French/dark Settings at 360px showed no horizontal overflow; desktop Settings was inspected at 1280px. Screenshots are local under `artifacts/review/ui-craft/` (excluded from Git).
+
+After deployment, signed into the existing production review account to verify live Friends, Add Friend, Settings, profile loading and the public deletion request action. No profile or friendship mutations were made during this production smoke test. Android 1.3 was submitted to closed Alpha for review; see [play-release-status.md](play-release-status.md).
 
 Native share, Android back dismissal, App Links, and sign-in return routing still require verification on a physical Play-installed Android device. No device was connected during this work.

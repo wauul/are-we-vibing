@@ -4,6 +4,20 @@ Package: `com.wauul.arewevibing`
 
 Play app ID: `4976192882653164667`, developer account `8530344199625899858`.
 
+## Latest update: 1.3 — Friends and account navigation
+
+Submitted **1.3 - Friends and account navigation** on October 1, 2026 to closed **Alpha** track `4699434223865458736`, release ID **3**, version code **4** / version name **1.3**. The publishing overview confirmed **Modifications en cours d'examen / Changes in review** and contained only this Alpha release with a full rollout. Automated quick checks were still running at submission. Managed publishing remains off, so approval publishes automatically. This is submitted for review, not yet confirmed available to testers.
+
+Play accepted the signed bundle with no blocking errors and no device compatibility losses. Its two nonblocking warnings remain missing native debug symbols and a deobfuscation file (minification is disabled). The separate testing tracks, country availability and tester configuration were not changed. The previous Alpha 1.2 release was confirmed published before preparing this update.
+
+The new mobile Friends screen leads with Add a friend, username copy/share, incoming requests, compact friend rows and mix history. Settings groups profile editing, language/appearance, privacy, terms, support, sign-out and the final red Delete account row. Account deletion remains an email request with ownership verification. Android friend links open the add-friend route with a validated username; Google sign-in preserves the destination, and native back dismisses an open confirmation dialog.
+
+Web deployment `dpl_CjnASEzFdNjnmUuuj2biAQYTsJEW` is **READY**, aliased to `https://are-we-vibing.vercel.app`. The existing Android shell loads this live site, so the UI updates are already deployed; the 1.3 bundle additionally delivers the new Android friend-link intent filter. Source implementation commit: `3aa107b` on `master`.
+
+Validation: all **41** unit tests, production Next.js build, Android `bundleRelease lintRelease`, and upload-key signature verification passed. Signed bundle: `artifacts/are-we-vibing-1.3-release.aab`; SHA-256: `75139DD13482F69B02C06297DE4166129521C390F4279D01976D90A5C99657E2`. Production browser verification signed into the existing review profile and confirmed Friends, Add Friend, Settings, profile field loading, and the public deletion email action. Mutation/error/empty-state checks used an isolated local fixture rather than changing real friendships or profiles. Physical Android testing of native sharing, sign-in return routing and App Links remains outstanding.
+
+Proof: `artifacts/review/ui-craft/17-play-1.3-submitted.png`. Production screenshots: `14-production-friends.png`, `15-production-add-friend.png`, and `16-production-settings.png` in the same folder. Design/verification details: [mobile-account-navigation.md](mobile-account-navigation.md).
+
 ## Published for internal testing
 
 Version code 2, version name 1.1. Release label: `1.1 - Mobile and playlist update`. Published October 1, 2026 at 12:09 (Play Console display time), replacing internal version code 1.
